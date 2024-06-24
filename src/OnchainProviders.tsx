@@ -21,11 +21,11 @@ function OnchainProviders({ children }: Props) {
   return (
     <WagmiProvider config={wagmiConfig}>
       <QueryClientProvider client={queryClient}>
-        <OnchainKitProvider chain={baseSepolia}>
-          <SessionProvider>
-            {children}
-          </SessionProvider>
-        </OnchainKitProvider>
+        {/* <OnchainKitProvider chain={baseSepolia}> */}
+        <SessionProvider>
+          {children}
+        </SessionProvider>
+        {/* </OnchainKitProvider> */}
       </QueryClientProvider>
     </WagmiProvider>
   );

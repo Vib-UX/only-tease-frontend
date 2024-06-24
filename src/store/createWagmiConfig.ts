@@ -1,6 +1,6 @@
+import Web3AuthConnectorInstance from '@/components/Web3AuthInstance';
 import { createConfig, http } from 'wagmi';
 import { base, baseSepolia } from 'wagmi/chains';
-import { coinbaseWallet } from 'wagmi/connectors';
 
 export function createWagmiConfig(rpcUrl: string, projectId?: string) {
   // Keep this till we fully deprecated RK inside the template
@@ -10,13 +10,8 @@ export function createWagmiConfig(rpcUrl: string, projectId?: string) {
 
   return createConfig({
     chains: [baseSepolia],
-    connectors: [
-      coinbaseWallet({
-        appName: 'buildonchainapps',
-        preference: 'smartWalletOnly',
-      }),
-    ],
-    ssr: true,
+    connectors: [Web3AuthConnectorInstance([baseSepolia])],
+    ssr: false,
     transports: {
       [baseSepolia.id]: http(baseSepoliaUrl),
       [base.id]: http(baseUrl),

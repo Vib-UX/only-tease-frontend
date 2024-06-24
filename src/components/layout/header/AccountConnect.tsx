@@ -1,5 +1,4 @@
-import { ConnectAccount } from '@coinbase/onchainkit/wallet';
-import { useAccount, useChainId, useDisconnect } from 'wagmi';
+import { useAccount, useChainId, useConnect, useDisconnect } from 'wagmi';
 import { baseSepolia } from 'wagmi/chains';
 
 import Button from '@/components/buttons/Button';
@@ -13,6 +12,7 @@ import AccountMenu from '@/components/layout/header/AccountMenu';
  *  - Displays the wallet network
  */
 function AccountConnect() {
+  const { connect, connectors } = useConnect()
   const account = useAccount();
   const { disconnect } = useDisconnect();
   const chainId = useChainId();
@@ -21,17 +21,12 @@ function AccountConnect() {
   return (
     <div
       className="flex flex-grow"
-    // {...(status === 'pending' && {
-    //   'aria-hidden': true,
-    //   style: {
-    //     pointerEvents: 'none',
-    //     userSelect: 'none',
-    //   },
-    // })}
     >
       {(() => {
         if (account.status === 'disconnected') {
-          return <ConnectAccount />
+          return <Button key={connectors[0].id} onClick={() => connect({ connector: connectors[0] })}>
+            Connect with {connectors[0].name}
+          </Button>
         }
 
         if (account.status === 'connected' && chainId !== baseSepolia.id) {
