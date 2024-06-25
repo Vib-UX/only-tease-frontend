@@ -3,8 +3,6 @@ import { PaymasterMode } from '@biconomy/account';
 import { ethers } from 'ethers';
 import { baseSepolia } from 'wagmi/chains';
 
-import { chainConfig } from '@/hooks/useWeb3auth';
-
 import batchAbi from '../constant/Batch.json';
 import blockTeaseNftAbi from '../constant/blockTeaseNft.json';
 import nftAutomationAbi from '../constant/MarketplaceAutomation.json';
@@ -370,7 +368,7 @@ export async function approveNSubscribe({
 }
 export async function getModalPayment(id: number) {
   const nftProvider = new ethers.providers.JsonRpcProvider(
-    chainConfig[1].rpcTarget
+    baseSepolia.rpcUrls.default.http[0]
   );
   const thirdPartyProvider = new ethers.Wallet(
     process.env.NEXT_PUBLIC_THIRD_PARTY_SIGNER || '',

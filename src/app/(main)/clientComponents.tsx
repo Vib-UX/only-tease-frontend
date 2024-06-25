@@ -21,10 +21,3 @@ const ClientComponent = ({ children }: any) => {
 };
 
 export default ClientComponent;
-
-{/* <Headers isOpen={isOpen} setIsOpen={setIsOpen} />
-      <div className='  flex  mt-28  '>
-        <SideBar isOpen={isOpen} setIsOpen={setIsOpen} />
-
-        {children}
-      </div> */}

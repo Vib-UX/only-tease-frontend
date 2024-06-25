@@ -1,17 +1,18 @@
 'use client';
 
-import { useSession } from "next-auth/react";
 import Image from 'next/image';
 import Link from 'next/link';
-import { useEffect, useState } from 'react';
 import { useAccount } from 'wagmi';
 
 import useFetchUserDetails from "@/hooks/user/useFetchUserDetails";
+import useWeb3AuthWrapper from '@/hooks/useWeb3Auth';
 
 import AccountConnect from "@/components/layout/header/AccountConnect";
-import GoogleSignIn from "@/components/layout/header/GoogleSiginModal";
 import Avatar from "@/components/ui/avatar";
 
+import useUserOnBoarding from '@/hooks/contracts/useUserOnboarding';
+import { useWeb3Auth } from '@web3auth/modal-react-hooks';
+import { useEffect } from 'react';
 import logo from '../../../public/images/logoWithoutGradient.webp';
 
 type props = {
@@ -20,27 +21,29 @@ type props = {
 };
 
 const Header = ({ isOpen, setIsOpen }: props) => {
-  const { data: session, status } = useSession()
+  const { userInfo } = useWeb3Auth()
+  useWeb3AuthWrapper()
 
-  const [isSignInOpen, setIsSignInOpen] = useState(false)
   const { address } = useAccount()
+  const { data: userData, isLoading, refetch } = useFetchUserDetails()
 
-  const { data: userData, isLoading } = useFetchUserDetails()
+  const { onBoarding } = useUserOnBoarding({
+    onSuccess: () => {
+      refetch()
+    }
+  })
 
   useEffect(() => {
-    if (address) {
-      if (status === "unauthenticated" || userData?.isFound === false) {
-        setIsSignInOpen(true)
+    if (userData) {
+      if (!userData?.isFound) {
+        debugger
+        onBoarding()
       }
     }
-  }, [address, status, userData?.isFound]);
-
-
-
-
+  }, [userData?.isFound])
   return (
     <div className='w-full flex items-center border-[1px] border-t-0 border-r-0 h-[110px] border-l-0 border-[#FCC0FF] bg-[#F7F2FA] justify-between px-6 py-4 lg:py-4 fixed top-0 z-10'>
-      <GoogleSignIn isOpen={isSignInOpen} setIsOpen={setIsSignInOpen} />
+      {/* <GoogleSignIn isOpen={isSignInOpen} setIsOpen={setIsSignInOpen} /> */}
       <div className='text-white lg:hidden'>
         {!isOpen ? (
           <svg
@@ -85,9 +88,9 @@ const Header = ({ isOpen, setIsOpen }: props) => {
         </div>
       </Link>
       <div className='flex items-center  justify-end fixed right-0  space-x-2 mx-4'>
-        {address && session && userData?.isFound && (
+        {address && userInfo && (
           <Avatar
-            userName={session.user.name || ''}
+            userName={userInfo?.name}
             openId={userData?.open_ai_id}
             ipfsUrl={userData?.ipfs}
             avatarLoading={isLoading}

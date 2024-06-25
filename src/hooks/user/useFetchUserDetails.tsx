@@ -1,5 +1,7 @@
 import { useQuery } from '@tanstack/react-query';
-import { useSession } from 'next-auth/react';
+import { useWeb3Auth } from '@web3auth/modal-react-hooks';
+
+import useUserOnBoarding from '@/hooks/contracts/useUserOnboarding';
 
 import { API_ROUTES, API_URL, fetchJSON } from '@/utils';
 import { allModelData } from '@/utils/modelData';
@@ -14,15 +16,18 @@ const filterMatchingIds = (array1: any, array2: any) => {
   return filteredArray;
 };
 
+
 const useFetchUserDetails = (
   modelId?: string
 ) => {
-  const session = useSession()
+  const { userInfo } = useWeb3Auth()
+
   return useQuery({
-    queryKey: ["user-data", !!session.data, modelId],
-    enabled: !!session.data,
+    queryKey: ["user-data", modelId, userInfo],
+    enabled: !!userInfo,
     queryFn: async () => {
-      const data = await fetchJSON(API_URL + `/` + API_ROUTES.USER_INFO + `?email=${session.data?.user.email}`, {
+      // const data = await fetchJSON(API_URL + `/` + API_ROUTES.USER_INFO + `?email=${session.data?.user.email}`, {
+      const data = await fetchJSON(API_URL + `/` + API_ROUTES.USER_INFO + `?email=` + userInfo.email, {
         method: "GET"
       })
       if (data.success) {
@@ -43,9 +48,7 @@ const useFetchUserDetails = (
           isUnlocked: false,
         }
       }
-    },
-    refetchOnWindowFocus: false,
-    // refetchInterval: 50000
+    }
   })
 }
 

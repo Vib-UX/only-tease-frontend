@@ -1,5 +1,4 @@
 import { parseUnits } from 'ethers/lib/utils';
-import { useSession } from 'next-auth/react';
 import { baseSepolia } from 'viem/chains';
 import { useCallsStatus, useWriteContracts } from 'wagmi/experimental';
 
@@ -42,7 +41,7 @@ const useNftMarketPlaceAutomation = ({ amount, modelId, onSuccess }: {
   const mockUsdContract = useMockUSDContract()
   const nftMarketPlaceContract = useNftMarketplaceAutomationContract()
   const { data: id, writeContractsAsync, isPending } = useWriteContracts()
-  const session = useSession()
+  // const session = useSession()
   const { data: callsStatus } = useCallsStatus({
     id: id as string,
     query: {
@@ -84,7 +83,7 @@ const useNftMarketPlaceAutomation = ({ amount, modelId, onSuccess }: {
           },
         })
         await updateSubscription({
-          email: session.data?.user.email,
+          email: "@TODO",
           modelId: modelId.toString(),
           subscriptionId: subscriptionId
         })

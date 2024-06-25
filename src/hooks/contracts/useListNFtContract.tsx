@@ -1,5 +1,4 @@
 import { parseUnits } from 'ethers/lib/utils';
-import { useSession } from 'next-auth/react';
 import { baseSepolia } from 'viem/chains';
 import { useAccount } from 'wagmi';
 import { useCallsStatus, useWriteContracts } from 'wagmi/experimental';
@@ -34,7 +33,6 @@ const useNFTListContract = ({ amount, tokenId, onSuccess }: {
   const nftMarketPlaceContract = useNftMarketplaceAutomationContract()
   const onlyTease = useOnlyTeaseNFTContract()
   const { data: id, writeContractsAsync, isPending } = useWriteContracts()
-  const session = useSession()
   const { data: callsStatus } = useCallsStatus({
     id: id as string,
     query: {
@@ -47,7 +45,7 @@ const useNFTListContract = ({ amount, tokenId, onSuccess }: {
 
   const listNFT = async () => {
     try {
-      if (mockUsdContract.status === "ready" && nftMarketPlaceContract.status === "ready" && onlyTease.status === "ready" && session.data?.user && address) {
+      if (mockUsdContract.status === "ready" && nftMarketPlaceContract.status === "ready" && onlyTease.status === "ready" && address) {
         const listingId = await publicClient.readContract({
           abi: nftMarketPlaceContract.abi,
           address: nftMarketPlaceContract.address,

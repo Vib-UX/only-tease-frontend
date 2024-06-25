@@ -1,10 +1,10 @@
 'use client';
+import { useSearchParams } from 'next/navigation';
 import React from 'react';
 
 import ModelCard from '@/components/ui/modelCard';
 
 import { IndianModelCardData, modelCardData } from '@/utils/modelData';
-import { useSearchParams } from 'next/navigation';
 type Props = {
   params: {
     feed: string;

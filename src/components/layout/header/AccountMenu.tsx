@@ -1,17 +1,13 @@
 import { Menu, MenuButton, MenuItem, MenuItems } from '@headlessui/react';
-import { useDisconnect } from '@web3modal/ethers5/react';
 import { CopyIcon, EllipsisVerticalIcon, LogOut } from 'lucide-react';
-import { signOut } from 'next-auth/react';
 import toast from 'react-hot-toast';
-import { useAccount } from 'wagmi';
+import { useAccount, useDisconnect } from 'wagmi';
 
 import { toastStyles } from '@/lib/utils';
 
 export default function Example() {
   const { address } = useAccount()
-  const { disconnect } = useDisconnect();
-
-
+  const { disconnect } = useDisconnect()
 
   const handleCopy = (address: string) => {
     navigator.clipboard
@@ -38,9 +34,7 @@ export default function Example() {
           className="w-52 origin-top-right z-50 relative rounded-xl border bg-button border-white/5 5 p-1 text-sm/6 text-white transition duration-100 ease-out [--anchor-gap:var(--spacing-1)] focus:outline-none data-[closed]:scale-95 data-[closed]:opacity-0"
         >
           <MenuItem>
-            <button onClick={() => {
-              signOut().then(() => { disconnect() })
-            }} className="group flex w-full items-center gap-2 rounded-lg py-1.5 px-3 data-[focus]:bg-white/10">
+            <button onClick={() => disconnect()} className="group flex w-full items-center gap-2 rounded-lg py-1.5 px-3 data-[focus]:bg-white/10">
               <LogOut className="size-4 fill-white/30" />
               Disconnect
             </button>

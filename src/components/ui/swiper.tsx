@@ -1,14 +1,14 @@
 import Image from 'next/image';
 import Link from 'next/link';
+import { Autoplay, FreeMode, Navigation, Pagination } from 'swiper/modules';
+import { Swiper, SwiperSlide } from 'swiper/react';
 import 'swiper/css';
 import 'swiper/css/free-mode';
 import 'swiper/css/pagination';
-import { Autoplay, FreeMode, Navigation, Pagination } from 'swiper/modules';
-import { Swiper, SwiperSlide } from 'swiper/react';
-
-import { CardStack } from '@/components/ui/card-stack';
 
 import Button from '@/components/buttons/Button';
+import { CardStack } from '@/components/ui/card-stack';
+
 import { MarketPlaceCardData } from '@/utils/modelData';
 
 export default function App() {

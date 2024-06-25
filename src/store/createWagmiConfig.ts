@@ -1,4 +1,3 @@
-import Web3AuthConnectorInstance from '@/components/Web3AuthInstance';
 import { createConfig, http } from 'wagmi';
 import { base, baseSepolia } from 'wagmi/chains';
 
@@ -10,7 +9,6 @@ export function createWagmiConfig(rpcUrl: string, projectId?: string) {
 
   return createConfig({
     chains: [baseSepolia],
-    connectors: [Web3AuthConnectorInstance([baseSepolia])],
     ssr: false,
     transports: {
       [baseSepolia.id]: http(baseSepoliaUrl),

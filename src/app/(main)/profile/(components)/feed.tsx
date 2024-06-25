@@ -2,8 +2,6 @@
 
 import React from 'react';
 
-import useFetchUserDetails from '@/hooks/user/useFetchUserDetails';
-
 import FeedCard from '@/app/(main)/profile/(components)/feddCard';
 
 type props = {

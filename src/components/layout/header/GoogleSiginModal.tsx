@@ -5,13 +5,13 @@ import {
   Transition,
   TransitionChild,
 } from '@headlessui/react';
-import { signIn, useSession } from 'next-auth/react';
-import { Dispatch, SetStateAction, memo } from 'react';
+import { useMutation } from '@tanstack/react-query';
+import { signIn } from 'next-auth/react';
+import { Dispatch, memo,SetStateAction } from 'react';
 
 import useUserOnBoarding from '@/hooks/contracts/useUserOnboarding';
 
 import Button from '@/components/buttons/Button';
-import { useMutation } from '@tanstack/react-query';
 
 
 const GoogleLogo = () => (
@@ -45,7 +45,7 @@ function GoogleSignIn({
   isOpen: boolean;
   setIsOpen: Dispatch<SetStateAction<boolean>>;
 }) {
-  const { data: session } = useSession();
+  // const { data: session } = useSession();
   const { isPending, mutateAsync } = useMutation({
     mutationFn: () => signIn("google")
   })

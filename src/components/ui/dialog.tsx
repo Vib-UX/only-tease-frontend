@@ -11,9 +11,6 @@ import toast from 'react-hot-toast';
 import { useAccount } from 'wagmi';
 import { baseSepolia } from 'wagmi/chains';
 
-import useNftMarketPlaceAutomation from '@/hooks/contracts/useNftMarketplaceAutomation';
-import useFetchUserDetails from '@/hooks/user/useFetchUserDetails';
-import useWeb3auth, { chainConfig } from '@/hooks/useWeb3auth';
 import {
   batchSubscribeFor,
   chainLinkAutomationSubscription,
@@ -21,20 +18,20 @@ import {
   checkUserBalanceAvaWeb3Auth,
   checkUserBalanceBase,
   checkUserBalanceWeb3Auth,
-  getTestFundsBase,
-  getTestFundsWeb3Auth,
-  getTestFundsZkEvm,
   PurchaseSubsAmoyGasslessBundle,
   PurchaseSubsAvaGasslessBundle,
-  purchaseSubscriptionZkevm,
+  purchaseSubscriptionZkevm
 } from '@/lib/func';
 import { cn, toastStyles } from '@/lib/utils';
+import useNftMarketPlaceAutomation from '@/hooks/contracts/useNftMarketplaceAutomation';
+import useFetchUserDetails from '@/hooks/user/useFetchUserDetails';
 
 import Button from '@/components/buttons/Button';
 import RippleLoader from '@/components/buttons/rippleLoader';
 import LinearWithValueLabel from '@/components/ui/progressBar';
 import RadioButton from '@/components/ui/radioGroup';
 import { VanishInput } from '@/components/ui/vanishInput';
+import { chainConfig } from '@/components/web3AuthConfig';
 
 import { morph } from '@/app/Providers';
 import { coinData } from '@/utils/natworkData';
@@ -84,12 +81,6 @@ export default function MyModal({
     onSuccess: () => showMsgs()
   })
 
-
-  const {
-    smartAccount,
-    login,
-    email,
-  } = useWeb3auth();
 
   function open() {
     setIsOpen(true);
@@ -338,8 +329,8 @@ export default function MyModal({
     Morph: `${morph.explorerUrl}/tx/${approvetrx}`,
     avalanche: `https://ccip.chain.link/tx/${avalancheCrossTxn}`,
     Polygon: `https://ccip.chain.link/tx/${Polygontrx}`,
-    Ethereum: `${chainConfig[1].blockExplorerUrl}/tx/${chainlinkCrossTxn}`,
-    Polygon_Zkevm: `${chainConfig[3].blockExplorerUrl}/tx/${chainlinkCrossTxn}`,
+    Ethereum: `${chainConfig.blockExplorerUrl}/tx/${chainlinkCrossTxn}`,
+    Polygon_Zkevm: `${chainConfig.blockExplorerUrl}/tx/${chainlinkCrossTxn}`,
     default: `${baseSepolia.blockExplorers.default.url}/tx/${txHash}`,
   };
 
@@ -682,66 +673,66 @@ export default function MyModal({
                         <div
                           className='text-end hover:underline cursor-pointer text-[#625B71]'
                           onClick={async () => {
-                            if (walletChosen === 'Ethereum') {
-                              const resp = await getTestFundsWeb3Auth(
-                                smartAccount
-                              );
-                              if (resp.trxhash) {
-                                toast.success(
-                                  'Wooho your funds have arrived 🚀🎉💸',
-                                  toastStyles
-                                );
-                                setTestTokensHash(resp.trxhash);
-                                setLoadingState('Confirm Payment');
-                              } else {
-                                toast.error(
-                                  'Something went wrong',
-                                  toastStyles
-                                );
-                                setTestTokensHash('');
-                              }
-                            } else if (walletChosen === 'Polygon_Zkevm') {
-                              const resp = await getTestFundsZkEvm(
-                                smartAccount
-                              );
-                              if (resp.trxhash) {
-                                toast.success(
-                                  'Wooho your funds have arrived 🚀🎉💸',
-                                  toastStyles
-                                );
-                                setTestTokensZekEvmHash(resp.trxhash);
-                                setLoadingState('Confirm Payment');
-                              } else {
-                                toast.error(
-                                  'Something went wrong',
-                                  toastStyles
-                                );
-                                setTestTokensZekEvmHash('');
-                              }
-                            } else if (walletChosen.toLowerCase() === 'base') {
-                              const resp = await getTestFundsBase(
-                                address
-                              );
-                              if (resp.trxhash) {
-                                toast.success(
-                                  'Wooho your funds have arrived 🚀🎉💸',
-                                  toastStyles
-                                );
-                                setTestTokensBaseHash(resp.trxhash);
-                                setLoadingState('Confirm Payment');
-                              } else {
-                                toast.error(
-                                  'Something went wrong',
-                                  toastStyles
-                                );
-                                setTestTokensZekEvmHash('');
-                              }
-                            } else {
-                              window.open(
-                                'https://faucet.circle.com/',
-                                '_blank'
-                              );
-                            }
+                            // if (walletChosen === 'Ethereum') {
+                            //   const resp = await getTestFundsWeb3Auth(
+                            //     smartAccount
+                            //   );
+                            //   if (resp.trxhash) {
+                            //     toast.success(
+                            //       'Wooho your funds have arrived 🚀🎉💸',
+                            //       toastStyles
+                            //     );
+                            //     setTestTokensHash(resp.trxhash);
+                            //     setLoadingState('Confirm Payment');
+                            //   } else {
+                            //     toast.error(
+                            //       'Something went wrong',
+                            //       toastStyles
+                            //     );
+                            //     setTestTokensHash('');
+                            //   }
+                            // } else if (walletChosen === 'Polygon_Zkevm') {
+                            //   const resp = await getTestFundsZkEvm(
+                            //     smartAccount
+                            //   );
+                            //   if (resp.trxhash) {
+                            //     toast.success(
+                            //       'Wooho your funds have arrived 🚀🎉💸',
+                            //       toastStyles
+                            //     );
+                            //     setTestTokensZekEvmHash(resp.trxhash);
+                            //     setLoadingState('Confirm Payment');
+                            //   } else {
+                            //     toast.error(
+                            //       'Something went wrong',
+                            //       toastStyles
+                            //     );
+                            //     setTestTokensZekEvmHash('');
+                            //   }
+                            // } else if (walletChosen.toLowerCase() === 'base') {
+                            //   const resp = await getTestFundsBase(
+                            //     address
+                            //   );
+                            //   if (resp.trxhash) {
+                            //     toast.success(
+                            //       'Wooho your funds have arrived 🚀🎉💸',
+                            //       toastStyles
+                            //     );
+                            //     setTestTokensBaseHash(resp.trxhash);
+                            //     setLoadingState('Confirm Payment');
+                            //   } else {
+                            //     toast.error(
+                            //       'Something went wrong',
+                            //       toastStyles
+                            //     );
+                            //     setTestTokensZekEvmHash('');
+                            //   }
+                            // } else {
+                            //   window.open(
+                            //     'https://faucet.circle.com/',
+                            //     '_blank'
+                            //   );
+                            // }
                           }}
                         >
                           Get test funds{' '}

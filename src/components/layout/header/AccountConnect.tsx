@@ -1,70 +1,34 @@
-import { useAccount, useChainId, useConnect, useDisconnect } from 'wagmi';
-import { baseSepolia } from 'wagmi/chains';
+'use client'
+import { useWeb3Auth } from '@web3auth/modal-react-hooks';
+
+import useGlobalStore from '@/hooks/store/useGlobalStore';
 
 import Button from '@/components/buttons/Button';
-import AccountMenu from '@/components/layout/header/AccountMenu';
 
-
-/**
- * AccountConnect
- *  - Connects to the wallet
- *  - Disconnects from the wallet
- *  - Displays the wallet network
- */
 function AccountConnect() {
-  const { connect, connectors } = useConnect()
-  const account = useAccount();
-  const { disconnect } = useDisconnect();
-  const chainId = useChainId();
+  const { smartAddress } = useGlobalStore();
+  const {
+    connect,
+  } = useWeb3Auth();
 
+  const shortAddress = smartAddress ? `${smartAddress.slice(0, 6)}...${smartAddress.slice(-4)}` : '';
 
   return (
-    <div
-      className="flex flex-grow"
-    >
-      {(() => {
-        if (account.status === 'disconnected') {
-          return <Button key={connectors[0].id} onClick={() => connect({ connector: connectors[0] })}>
-            Connect with {connectors[0].name}
-          </Button>
-        }
-
-        if (account.status === 'connected' && chainId !== baseSepolia.id) {
-          return (
-            <Button
-              onClick={() => disconnect()}
-            >
-              Wrong network
-            </Button>
-          );
-        }
-
-        if (account.status === 'reconnecting') {
-          return <Button
-          >
-            Connecting...
-          </Button>
-        }
-
-        if (account.status === 'connected') {
-          return <div className='flex items-center justify-end'>
-            <Button
-              onClick={() => disconnect()}
-            >
-              {account.address.slice(0, 4) + "..." + account.address.slice(account.address.length - 4, account.address.length - 1)}
-            </Button>
-            <AccountMenu />
-          </div>
-        }
-
-        return (
-          <Button
-          >
-            Connecting....
-          </Button>
-        );
-      })()}
-    </div >
+    <div className='flex flex-grow'>
+      {smartAddress ? (
+        <Button>
+          {shortAddress}
+        </Button>
+      ) : (
+        <Button
+          onClick={() => {
+            connect();
+          }}
+        >
+          Connect wallet
+        </Button>
+      )}
+    </div>
   );
 }
 

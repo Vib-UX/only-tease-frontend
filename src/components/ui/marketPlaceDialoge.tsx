@@ -15,9 +15,10 @@ import React, { useState } from 'react';
 import toast from 'react-hot-toast';
 import { baseSepolia } from 'wagmi/chains';
 
-import Button from '@/components/buttons/Button';
-import useNFTListContract from '@/hooks/contracts/useListNFtContract';
 import { toastStyles } from '@/lib/utils';
+import useNFTListContract from '@/hooks/contracts/useListNFtContract';
+
+import Button from '@/components/buttons/Button';
 type props = {
   icon: any;
   name: string;

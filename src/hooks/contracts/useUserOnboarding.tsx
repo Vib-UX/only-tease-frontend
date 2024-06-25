@@ -1,15 +1,16 @@
-import { useSession } from 'next-auth/react';
+import { PaymasterMode } from '@biconomy/paymaster';
+import { useMutation } from '@tanstack/react-query';
+import { useWeb3Auth } from '@web3auth/modal-react-hooks';
+import { encodeFunctionData } from 'viem';
 import { baseSepolia } from 'viem/chains';
 import { useAccount } from 'wagmi';
-import { useWriteContracts } from 'wagmi/experimental';
 
 import { USER_ONBOARDING_ABI } from '@/hooks/abi/USER_ONBOARDING_ABI';
 import { generateContractHook } from '@/hooks/contracts/contracts';
-import useFetchUserDetails from '@/hooks/user/useFetchUserDetails';
+import useGlobalStore from '@/hooks/store/useGlobalStore';
 
-import { API_URL, createFetchOptions, defaultUrl, fetchJSON, OPEN_AI_API_URL, publicClient } from '@/utils';
+import { API_URL, createFetchOptions, fetchJSON, OPEN_AI_API_URL, publicClient } from '@/utils';
 import { NULL_ADDRESS, USER_ONBOARDING_ADDRESS } from '@/utils/addresses';
-import { useMutation } from '@tanstack/react-query';
 
 export const useUserOnbordingContract = generateContractHook({
   abi: USER_ONBOARDING_ABI,
@@ -49,34 +50,40 @@ const register = async ({ session, tokenId, address }: {
 const useUserOnBoarding = ({ onSuccess }: {
   onSuccess: () => void
 }) => {
+  const { userInfo } = useWeb3Auth()
   const { address } = useAccount()
-  const session = useSession()
-  const { refetch } = useFetchUserDetails()
+  const { smartAccount } = useGlobalStore()
   const userOnboardingContract = useUserOnbordingContract()
-  const { writeContractsAsync, isPending: isContractPending } = useWriteContracts()
 
   const onBoarding = async () => {
     try {
-      if (!address || !session.data) throw new Error("")
+      debugger
+      if (!address || !smartAccount || !userInfo) throw new Error("")
       const fetchOptions = createFetchOptions("POST", {
-        name: session.data.user.name
+        name: userInfo.name
       })
       await fetchJSON(OPEN_AI_API_URL + '/generate-avatar-openAI', fetchOptions);
-      await writeContractsAsync({
-        contracts: [
-          {
-            abi: userOnboardingContract.abi,
-            address: userOnboardingContract.status === "ready" ? userOnboardingContract.address : NULL_ADDRESS,
-            functionName: "sendRequest",
-            args: [BigInt(85), [session.data?.user.name], BigInt(300000)],
-          }
-        ],
-        capabilities: {
-          paymasterService: {
-            url: defaultUrl,
-          },
-        },
+      const txData = encodeFunctionData({
+        abi: userOnboardingContract.abi,
+        functionName: "sendRequest",
+        args: [BigInt(85), [userInfo.name], 300000],
       })
+      const tx = {
+        to: userOnboardingContract.status === "ready" ? userOnboardingContract.address : NULL_ADDRESS,
+        data: txData,
+      };
+      // Send the transaction and get the transaction hash
+      const userOpResponse = await smartAccount.sendTransaction(tx, {
+        paymasterServiceData: { mode: PaymasterMode.SPONSORED },
+      });
+      const { transactionHash } = await userOpResponse.waitForTxHash();
+      console.log("Transaction Hash", transactionHash);
+      const userOpReceipt = await userOpResponse.wait();
+      if (userOpReceipt.success == "true") {
+        console.log("UserOp receipt", userOpReceipt);
+        console.log("Transaction receipt", userOpReceipt.receipt);
+      }
+
       const tokenId = await publicClient.readContract({
         abi: userOnboardingContract.abi,
         address: userOnboardingContract.status === "ready" ? userOnboardingContract.address : NULL_ADDRESS,
@@ -84,10 +91,12 @@ const useUserOnBoarding = ({ onSuccess }: {
       });
       await register({
         address: address,
-        session: session.data?.user,
+        session: {
+          email: userInfo.email,
+          name: userInfo.name
+        },
         tokenId: tokenId.toString()
       })
-      refetch()
       onSuccess()
     } catch (error) {
       console.error(error);
@@ -99,7 +108,7 @@ const useUserOnBoarding = ({ onSuccess }: {
     mutationFn: onBoarding
   })
   return {
-    onBoarding: mutateAsync, isLoading: isContractPending || isPending
+    onBoarding: mutateAsync, isLoading: isPending
   }
 }
 

@@ -10,7 +10,7 @@ export const defaultUrl = process.env.NEXT_PUBLIC_PAYMASTER_URL;
 
 export const publicClient = createPublicClient({
   chain: baseSepolia,
-  transport: http(process.env.NEXT_PUBLIC_RPC_URL),
+  transport: http(),
 });
 
 export const fetchJSON = async (

@@ -5,9 +5,9 @@ import '@/styles/globals.css';
 // !STARTERCONF This is for demo purposes, remove @/styles/colors.css import immediately
 import '@/styles/colors.css';
 
-import { siteConfig } from '@/constant/config';
-import Providers from '@/app/Providers';
 import ClientComponent from '@/app/(main)/clientComponents';
+import Providers from '@/app/Providers';
+import { siteConfig } from '@/constant/config';
 
 // !STARTERCONF Change these default meta
 // !STARTERCONF Look at @/constant/config to change them
