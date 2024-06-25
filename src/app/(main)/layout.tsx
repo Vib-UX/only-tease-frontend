@@ -50,14 +50,10 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html>
-      <body className='w-full h-full bg-[#F7F2FA] '>
-        <div className='min-h-screen h-full w-full'>
-          <Providers>
-            <ClientComponent>{children}</ClientComponent>
-          </Providers>
-        </div>
-      </body>
-    </html>
+    <div className='min-h-screen h-full w-full'>
+      <Providers>
+        <ClientComponent>{children}</ClientComponent>
+      </Providers>
+    </div>
   );
 }

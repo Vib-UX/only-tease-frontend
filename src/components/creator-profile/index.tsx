@@ -1,8 +1,8 @@
 'use client';
 import React, { useState } from 'react';
 
-import { getModalPayment } from '@/lib/func';
 import useFetchUserDetails from '@/hooks/user/useFetchUserDetails';
+import { getModalPayment } from '@/lib/func';
 
 import { MarketPlaceCard2 } from '@/components/ui/marketPlaceCard';
 
@@ -27,7 +27,7 @@ const CreatorProfile = ({ params }: Props) => {
 
   const fetchModalFees = async () => {
     const data = await getModalPayment(modelData.id);
-    setModelFees(parseInt(data));
+    setModelFees(data);
   };
 
   React.useEffect(() => {

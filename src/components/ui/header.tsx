@@ -36,7 +36,6 @@ const Header = ({ isOpen, setIsOpen }: props) => {
   useEffect(() => {
     if (userData) {
       if (!userData?.isFound) {
-        debugger
         onBoarding()
       }
     }

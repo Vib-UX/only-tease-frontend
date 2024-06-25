@@ -18,6 +18,8 @@ import purchaseSubsAvaAbi from '../constant/purchaseSubsAva.json';
 import purchaseSubscriptionAbi from '../constant/PurchaseSubscription.json';
 import purchaseSubsAmoyAbi from '../constant/PurchaseSubscriptionAmoy.json';
 //const provider = new ethers.providers.Web3Provider(window.ethereum);
+import { NFT_MARKETPLACE_ABI } from '@/hooks/abi/NFT_MARKETPLACE_ABI';
+import { NFT_MARKET_PLACE_ADDRESS } from '@/utils/addresses';
 import UsdcAvaAbi from '../constant/usdcAva.json';
 import userOnBoardingAbi from '../constant/userOnBoarding.json';
 import blockTeaseNftZkevmAbi from '../constant/Zkevm/blockTeaseNftZkevm.json';
@@ -375,13 +377,14 @@ export async function getModalPayment(id: number) {
     nftProvider
   );
   const mockUsd = new ethers.Contract(
-    nftAutomationAddr,
-    nftAutomationAbi,
+    NFT_MARKET_PLACE_ADDRESS,
+    NFT_MARKETPLACE_ABI,
     thirdPartyProvider
   );
   const modelBalance = await mockUsd.models(id);
-  const modelBalanceValue = ethers.utils.formatUnits(modelBalance.priceUSD, 8);
+  const modelBalanceValue = ethers.utils.formatUnits(modelBalance.priceUSD, 6);
   return modelBalanceValue;
+
 }
 export async function checkUserBalance(provider: any) {
   const signer = provider.getSigner();

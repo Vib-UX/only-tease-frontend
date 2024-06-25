@@ -1,7 +1,5 @@
 import { parseUnits } from 'ethers/lib/utils';
-import { baseSepolia } from 'viem/chains';
-import { useAccount } from 'wagmi';
-import { useCallsStatus, useWriteContracts } from 'wagmi/experimental';
+import { encodeFunctionData, getAddress } from 'viem';
 
 import { useMockUSDContract } from '@/hooks/contracts/useMockUSD';
 import { useNftMarketplaceAutomationContract } from '@/hooks/contracts/useNftMarketplaceAutomation';
@@ -9,7 +7,10 @@ import { useOnlyTeaseNFTContract } from '@/hooks/contracts/useOnlyTeaseNFTContra
 import useFetchUserDetails from '@/hooks/user/useFetchUserDetails';
 import useGetListedSubscriptions from '@/hooks/user/useGetListedSubscriptions';
 
-import { API_ROUTES, API_URL, createFetchOptions, defaultUrl, fetchJSON, publicClient } from '@/utils';
+import useGlobalStore from '@/hooks/store/useGlobalStore';
+import { API_ROUTES, API_URL, createFetchOptions, fetchJSON, publicClient } from '@/utils';
+import { PaymasterMode } from '@biconomy/paymaster';
+import { useState } from 'react';
 
 
 const updateSubscription = async ({ price, tokenId, listingId }: {
@@ -26,26 +27,17 @@ const updateSubscription = async ({ price, tokenId, listingId }: {
 const useNFTListContract = ({ amount, tokenId, onSuccess }: {
   amount: string, tokenId: string, onSuccess?: () => void
 }) => {
-  const { address } = useAccount()
   const { refetch: refetchUser } = useFetchUserDetails()
   const { refetch } = useGetListedSubscriptions()
   const mockUsdContract = useMockUSDContract()
   const nftMarketPlaceContract = useNftMarketplaceAutomationContract()
   const onlyTease = useOnlyTeaseNFTContract()
-  const { data: id, writeContractsAsync, isPending } = useWriteContracts()
-  const { data: callsStatus } = useCallsStatus({
-    id: id as string,
-    query: {
-      enabled: !!id,
-      // Poll every second until the calls are confirmed
-      refetchInterval: (data) =>
-        data.state.data?.status === "CONFIRMED" ? false : 1000,
-    },
-  });
+  const [txHash, setTxHash] = useState("")
 
+  const { smartAccount, smartAddress } = useGlobalStore()
   const listNFT = async () => {
     try {
-      if (mockUsdContract.status === "ready" && nftMarketPlaceContract.status === "ready" && onlyTease.status === "ready" && address) {
+      if (mockUsdContract.status === "ready" && nftMarketPlaceContract.status === "ready" && onlyTease.status === "ready" && smartAccount && smartAddress) {
         const listingId = await publicClient.readContract({
           abi: nftMarketPlaceContract.abi,
           address: nftMarketPlaceContract.address,
@@ -56,49 +48,62 @@ const useNFTListContract = ({ amount, tokenId, onSuccess }: {
           abi: onlyTease.abi,
           address: onlyTease.address,
           functionName: "isApprovedForAll",
-          args: [address, onlyTease.address]
+          args: [getAddress(smartAddress), onlyTease.address]
         })
 
         let contracts = []
 
         if (allowance) {
+          const txData1 = encodeFunctionData({
+            abi: nftMarketPlaceContract.abi,
+            functionName: 'listNft',
+            args: [BigInt(tokenId), parseUnits(amount.toString(), 6).toBigInt()],
+          })
+          const tx1 = {
+            to: nftMarketPlaceContract.address,
+            data: txData1
+          }
           contracts = [
-            {
-              address: nftMarketPlaceContract.address,
-              abi: nftMarketPlaceContract.abi,
-              functionName: 'listNft',
-              args: [tokenId, parseUnits(amount.toString(), 6)],
-            },
+            tx1
           ]
         } else {
+          const txData1 = encodeFunctionData({
+            abi: onlyTease.abi,
+            functionName: "setApprovalForAll",
+            args: [nftMarketPlaceContract.address, true]
+          })
+          const tx1 = {
+            to: onlyTease.address,
+            data: txData1
+          }
+          const txData2 = encodeFunctionData({
+            abi: nftMarketPlaceContract.abi,
+            functionName: 'listNft',
+            args: [BigInt(tokenId), parseUnits(amount.toString(), 6).toBigInt()],
+          })
+          const tx2 = {
+            to: nftMarketPlaceContract.address,
+            data: txData2
+          }
           contracts = [
-            {
-              abi: onlyTease.abi,
-              address: onlyTease.address,
-              functionName: "setApprovalForAll",
-              args: [nftMarketPlaceContract.address, true]
-            },
-            {
-              address: nftMarketPlaceContract.address,
-              abi: nftMarketPlaceContract.abi,
-              functionName: 'listNft',
-              args: [tokenId, parseUnits(amount.toString(), 6)],
-            },
+            tx1,
+            tx2,
           ]
         }
-        await writeContractsAsync({
-          contracts: contracts,
-          capabilities: {
-            paymasterService: {
-              url: defaultUrl,
-            },
-            [baseSepolia.id]: {
-              atomicBatch: {
-                supported: true,
-              },
-            }
-          },
-        })
+
+        const userOpResponse = await smartAccount.sendTransaction(contracts, {
+          paymasterServiceData: { mode: PaymasterMode.SPONSORED },
+        });
+        const { transactionHash } = await userOpResponse.waitForTxHash();
+        console.log("Transaction Hash", transactionHash);
+        const userOpReceipt = await userOpResponse.wait();
+        if (userOpReceipt.success == "true") {
+          console.log("UserOp receipt", userOpReceipt);
+          console.log("Transaction receipt", userOpReceipt.receipt);
+          setTxHash(userOpReceipt.receipt.transactionHash)
+        } else {
+          throw new Error("Tx failed")
+        }
         await updateSubscription({
           price: amount,
           listingId: listingId.toString(),
@@ -113,9 +118,9 @@ const useNFTListContract = ({ amount, tokenId, onSuccess }: {
     }
   }
   return {
-    listNFT, callsStatus,
-    isLoading: isPending,
-    txHash: callsStatus && callsStatus.receipts && callsStatus.receipts[0] ? callsStatus.receipts[0].transactionHash : ""
+    listNFT,
+    isLoading: false,
+    txHash: txHash
   }
 }
 

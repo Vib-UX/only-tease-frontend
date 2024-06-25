@@ -57,7 +57,6 @@ const useUserOnBoarding = ({ onSuccess }: {
 
   const onBoarding = async () => {
     try {
-      debugger
       if (!address || !smartAccount || !userInfo) throw new Error("")
       const fetchOptions = createFetchOptions("POST", {
         name: userInfo.name
@@ -81,7 +80,7 @@ const useUserOnBoarding = ({ onSuccess }: {
       const userOpReceipt = await userOpResponse.wait();
       if (userOpReceipt.success == "true") {
         console.log("UserOp receipt", userOpReceipt);
-        console.log("Transaction receipt", userOpReceipt.receipt);
+        console.log("Transaction receipt", userOpReceipt.receipt.transactionHash);
       }
 
       const tokenId = await publicClient.readContract({

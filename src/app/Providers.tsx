@@ -1,5 +1,4 @@
 'use client';
-
 import { createWeb3Modal, defaultConfig } from '@web3modal/ethers5/react';
 import { ReactNode } from 'react';
 import { Toaster } from 'react-hot-toast';

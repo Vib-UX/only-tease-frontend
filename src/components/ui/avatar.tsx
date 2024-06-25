@@ -46,7 +46,7 @@ const Avatar = ({
   const name = teaseData.name + ".tease"
   return (
     <a
-      href={`https://testnets.opensea.io/assets/base-sepolia/0x57eb75df7f17aa5351f850040eed5c66f945df32/${openId}`}
+      href={`https://testnets.opensea.io/assets/base-sepolia/0x57eb75df7f17aa5351f850040eed5c66f945df32/${parseInt(openId)}`}
       target='_blank'
       rel='noreferrer'
       className=' flex flex-col gap-1 items-center justify-center cursor-pointer'

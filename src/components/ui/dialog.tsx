@@ -8,9 +8,10 @@ import {
 import Image from 'next/image';
 import React, { useState } from 'react';
 import toast from 'react-hot-toast';
-import { useAccount } from 'wagmi';
 import { baseSepolia } from 'wagmi/chains';
 
+import useNftMarketPlaceAutomation from '@/hooks/contracts/useNftMarketplaceAutomation';
+import useFetchUserDetails from '@/hooks/user/useFetchUserDetails';
 import {
   batchSubscribeFor,
   chainLinkAutomationSubscription,
@@ -18,13 +19,12 @@ import {
   checkUserBalanceAvaWeb3Auth,
   checkUserBalanceBase,
   checkUserBalanceWeb3Auth,
+  getTestFundsBase,
   PurchaseSubsAmoyGasslessBundle,
   PurchaseSubsAvaGasslessBundle,
   purchaseSubscriptionZkevm
 } from '@/lib/func';
 import { cn, toastStyles } from '@/lib/utils';
-import useNftMarketPlaceAutomation from '@/hooks/contracts/useNftMarketplaceAutomation';
-import useFetchUserDetails from '@/hooks/user/useFetchUserDetails';
 
 import Button from '@/components/buttons/Button';
 import RippleLoader from '@/components/buttons/rippleLoader';
@@ -34,6 +34,7 @@ import { VanishInput } from '@/components/ui/vanishInput';
 import { chainConfig } from '@/components/web3AuthConfig';
 
 import { morph } from '@/app/Providers';
+import useGlobalStore from '@/hooks/store/useGlobalStore';
 import { coinData } from '@/utils/natworkData';
 
 
@@ -54,7 +55,6 @@ export default function MyModal({
   modelId: number;
   setIsUnlocked: React.Dispatch<React.SetStateAction<boolean>>;
 }) {
-  const { address } = useAccount()
   const [isOpen, setIsOpen] = useState(false);
   const [walletChosen, setWalletChosen] = useState('');
   const [batchGaslessTrx, setBatchGaslessTrx] = useState('');
@@ -69,7 +69,8 @@ export default function MyModal({
   const [nftTrx, setNftTrx] = useState('');
   const [progress, setProgress] = React.useState(0);
   const { refetch } = useFetchUserDetails()
-
+  const { smartAccount, smartAddress } = useGlobalStore()
+  const address = smartAddress
   const showMsgs = () => {
     setProgress(100);
     toast.success('Payment completed successfully', toastStyles);
@@ -214,7 +215,6 @@ export default function MyModal({
           subscriptionId,
           value
         );
-        login(1);
         if (resp?.hash) {
           await chainLinkNotifier();
           // if (res) {
@@ -334,8 +334,7 @@ export default function MyModal({
     default: `${baseSepolia.blockExplorers.default.url}/tx/${txHash}`,
   };
 
-  const transactionUrl =
-    transactionUrls[walletChosen] || transactionUrls.default;
+  const transactionUrl = transactionUrls.default;
 
   return (
     <>
@@ -522,7 +521,7 @@ export default function MyModal({
                       {testTokensZekEvm && (
                         <div className='flex items-center w-full'>
                           <a
-                            href={`${chainConfig[3].blockExplorerUrl}/tx/${testTokensZekEvm}`}
+                            href={`${baseSepolia.blockExplorers.default.url}/tx/${testTokensZekEvm}`}
                             target='_blank'
                             className='flex items-center gap-1 hover:underline'
                           >
@@ -584,7 +583,7 @@ export default function MyModal({
                       {polygonTokensHash && (
                         <div className='flex items-center w-full'>
                           <a
-                            href={`${chainConfig[2].blockExplorerUrl}/tx/${polygonTokensHash}`}
+                            href={`${baseSepolia.blockExplorers.default.url}/tx/${polygonTokensHash}`}
                             target='_blank'
                             className='flex items-center text-white gap-1 hover:underline'
                           >
@@ -710,23 +709,27 @@ export default function MyModal({
                             //     setTestTokensZekEvmHash('');
                             //   }
                             // } else if (walletChosen.toLowerCase() === 'base') {
-                            //   const resp = await getTestFundsBase(
-                            //     address
-                            //   );
-                            //   if (resp.trxhash) {
-                            //     toast.success(
-                            //       'Wooho your funds have arrived 🚀🎉💸',
-                            //       toastStyles
-                            //     );
-                            //     setTestTokensBaseHash(resp.trxhash);
-                            //     setLoadingState('Confirm Payment');
-                            //   } else {
-                            //     toast.error(
-                            //       'Something went wrong',
-                            //       toastStyles
-                            //     );
-                            //     setTestTokensZekEvmHash('');
-                            //   }
+                            toast.success(
+                              'Sending funds at 🚀🎉💸' + smartAddress?.slice(0, 3) + smartAddress?.slice(-3),
+                              toastStyles
+                            );
+                            const resp = await getTestFundsBase(
+                              address
+                            );
+                            if (resp.trxhash) {
+                              toast.success(
+                                'Wooho your funds have arrived 🚀🎉💸',
+                                toastStyles
+                              );
+                              setTestTokensBaseHash(resp.trxhash);
+                              setLoadingState('Confirm Payment');
+                            } else {
+                              toast.error(
+                                'Something went wrong',
+                                toastStyles
+                              );
+                              setTestTokensZekEvmHash('');
+                            }
                             // } else {
                             //   window.open(
                             //     'https://faucet.circle.com/',
