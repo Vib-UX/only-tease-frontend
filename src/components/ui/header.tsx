@@ -35,11 +35,14 @@ const Header = ({ isOpen, setIsOpen }: props) => {
 
   useEffect(() => {
     if (userData) {
-      if (!userData?.isFound) {
-        onBoarding()
+      debugger
+      if (!userData?.isFound && userInfo) {
+        onBoarding({
+          userInfo
+        })
       }
     }
-  }, [userData?.isFound])
+  }, [userData?.isFound, userInfo?.name])
 
   return (
     <div className='w-full flex items-center border-[1px] border-t-0 border-r-0 h-[110px] border-l-0 border-[#FCC0FF] bg-[#F7F2FA] justify-between px-6 py-4 lg:py-4 fixed top-0 z-10'>

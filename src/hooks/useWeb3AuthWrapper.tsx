@@ -24,6 +24,7 @@ function useWeb3AuthWrapper() {
     queryKey: [!!web3Auth],
     queryFn: async () => {
       if (web3Auth) {
+        debugger
         await initModal()
         const web3authProvider = await web3Auth.connect();
         const ethersProvider = new ethers.providers.Web3Provider(

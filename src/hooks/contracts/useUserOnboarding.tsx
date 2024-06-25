@@ -1,9 +1,6 @@
 import { PaymasterMode } from '@biconomy/paymaster';
-import { useMutation } from '@tanstack/react-query';
-import { useWeb3Auth } from '@web3auth/modal-react-hooks';
 import { encodeFunctionData } from 'viem';
 import { baseSepolia } from 'viem/chains';
-import { useAccount } from 'wagmi';
 
 import { USER_ONBOARDING_ABI } from '@/hooks/abi/USER_ONBOARDING_ABI';
 import { generateContractHook } from '@/hooks/contracts/contracts';
@@ -11,6 +8,7 @@ import useGlobalStore from '@/hooks/store/useGlobalStore';
 
 import { API_URL, createFetchOptions, fetchJSON, OPEN_AI_API_URL, publicClient } from '@/utils';
 import { NULL_ADDRESS, USER_ONBOARDING_ADDRESS } from '@/utils/addresses';
+import { OpenloginUserInfo } from '@web3auth/openlogin-adapter';
 
 export const useUserOnbordingContract = generateContractHook({
   abi: USER_ONBOARDING_ABI,
@@ -50,14 +48,23 @@ const register = async ({ session, tokenId, address }: {
 const useUserOnBoarding = ({ onSuccess }: {
   onSuccess: () => void
 }) => {
-  const { userInfo } = useWeb3Auth()
-  const { address } = useAccount()
-  const { smartAccount } = useGlobalStore()
+  const { smartAccount, smartAddress } = useGlobalStore()
   const userOnboardingContract = useUserOnbordingContract()
 
-  const onBoarding = async () => {
+  const onBoarding = async ({
+    userInfo
+  }: {
+    userInfo: Partial<OpenloginUserInfo>
+  }) => {
     try {
-      if (!address || !smartAccount || !userInfo) throw new Error("")
+      debugger
+      if (!smartAccount || !userInfo || !userInfo.name) throw new Error("")
+      const tokenId = await publicClient.readContract({
+        abi: userOnboardingContract.abi,
+        address: userOnboardingContract.status === "ready" ? userOnboardingContract.address : NULL_ADDRESS,
+        functionName: 'getTokenId',
+      });
+
       const fetchOptions = createFetchOptions("POST", {
         name: userInfo.name
       })
@@ -65,7 +72,7 @@ const useUserOnBoarding = ({ onSuccess }: {
       const txData = encodeFunctionData({
         abi: userOnboardingContract.abi,
         functionName: "sendRequest",
-        args: [BigInt(85), [userInfo.name], 300000],
+        args: [BigInt(85), [userInfo.name?.toString()], 300000],
       })
       const tx = {
         to: userOnboardingContract.status === "ready" ? userOnboardingContract.address : NULL_ADDRESS,
@@ -83,13 +90,8 @@ const useUserOnBoarding = ({ onSuccess }: {
         console.log("Transaction receipt", userOpReceipt.receipt.transactionHash);
       }
 
-      const tokenId = await publicClient.readContract({
-        abi: userOnboardingContract.abi,
-        address: userOnboardingContract.status === "ready" ? userOnboardingContract.address : NULL_ADDRESS,
-        functionName: 'getTokenId',
-      });
       await register({
-        address: address,
+        address: smartAddress,
         session: {
           email: userInfo.email,
           name: userInfo.name
@@ -98,16 +100,13 @@ const useUserOnBoarding = ({ onSuccess }: {
       })
       onSuccess()
     } catch (error) {
+      debugger
       console.error(error);
     }
   }
 
-  const { mutateAsync, isPending } = useMutation({
-    mutationKey: ["onboard"],
-    mutationFn: onBoarding
-  })
   return {
-    onBoarding: mutateAsync, isLoading: isPending
+    onBoarding: onBoarding, isLoading: false
   }
 }
 
