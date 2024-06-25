@@ -11,6 +11,8 @@ type Props = {
     feed: string;
   };
 };
+
+
 const CreatorsPage = ({ params }: Props) => {
   const searchParams = useSearchParams()
   console.log(searchParams.get("type"), "searchParams");
@@ -47,6 +49,5 @@ const Page = ({ params }: Props) => {
     <CreatorsPage params={params} />
   </Suspense>
 }
-
 
 export default Page;
