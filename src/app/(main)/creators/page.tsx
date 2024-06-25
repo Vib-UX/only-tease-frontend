@@ -1,19 +1,8 @@
 'use client';
-import { useSearchParams } from 'next/navigation';
-import React from 'react';
-
 import ModelCard from '@/components/ui/modelCard';
-
 import { IndianModelCardData, modelCardData } from '@/utils/modelData';
-type Props = {
-  params: {
-    feed: string;
-  };
-};
-const Creators = ({ params }: Props) => {
-  const searchParams = useSearchParams()
-  console.log(searchParams.get("type"), "searchParams");
-  const type = searchParams.get("type") ?? "global"
+import React from 'react';
+const Creators = () => {
   return (
     <div className='w-full pt-5 max-w-[1200px] mx-auto'>
       <p className='text-[#0051FE] underline text-[25px] mt-3 pl-4 font-semibold'> Indian Creators</p>
@@ -36,4 +25,6 @@ const Creators = ({ params }: Props) => {
   );
 };
 
-export default Creators;
+
+export default Creators
+
