@@ -5,7 +5,7 @@ import Link from 'next/link';
 import { useAccount } from 'wagmi';
 
 import useFetchUserDetails from "@/hooks/user/useFetchUserDetails";
-import useWeb3AuthWrapper from '@/hooks/useWeb3Auth';
+import useWeb3AuthWrapper from '@/hooks/useWeb3AuthWrapper';
 
 import AccountConnect from "@/components/layout/header/AccountConnect";
 import Avatar from "@/components/ui/avatar";
