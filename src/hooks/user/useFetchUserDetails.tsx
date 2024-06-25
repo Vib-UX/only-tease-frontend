@@ -1,7 +1,6 @@
 import { useQuery } from '@tanstack/react-query';
 import { useWeb3Auth } from '@web3auth/modal-react-hooks';
 
-import useUserOnBoarding from '@/hooks/contracts/useUserOnboarding';
 
 import { API_ROUTES, API_URL, fetchJSON } from '@/utils';
 import { allModelData } from '@/utils/modelData';
@@ -26,22 +25,30 @@ const useFetchUserDetails = (
     queryKey: ["user-data", modelId, userInfo],
     enabled: !!userInfo,
     queryFn: async () => {
-      // const data = await fetchJSON(API_URL + `/` + API_ROUTES.USER_INFO + `?email=${session.data?.user.email}`, {
-      const data = await fetchJSON(API_URL + `/` + API_ROUTES.USER_INFO + `?email=` + userInfo.email, {
-        method: "GET"
-      })
-      if (data.success) {
-        const isUnlocked = !!data.data.subscriptions.find((s: {
-          modelId: string
-        }) => s.modelId.toString() === modelId?.toString())
-        return {
-          isFound: true,
-          subscriptions: filterMatchingIds(data.data.subscriptions, allModelData),
-          isUnlocked: isUnlocked ?? false,
-          open_ai_id: data.data.user.openAi_tokenId,
-          ipfs: data.data.user.ipfs_url
+      try {
+        // const data = await fetchJSON(API_URL + `/` + API_ROUTES.USER_INFO + `?email=${session.data?.user.email}`, {
+        const data = await fetchJSON(API_URL + `/` + API_ROUTES.USER_INFO + `?email=` + userInfo.email, {
+          method: "GET"
+        })
+        if (data.success) {
+          const isUnlocked = !!data.data.subscriptions.find((s: {
+            modelId: string
+          }) => s.modelId.toString() === modelId?.toString())
+          return {
+            isFound: true,
+            subscriptions: filterMatchingIds(data.data.subscriptions, allModelData),
+            isUnlocked: isUnlocked ?? false,
+            open_ai_id: data.data.user.openAi_tokenId,
+            ipfs: data.data.user.ipfs_url
+          }
+        } else if (data.message === 'User not found') {
+          return {
+            subscriptions: [],
+            isFound: false,
+            isUnlocked: false,
+          }
         }
-      } else if (data.message === 'User not found') {
+      } catch (error) {
         return {
           subscriptions: [],
           isFound: false,
