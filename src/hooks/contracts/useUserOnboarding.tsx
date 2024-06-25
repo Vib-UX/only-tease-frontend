@@ -57,7 +57,6 @@ const useUserOnBoarding = ({ onSuccess }: {
     userInfo: Partial<OpenloginUserInfo>
   }) => {
     try {
-      debugger
       if (!smartAccount || !userInfo || !userInfo.name) throw new Error("")
       const tokenId = await publicClient.readContract({
         abi: userOnboardingContract.abi,
@@ -100,7 +99,6 @@ const useUserOnBoarding = ({ onSuccess }: {
       })
       onSuccess()
     } catch (error) {
-      debugger
       console.error(error);
     }
   }
