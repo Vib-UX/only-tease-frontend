@@ -22,7 +22,7 @@ import {
   getTestFundsBase,
   PurchaseSubsAmoyGasslessBundle,
   PurchaseSubsAvaGasslessBundle,
-  purchaseSubscriptionZkevm
+  purchaseSubscriptionZkevm,
 } from '@/lib/func';
 import { cn, toastStyles } from '@/lib/utils';
 
@@ -37,10 +37,9 @@ import { morph } from '@/app/Providers';
 import useGlobalStore from '@/hooks/store/useGlobalStore';
 import { coinData } from '@/utils/natworkData';
 
-
 const subscriptionId = Math.floor(Math.random() * (1e12 - 1 + 1)) + 1;
 
-const months = [3, 6, 12]
+const months = [3, 6, 12];
 export default function MyModal({
   setLocked,
   dialogFor,
@@ -56,7 +55,7 @@ export default function MyModal({
   modelId: number;
   setIsUnlocked: React.Dispatch<React.SetStateAction<boolean>>;
 }) {
-  const [selectedMonth, setSelectedMonth] = useState(months[0])
+  const [selectedMonth, setSelectedMonth] = useState(months[0]);
   const [isOpen, setIsOpen] = useState(false);
   const [walletChosen, setWalletChosen] = useState('');
   const [batchGaslessTrx, setBatchGaslessTrx] = useState('');
@@ -70,35 +69,35 @@ export default function MyModal({
   const [polygonTokensHash, setPolygonTokensHash] = useState('');
   const [nftTrx, setNftTrx] = useState('');
   const [progress, setProgress] = React.useState(0);
-  const { refetch } = useFetchUserDetails()
-  const { smartAccount, smartAddress } = useGlobalStore()
-  const address = smartAddress
+  const { refetch } = useFetchUserDetails();
+  const { smartAccount, smartAddress } = useGlobalStore();
+  const address = smartAddress;
   const showMsgs = () => {
     setProgress(100);
     toast.success('Payment completed successfully', toastStyles);
   };
 
-  const { purchaseSubscription, txHash, isLoading } = useNftMarketPlaceAutomation({
-    amount: (value * selectedMonth).toString(),
-    modelId: modelId,
-    onSuccess: () => showMsgs()
-  })
-
+  const { purchaseSubscription, txHash, isLoading } =
+    useNftMarketPlaceAutomation({
+      amount: (value * selectedMonth).toString(),
+      modelId: modelId,
+      onSuccess: () => showMsgs(),
+    });
 
   function open() {
     setIsOpen(true);
   }
-  console.log(txHash !== "", "txHash");
+  console.log(txHash !== '', 'txHash');
 
   function close() {
     setIsOpen(false);
-    if (txHash !== "") {
-      setIsUnlocked(true)
+    if (txHash !== '') {
+      setIsUnlocked(true);
     }
-    setTestTokensBaseHash("")
+    setTestTokensBaseHash('');
     setWalletChosen('');
-    refetch()
-    setProgress(0)
+    refetch();
+    setProgress(0);
   }
   const [provider, setProvider] = useState<any>(undefined);
   const [loadingState, setLoadingState] = useState<string>('Confirm Payment');
@@ -109,7 +108,6 @@ export default function MyModal({
     `She's right around the corner 👠. Sit tight! 💺💃`,
     'She is ready!🍾 Head over and enjoy the show! 🎵🥂',
   ];
-
 
   const chainLinkNotifier = async () => {
     try {
@@ -172,8 +170,8 @@ export default function MyModal({
   const handleOperation = async (walletChosen: string) => {
     try {
       if (walletChosen.toLowerCase() === 'base') {
-        setProgress(10)
-        await purchaseSubscription()
+        setProgress(10);
+        await purchaseSubscription();
       } else if (walletChosen === 'MoonBeam') {
         setProgress(10);
         const resp = await batchSubscribeFor({
@@ -264,7 +262,8 @@ export default function MyModal({
     const amount = await checkUserBalanceWeb3Auth(smartAccount);
     if (parseInt(amount.signerBalance) < value) {
       setLoadingState(
-        `Insufficient Funds need ${value - parseInt(amount.signerBalance)
+        `Insufficient Funds need ${
+          value - parseInt(amount.signerBalance)
         } 💸 to subscribe`
       );
     }
@@ -274,7 +273,8 @@ export default function MyModal({
     const amount = await checkUserBalanceAvaWeb3Auth(smartAccount);
     if (parseInt(amount.signerBalance) < value) {
       setLoadingState(
-        `Insufficient Funds need ${value - parseInt(amount.signerBalance)
+        `Insufficient Funds need ${
+          value - parseInt(amount.signerBalance)
         }💸 to subscribe`
       );
     }
@@ -284,7 +284,8 @@ export default function MyModal({
     const amount = await checkUserBalanceAmoyWeb3Auth(smartAccount);
     if (parseInt(amount.signerBalance) < value) {
       setLoadingState(
-        `Insufficient Funds need ${value - parseInt(amount.signerBalance)
+        `Insufficient Funds need ${
+          value - parseInt(amount.signerBalance)
         }💸 to subscribe`
       );
     }
@@ -294,7 +295,8 @@ export default function MyModal({
     const amount = await checkUserBalanceBase(address);
     if (parseInt(amount.signerBalance) < value) {
       setLoadingState(
-        `Insufficient Funds need ${value - parseInt(amount.signerBalance)
+        `Insufficient Funds need ${
+          value - parseInt(amount.signerBalance)
         }💸 to subscribe`
       );
     }
@@ -345,7 +347,7 @@ export default function MyModal({
         onMouseOut={() => setLocked && setLocked(true)}
         onClick={open}
         className='flex items-center justify-center'
-      // className=' cursor-pointer h-[37px] w-full group/button relative overflow-hidden rounded-md bg-[rgb(48,20,47)] bg-gradient-to-br from-[rgba(48,20,47,1)] from-[0%] to-[rgba(17,12,23,1)] to-[57%] px-5 py-1.5 text-xs font-medium text-[#fb0393] transition-all hover:border-red-500 active:scale-95'
+        // className=' cursor-pointer h-[37px] w-full group/button relative overflow-hidden rounded-md bg-[rgb(48,20,47)] bg-gradient-to-br from-[rgba(48,20,47,1)] from-[0%] to-[rgba(17,12,23,1)] to-[57%] px-5 py-1.5 text-xs font-medium text-[#fb0393] transition-all hover:border-red-500 active:scale-95'
       >
         <span className='absolute bottom-0 left-0 z-0 h-0 w-full  transition-all duration-200 group-hover/button:h-full' />
         <span className='relative flex gap-2 justify-center items-center z-10 transition-all duration-500 group-hover/button:text-white'>
@@ -381,14 +383,17 @@ export default function MyModal({
           className='relative z-10 focus:outline-none'
           onClose={() => {
             if (isLoading) {
-              return undefined
+              return undefined;
             }
-            close()
+            close();
           }}
         >
-          <div style={{
-            zIndex: 999999
-          }} className='fixed inset-0 w-screen bg-black bg-opacity-60 overflow-y-auto z-50'>
+          <div
+            style={{
+              zIndex: 999999,
+            }}
+            className='fixed inset-0 w-screen bg-black bg-opacity-60 overflow-y-auto z-50'
+          >
             <div className='flex min-h-full items-center justify-center p-4'>
               <TransitionChild
                 enter='ease-out duration-300'
@@ -403,12 +408,22 @@ export default function MyModal({
                   <div className='flex items-center py-2 justify-between'>
                     <div className='text-xl font-semibold '>Autopay 🔁</div>
                     <div className='flex items-center space-x-2 justify-center'>
-                      {months.map((s, index) => <div onClick={() => {
-                        setSelectedMonth(s)
-                      }} className={cn('w-[60px] cursor-pointer  rounded-lg py-1 flex items-center justify-center  px-2',
-                        selectedMonth === s ? "bg-[#0051FE] text-white shadow-lg border border-[#0051FE]" : ""
-
-                      )} key={index}>{s}m</div>)}
+                      {months.map((s, index) => (
+                        <div
+                          onClick={() => {
+                            setSelectedMonth(s);
+                          }}
+                          className={cn(
+                            'w-[60px] cursor-pointer  rounded-lg py-1 flex items-center justify-center  px-2',
+                            selectedMonth === s
+                              ? 'bg-[#0051FE] text-white shadow-lg border border-[#0051FE]'
+                              : ''
+                          )}
+                          key={index}
+                        >
+                          {s}m
+                        </div>
+                      ))}
                     </div>
                   </div>
                   <p className=''>
@@ -430,23 +445,55 @@ export default function MyModal({
                     )}
                     <div className='absolute left-1/2 top-[62%] -translate-x-1/2 -translate-y-1/2 w-full'>
                       {(approvetrx ||
-                        batchGaslessTrx || txHash ||
+                        batchGaslessTrx ||
+                        txHash ||
                         nftTrx ||
                         avalancheCrossTxn ||
                         chainlinkCrossTxn ||
                         Polygontrx) && (
-                          <div
-                            className={`flex items-center ${batchGaslessTrx
+                        <div
+                          className={`flex items-center ${
+                            batchGaslessTrx
                               ? 'justify-center'
                               : 'justify-between'
-                              }  w-full py-3`}
+                          }  w-full py-3`}
+                        >
+                          <a
+                            href={transactionUrl}
+                            target='_blank'
+                            className='flex items-center gap-1 hover:underline'
                           >
-                            <a
-                              href={transactionUrl}
-                              target='_blank'
-                              className='flex items-center gap-1 hover:underline'
+                            {paymentSuccessMessage(walletChosen)}
+                            <svg
+                              stroke='currentColor'
+                              fill='none'
+                              stroke-width='2'
+                              viewBox='0 0 24 24'
+                              stroke-linecap='round'
+                              stroke-linejoin='round'
+                              height='1em'
+                              width='1em'
+                              xmlns='http://www.w3.org/2000/svg'
                             >
-                              {paymentSuccessMessage(walletChosen)}
+                              <path
+                                stroke='none'
+                                d='M0 0h24v24H0z'
+                                fill='none'
+                              ></path>
+                              <path d='M12 6h-6a2 2 0 0 0 -2 2v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-6'></path>
+                              <path d='M11 13l9 -9'></path>
+                              <path d='M15 4h5v5'></path>
+                            </svg>
+                          </a>
+                          {walletChosen === 'Morph' && (
+                            <a
+                              href={`https://testnets.opensea.io/assets/sepolia/0xB974E8Db0Ad4b573e8AFBC601146Fc8daE2FC4DD/${
+                                BigInt(1e18) * BigInt(5) + BigInt(18)
+                              }`}
+                              target='_blank'
+                              className='flex items-center text-white gap-1 hover:underline'
+                            >
+                              Nft Minted
                               <svg
                                 stroke='currentColor'
                                 fill='none'
@@ -468,40 +515,15 @@ export default function MyModal({
                                 <path d='M15 4h5v5'></path>
                               </svg>
                             </a>
-                            {walletChosen === 'Morph' && (
-                              <a
-                                href={`https://testnets.opensea.io/assets/sepolia/0xB974E8Db0Ad4b573e8AFBC601146Fc8daE2FC4DD/${BigInt(1e18) * BigInt(5) + BigInt(18)
-                                  }`}
-                                target='_blank'
-                                className='flex items-center text-white gap-1 hover:underline'
-                              >
-                                Nft Minted
-                                <svg
-                                  stroke='currentColor'
-                                  fill='none'
-                                  stroke-width='2'
-                                  viewBox='0 0 24 24'
-                                  stroke-linecap='round'
-                                  stroke-linejoin='round'
-                                  height='1em'
-                                  width='1em'
-                                  xmlns='http://www.w3.org/2000/svg'
-                                >
-                                  <path
-                                    stroke='none'
-                                    d='M0 0h24v24H0z'
-                                    fill='none'
-                                  ></path>
-                                  <path d='M12 6h-6a2 2 0 0 0 -2 2v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-6'></path>
-                                  <path d='M11 13l9 -9'></path>
-                                  <path d='M15 4h5v5'></path>
-                                </svg>
-                              </a>
-                            )}
-                          </div>
-                        )}
+                          )}
+                        </div>
+                      )}
                       {testTokensHash && (
-                        <div className='flex items-center w-full'>
+                        <div
+                          className={`flex items-center w-full py-3 ${
+                            progress > 0 && progress < 99 ? 'mt-20' : 'mt-0'
+                          }`}
+                        >
                           <a
                             href={`${baseSepolia.blockExplorers.default.url}/tx/${testTokensHash}`}
                             target='_blank'
@@ -532,7 +554,11 @@ export default function MyModal({
                         </div>
                       )}
                       {testTokensZekEvm && (
-                        <div className='flex items-center w-full'>
+                        <div
+                          className={`flex items-center w-full py-3 ${
+                            progress > 0 && progress < 99 ? 'mt-20' : 'mt-0'
+                          }`}
+                        >
                           <a
                             href={`${baseSepolia.blockExplorers.default.url}/tx/${testTokensZekEvm}`}
                             target='_blank'
@@ -563,7 +589,11 @@ export default function MyModal({
                         </div>
                       )}
                       {testTokensBase && (
-                        <div className='flex items-center w-full'>
+                        <div
+                          className={`flex items-center w-full py-3 ${
+                            progress > 0 && progress < 99 ? 'mt-20' : 'mt-0'
+                          }`}
+                        >
                           <a
                             href={`${baseSepolia.blockExplorers.default.url}/tx/${testTokensBase}`}
                             target='_blank'
@@ -594,7 +624,11 @@ export default function MyModal({
                         </div>
                       )}
                       {polygonTokensHash && (
-                        <div className='flex items-center w-full'>
+                        <div
+                          className={`flex items-center w-full py-3 ${
+                            progress > 0 && progress < 99 ? 'mt-20' : 'mt-0'
+                          }`}
+                        >
                           <a
                             href={`${baseSepolia.blockExplorers.default.url}/tx/${polygonTokensHash}`}
                             target='_blank'
@@ -635,8 +669,9 @@ export default function MyModal({
                                 setWalletChosen(coin.name);
                                 setLoadingState('Confirm Payment');
                               }}
-                              className={`group/button relative  inline-flex  h-10 w-10 items-center justify-center overflow-hidden bg-transparent font-medium transition-all duration-300 hover:w-24 ${walletChosen === coin.name ? 'bg-gray-800' : ''
-                                }`}
+                              className={`group/button relative  inline-flex  h-10 w-10 items-center justify-center overflow-hidden bg-transparent font-medium transition-all duration-300 hover:w-24 ${
+                                walletChosen === coin.name ? 'bg-gray-800' : ''
+                              }`}
                               key={coin.name}
                             >
                               <div className='absolute left-0 w-7 h-7  '>
@@ -676,7 +711,7 @@ export default function MyModal({
                           `z-20 flex items-center justify-center w-full gap-2 rounded-md  py-2 px-10 text-sm/6 font-semibold text-white shadow-inner shadow-white/10 focus:outline-none data-[focus]:outline-1 data-[focus]:outline-white`,
                           (!walletChosen ||
                             loadingState !== 'Confirm Payment') &&
-                          'cursor-not-allowed opacity-50 '
+                            'cursor-not-allowed opacity-50 '
                         )}
                       >
                         <p>{loadingState}</p>
@@ -723,12 +758,12 @@ export default function MyModal({
                             //   }
                             // } else if (walletChosen.toLowerCase() === 'base') {
                             toast.success(
-                              'Sending funds at 🚀🎉💸' + smartAddress?.slice(0, 3) + smartAddress?.slice(-3),
+                              'Sending funds at 🚀🎉💸' +
+                                smartAddress?.slice(0, 3) +
+                                smartAddress?.slice(-3),
                               toastStyles
                             );
-                            const resp = await getTestFundsBase(
-                              address
-                            );
+                            const resp = await getTestFundsBase(address);
                             if (resp.trxhash) {
                               toast.success(
                                 'Wooho your funds have arrived 🚀🎉💸',
@@ -737,10 +772,7 @@ export default function MyModal({
                               setTestTokensBaseHash(resp.trxhash);
                               setLoadingState('Confirm Payment');
                             } else {
-                              toast.error(
-                                'Something went wrong',
-                                toastStyles
-                              );
+                              toast.error('Something went wrong', toastStyles);
                               setTestTokensZekEvmHash('');
                             }
                             // } else {
