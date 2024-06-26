@@ -21,81 +21,126 @@ export const useNftMarketplaceAutomationContract = generateContractHook({
   },
 });
 
-
-const updateSubscription = async ({ walletAddress, tokenId }: {
-  walletAddress: string, tokenId: string
+const updateSubscription = async ({
+  walletAddress,
+  tokenId,
+}: {
+  walletAddress: string;
+  tokenId: string;
 }) => {
-  const fetchOptions = createFetchOptions("PATCH", {
+  const fetchOptions = createFetchOptions('PATCH', {
     wallet_address: walletAddress,
     tokenId: tokenId,
-  })
-  return await fetchJSON(API_URL + "/" + API_ROUTES.UPDATE_SUBSCRIPTION_BASE, fetchOptions)
-}
+  });
+  return await fetchJSON(
+    API_URL + '/' + API_ROUTES.UPDATE_SUBSCRIPTION_BASE,
+    fetchOptions
+  );
+};
 
-const useNFTSubscription = ({ amount, listingId, tokenId, onSuccess }: {
-  amount: string, listingId: number, tokenId: string, onSuccess: () => void
+const useNFTSubscription = ({
+  amount,
+  listingId,
+  tokenId,
+  onSuccess,
+}: {
+  amount: string;
+  listingId: number;
+  tokenId: string;
+  onSuccess: () => void;
 }) => {
-  const { refetch } = useFetchUserDetails()
-  const mockUsdContract = useMockUSDContract()
-  const nftMarketPlaceContract = useNftMarketplaceAutomationContract()
-  const [txHash, setTxHash] = useState("")
-  const { smartAccount, smartAddress } = useGlobalStore()
+  console.log('Initializing useNFTSubscription hook with:', {
+    amount,
+    listingId,
+    tokenId,
+  });
+
+  const { refetch } = useFetchUserDetails();
+  const mockUsdContract = useMockUSDContract();
+  const nftMarketPlaceContract = useNftMarketplaceAutomationContract();
+  const [txHash, setTxHash] = useState('');
+  const { smartAccount, smartAddress } = useGlobalStore();
+
+  console.log('Contracts loaded:', {
+    mockUsdContractStatus: mockUsdContract.status,
+    nftMarketPlaceContractStatus: nftMarketPlaceContract.status,
+  });
+  console.log('User details from global store:', {
+    smartAccount,
+    smartAddress,
+  });
 
   const buyNFT = async () => {
+    console.log('Attempting to buy NFT with params:', {
+      amount,
+      listingId,
+      tokenId,
+    });
     try {
-      if (mockUsdContract.status === "ready" && nftMarketPlaceContract.status === "ready" && smartAddress && smartAccount) {
-        const txData1 = encodeFunctionData(
-          {
-            abi: mockUsdContract.abi,
-            functionName: "approve",
-            args: [nftMarketPlaceContract.address, parseUnits(amount.toString(), 6).toBigInt()]
-          }
-        )
-        const txData2 = encodeFunctionData(
-          {
-            abi: nftMarketPlaceContract.abi,
-            functionName: 'buyNft',
-            args: [BigInt(listingId)],
-          }
-        )
+      if (
+        mockUsdContract.status === 'ready' &&
+        nftMarketPlaceContract.status === 'ready' &&
+        smartAddress &&
+        smartAccount
+      ) {
+        console.log(
+          'Contracts and user details are ready to process the transaction.'
+        );
+
+        const txData1 = encodeFunctionData({
+          abi: mockUsdContract.abi,
+          functionName: 'approve',
+          args: [
+            nftMarketPlaceContract.address,
+            parseUnits(amount.toString(), 6).toBigInt(),
+          ],
+        });
+        console.log('Encoded txData1 for approve function:', txData1);
+
+        const txData2 = encodeFunctionData({
+          abi: nftMarketPlaceContract.abi,
+          functionName: 'buyNft',
+          args: [BigInt(listingId)],
+        });
+        console.log('Encoded txData2 for buyNft function:', txData2);
 
         const tx1 = {
           to: mockUsdContract.address,
           data: txData1,
         };
-
         const tx2 = {
           to: nftMarketPlaceContract.address,
           data: txData2,
         };
+        console.log('Prepared transactions:', { tx1, tx2 });
+
         const userOpResponse = await smartAccount.sendTransaction([tx1, tx2], {
           paymasterServiceData: { mode: PaymasterMode.SPONSORED },
         });
         const { transactionHash } = await userOpResponse.waitForTxHash();
-        console.log("Transaction Hash", transactionHash);
-        const userOpReceipt = await userOpResponse.wait(1);
-        if (userOpReceipt.success == "true") {
-          console.log("UserOp receipt", userOpReceipt);
-          console.log("Transaction receipt", userOpReceipt.receipt);
-          setTxHash(userOpReceipt.receipt.transactionHash)
-        } else {
-          throw new Error("Tx failed")
-        }
+        console.log('Transaction Hash received:', transactionHash);
+
+        setTxHash(transactionHash || '');
         await updateSubscription({
           walletAddress: smartAddress,
           tokenId: tokenId.toString(),
-        })
-        await refetch()
-        onSuccess()
+        });
+        console.log('Subscription updated successfully.');
+
+        await refetch();
+        console.log('User details refetched after transaction.');
+        onSuccess();
+        console.log('onSuccess callback executed.');
       }
     } catch (error) {
-      throw new Error("purchase failed")
+      console.error('Purchase failed with error:', error);
+      throw error;
     }
-  }
+  };
   return {
     buyNFT,
-    txHash: txHash
-  }
-}
+    txHash: txHash,
+  };
+};
 
-export default useNFTSubscription
+export default useNFTSubscription;
