@@ -9,11 +9,18 @@ import useWeb3AuthWrapper from '@/hooks/useWeb3AuthWrapper';
 
 import AccountConnect from '@/components/layout/header/AccountConnect';
 import Avatar from '@/components/ui/avatar';
+import { AlignJustify } from 'lucide-react';
+import { useSession } from "next-auth/react";
+import { useEffect } from 'react';
+
+import useWindowSize from '@/hooks/useWindowSize';
+
+import IconButton from "@/components/buttons/IconButton";
 
 import useUserOnBoarding from '@/hooks/contracts/useUserOnboarding';
 import { useWeb3Auth } from '@web3auth/modal-react-hooks';
-import { useEffect } from 'react';
 import logo from '../../../public/images/logoWithoutGradient.webp';
+import smartWallet from '../../../public/images/Subtract.png';
 
 type props = {
   isOpen: boolean;
@@ -23,6 +30,8 @@ type props = {
 const Header = ({ isOpen, setIsOpen }: props) => {
   const { userInfo } = useWeb3Auth();
   useWeb3AuthWrapper();
+  const windowSize = useWindowSize()
+  const { data: session, status } = useSession()
 
   const { address } = useAccount();
   const { data: userData, isLoading, refetch } = useFetchUserDetails();
@@ -102,6 +111,14 @@ const Header = ({ isOpen, setIsOpen }: props) => {
         <div className='flex items-center text-white justify-end'>
           <AccountConnect />
         </div>
+        <div className='flex gap-2 justify-center items-center'>
+          <Image src={smartWallet} alt="smart-wallet" className='size-10 object-contain' />
+          <div className='font-bold text-[#0051FE]'>
+            <p>Smart</p>
+            <p>Wallet</p>
+          </div>
+        </div>
+        {windowSize.width <= 1090 ? <IconButton icon={AlignJustify} onClick={() => setIsOpen(!isOpen)} /> : <></>}
       </div>
     </div>
   );
