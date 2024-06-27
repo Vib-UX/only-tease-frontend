@@ -1,12 +1,14 @@
 import { Menu, MenuButton, MenuItem, MenuItems } from '@headlessui/react';
 import { CopyIcon, EllipsisVerticalIcon, LogOut } from 'lucide-react';
 import toast from 'react-hot-toast';
-import { useAccount, useDisconnect } from 'wagmi';
+import { useDisconnect } from 'wagmi';
 
+import useGlobalStore from '@/hooks/store/useGlobalStore';
 import { toastStyles } from '@/lib/utils';
 
 export default function Example() {
-  const { address } = useAccount()
+  const { smartAddress } = useGlobalStore()
+  const address = smartAddress
   const { disconnect } = useDisconnect()
 
   const handleCopy = (address: string) => {

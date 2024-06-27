@@ -1,24 +1,20 @@
 'use client';
 
+import { useWeb3Auth } from '@web3auth/modal-react-hooks';
+import { AlignJustify } from 'lucide-react';
 import Image from 'next/image';
 import Link from 'next/link';
-import { useAccount } from 'wagmi';
-
-import useFetchUserDetails from '@/hooks/user/useFetchUserDetails';
-import useWeb3AuthWrapper from '@/hooks/useWeb3AuthWrapper';
-
-import AccountConnect from '@/components/layout/header/AccountConnect';
-import Avatar from '@/components/ui/avatar';
-import { AlignJustify } from 'lucide-react';
-import { useSession } from "next-auth/react";
 import { useEffect } from 'react';
 
+import useUserOnBoarding from '@/hooks/contracts/useUserOnboarding';
+import useFetchUserDetails from '@/hooks/user/useFetchUserDetails';
+import useWeb3AuthWrapper from '@/hooks/useWeb3AuthWrapper';
 import useWindowSize from '@/hooks/useWindowSize';
 
 import IconButton from "@/components/buttons/IconButton";
+import AccountConnect from '@/components/layout/header/AccountConnect';
+import Avatar from '@/components/ui/avatar';
 
-import useUserOnBoarding from '@/hooks/contracts/useUserOnboarding';
-import { useWeb3Auth } from '@web3auth/modal-react-hooks';
 import logo from '../../../public/images/logoWithoutGradient.webp';
 import smartWallet from '../../../public/images/Subtract.png';
 
@@ -31,9 +27,7 @@ const Header = ({ isOpen, setIsOpen }: props) => {
   const { userInfo } = useWeb3Auth();
   useWeb3AuthWrapper();
   const windowSize = useWindowSize()
-  const { data: session, status } = useSession()
 
-  const { address } = useAccount();
   const { data: userData, isLoading, refetch } = useFetchUserDetails();
 
   const { onBoarding } = useUserOnBoarding({
