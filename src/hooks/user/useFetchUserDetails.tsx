@@ -24,7 +24,6 @@ const useFetchUserDetails = (
     queryKey: ["user-data", modelId, userInfo],
     enabled: !!userInfo,
     queryFn: async () => {
-      debugger
       const data = await fetchJSON(API_URL + `/` + API_ROUTES.USER_INFO + `?email=${userInfo.email}`, {
         method: "GET"
       })
