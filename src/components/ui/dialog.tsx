@@ -13,7 +13,6 @@ import { baseSepolia } from 'wagmi/chains';
 import useNftMarketPlaceAutomation from '@/hooks/contracts/useNftMarketplaceAutomation';
 import useGlobalStore from '@/hooks/store/useGlobalStore';
 import useFetchUserDetails from '@/hooks/user/useFetchUserDetails';
-import { chainConfig } from '@/hooks/useWeb3auth';
 import {
   batchSubscribeFor,
   chainLinkAutomationSubscription,
@@ -33,6 +32,7 @@ import RippleLoader from '@/components/buttons/rippleLoader';
 import LinearWithValueLabel from '@/components/ui/progressBar';
 import RadioButton from '@/components/ui/radioGroup';
 import { VanishInput } from '@/components/ui/vanishInput';
+import { chainConfig } from '@/components/web3AuthConfig';
 
 import { morph } from '@/app/Providers';
 import { coinData } from '@/utils/natworkData';
