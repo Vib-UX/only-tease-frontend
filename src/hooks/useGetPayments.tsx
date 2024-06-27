@@ -12,7 +12,7 @@ const useGetPayments = () => {
     enabled: !!address,
     queryFn: async () => {
       const fetchOptions = createFetchOptions("POST", {
-        query: `{ transfers(where: {from: "${address}", to: "${NFT_MARKET_PLACE_ADDRESS}"}) { id from to value transactionHash blockTimestamp }}`
+        query: `{ transfers(orderDirection: desc, where: {from: "${address}", to: "${NFT_MARKET_PLACE_ADDRESS}"}) { id from to value transactionHash blockTimestamp }}`
       })
       const res = await fetchJSON("https://api.studio.thegraph.com/query/80954/payment-token/v0.1", fetchOptions)
 
@@ -23,7 +23,7 @@ const useGetPayments = () => {
           ...s,
           modelData: modelData
         }
-      }).sort((a, b) => new Date(b.blockTimestamp) - new Date(a.blockTimestamp))
+      })
       return formatted as [] || []
     },
     refetchInterval: 10000
