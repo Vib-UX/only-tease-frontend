@@ -45,6 +45,12 @@ const useFetchUserDetails = (
             open_ai_id: data.data.user.openAi_tokenId,
             ipfs: data.data.user.ipfs_url
           }
+        } else if (data.message === 'User not found') {
+          return {
+            subscriptions: [],
+            isFound: false,
+            isUnlocked: false,
+          }
         }
       } catch (error) {
         return {
