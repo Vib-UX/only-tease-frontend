@@ -1,6 +1,7 @@
 'use client';
 import { Checkbox, Paper, Table, TableBody, TableContainer, TableHead, TableRow } from '@mui/material';
 import { useQuery } from '@tanstack/react-query';
+// import { useQuery } from '@tanstack/react-query';
 import { format } from 'date-fns';
 import { CheckIcon } from 'lucide-react';
 import Image from 'next/image';
@@ -8,10 +9,12 @@ import { useMemo, useState } from 'react';
 import { ResponsiveContainer } from 'recharts';
 import { useAccount } from 'wagmi';
 
+import { checkUserBalanceBase } from '@/lib/func';
+// import { checkUserBalanceBase } from '@/lib/func';
+import { scaleDown, shortenAddress } from '@/lib/utils';
+// import useGlobalStore from '@/hooks/store/useGlobalStore';
 import useGetPayments from '@/hooks/useGetPayments';
 import useFetchUserDetails from '@/hooks/user/useFetchUserDetails';
-import { checkUserBalanceBase } from '@/lib/func';
-import { scaleDown, shortenAddress } from '@/lib/utils';
 
 import TextButton from '@/components/buttons/TextButton';
 import UnderlineLink from '@/components/links/UnderlineLink';
@@ -73,7 +76,7 @@ export default function Page() {
       <div className='border p-4 aspect-square bg-white rounded-2xl shadow-lg flex place-self-center gap-4'>
         <div className='flex items-end'>
           <div className=' flex flex-col gap-4'>
-            <Image src="/images/stripe.png" width={256} height={256} />
+            <Image src="/images/stripe.png" width={256} height={256} alt="stripe" />
             <Image src={Coins} alt='bitcoin' width={256} height={256} />
             <TextButton className='border-2 bg-gradient-to-r from-blue-900 to-blue-700 text-white rounded-lg shadow-lg px-10 py-2 text-nowrap hover:text-white'>
               Add Funds
@@ -92,8 +95,9 @@ export default function Page() {
           <div className='absolute size-5 bg-[#0088FE] rounded shadow-lg'></div>
           <div className='absolute left-12 text-[#0088FE]'>Balance</div>
           <div className='absolute top-12 size-5 bg-[#00C49F] rounded shadow-lg'></div>
-          <div className='absolute top-12 left-12 text-[#00C49F]'>Value</div>
-          <PieChartExample balance={balance ? parseInt(balance?.signerBalance) : 0} />
+          <div className='absolute top-12 left-12 text-[#00C49F]'>Deducted</div>
+          {balance && <PieChartExample balance={parseInt(balance.signerBalance)} />}
+          {/* <PieChartExample balance={balance ? parseInt(balance?.signerBalance) : 0} /> */}
           {/* <div className='absolute text-3xl font-semibold text-[#0088FE] left-[45%] bottom-[48%]'>{balance?.signerBalance}</div> */}
           <div className='absolute text-lg font-semibold left-1/2 -translate-x-1/2 bottom-[10%]'>
             Balance: {balance?.signerBalance} {" "}
