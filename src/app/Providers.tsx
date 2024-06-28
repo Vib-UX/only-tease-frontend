@@ -47,7 +47,7 @@ const avalanche = {
 const metadata = {
   name: 'onlyTease',
   description: 'OnlyFans for web3',
-  url: 'https://blocktease.vercel.app/', // origin must match your domain & subdomain
+  url: 'https://onlytease.vercel.app/', // origin must match your domain & subdomain
   icons: ['https://avatars.mywebsite.com/'],
 };
 
