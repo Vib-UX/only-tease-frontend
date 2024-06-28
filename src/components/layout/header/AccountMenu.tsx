@@ -1,7 +1,7 @@
 import { Menu, MenuButton, MenuItem, MenuItems } from '@headlessui/react';
+import { useDisconnect } from '@web3modal/ethers5/react';
 import { CopyIcon, EllipsisVerticalIcon, LogOut } from 'lucide-react';
 import toast from 'react-hot-toast';
-import { useDisconnect } from 'wagmi';
 
 import useGlobalStore from '@/hooks/store/useGlobalStore';
 import { toastStyles } from '@/lib/utils';
