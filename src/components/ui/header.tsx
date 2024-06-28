@@ -88,12 +88,14 @@ const Header = ({ isOpen, setIsOpen }: props) => {
         </div>
       </Link>
       <div className='flex items-center md:justify-end fixed md:right-0 space-x-2 mx-4'>
-        <Avatar
-          userName={session?.name}
-          openId={userData?.open_ai_id}
-          ipfsUrl={userData?.ipfs}
-          avatarLoading={isLoading}
-        />
+        {session &&
+          <Avatar
+            userName={session?.name}
+            openId={userData?.open_ai_id}
+            ipfsUrl={userData?.ipfs}
+            avatarLoading={isLoading}
+          />
+        }
         <div className='flex items-center text-white justify-end'>
           <AccountConnect />
         </div>
