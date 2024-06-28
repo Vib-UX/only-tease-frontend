@@ -1,22 +1,22 @@
 'use client';
 
-import { AlignJustify } from 'lucide-react'
+import { AlignJustify } from 'lucide-react';
+import { useSession } from "next-auth/react";
 import Image from 'next/image';
 import Link from 'next/link';
-import { useSession } from "next-auth/react";
 import { useEffect, useState } from 'react';
 import { useAccount } from 'wagmi';
 
 import useFetchUserDetails from "@/hooks/user/useFetchUserDetails";
 import useWindowSize from '@/hooks/useWindowSize';
 
-import IconButton from "@/components/buttons/IconButton"
+import IconButton from "@/components/buttons/IconButton";
 import AccountConnect from "@/components/layout/header/AccountConnect";
 import GoogleSignIn from "@/components/layout/header/GoogleSiginModal";
 import Avatar from "@/components/ui/avatar";
 
 import logo from '../../../public/images/logoWithoutGradient.webp';
-import smartWallet from '../../../public/images/Subtract.png'
+import smartWallet from '../../../public/images/Subtract.png';
 
 type props = {
   isOpen: boolean;
@@ -88,14 +88,12 @@ const Header = ({ isOpen, setIsOpen }: props) => {
         </div>
       </Link>
       <div className='flex items-center md:justify-end fixed md:right-0 space-x-2 mx-4'>
-        {/* {userInfo && ( */}
-        {/*   <Avatar */}
-        {/*     userName={userInfo?.name} */}
-        {/*     openId={userData?.open_ai_id} */}
-        {/*     ipfsUrl={userData?.ipfs} */}
-        {/*     avatarLoading={isLoading} */}
-        {/*   /> */}
-        {/* )} */}
+        <Avatar
+          userName={session?.name}
+          openId={userData?.open_ai_id}
+          ipfsUrl={userData?.ipfs}
+          avatarLoading={isLoading}
+        />
         <div className='flex items-center text-white justify-end'>
           <AccountConnect />
         </div>
