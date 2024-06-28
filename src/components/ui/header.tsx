@@ -16,7 +16,7 @@ import AccountConnect from '@/components/layout/header/AccountConnect';
 import Avatar from '@/components/ui/avatar';
 
 import logo from '../../../public/images/logoWithoutGradient.webp';
-import smartWallet from '../../../public/images/Subtract.png';
+import smartWallet from '../../../public/images/onlytease-biconomy.png';
 
 type props = {
   isOpen: boolean;
@@ -107,9 +107,8 @@ const Header = ({ isOpen, setIsOpen }: props) => {
         <div className='hidden md:block'>
           <div className='flex gap-2 justify-center items-center '>
             <Image src={smartWallet} alt="smart-wallet" className='size-10 object-contain' />
-            <div className='font-bold text-[#0051FE]'>
-              <p>Smart</p>
-              <p>Wallet</p>
+            <div className='font-bold text-2xl text-[#fc4e07]'>
+              <p>Biconomy</p>
             </div>
           </div>
         </div>
