@@ -87,7 +87,7 @@ const Header = ({ isOpen, setIsOpen }: props) => {
           </div>
         </div>
       </Link>
-      <div className='flex items-center md:justify-end fixed md:right-0 space-x-2 mx-4'>
+      <div className='flex items-center justify-end fixed right-0 space-x-2 mx-4'>
         {session &&
           <Avatar
             userName={session?.name}

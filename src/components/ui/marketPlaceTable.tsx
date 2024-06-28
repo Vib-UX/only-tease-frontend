@@ -61,7 +61,8 @@ export default function CustomizedTables() {
         borderRadius: "10px",
         border: "2px solid #FA78FF "
       }}
-      className='w-full md:w-[1100px] bg-white text-white border-fuchsia-700 border'
+      className='w-full'
+    // className='w-full md:max-w-[1100px] bg-white text-white border-fuchsia-700 border'
     >
       {' '}
       {selectActiveData.icon !== '' && (
@@ -190,7 +191,6 @@ export default function CustomizedTables() {
           })}
         </TableBody>
       </Table>
-      {/* <div onClick={handleBuyNft}>Buy</div> */}
     </TableContainer>
   );
 }
