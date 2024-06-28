@@ -52,6 +52,7 @@ export default function MyModal({
   const { refetch } = useFetchUserDetails();
   const { smartAddress } = useGlobalStore();
   const address = smartAddress;
+
   const showMsgs = () => {
     setProgress(100);
     toast.success('Payment completed successfully', toastStyles);
@@ -89,6 +90,7 @@ export default function MyModal({
 
   const handleOperation = async (walletChosen: string) => {
     if (walletChosen.toLowerCase() === 'base') {
+      setTestTokensBaseHash("")
       try {
         setProgress(10);
         toast.loading(
@@ -264,6 +266,40 @@ export default function MyModal({
                           </a>
                         </div>
                       )}
+                      {txHash && (
+                        <div
+                          className={`flex items-center w-full py-3 ${progress > 0 && progress < 99 ? 'mt-20' : 'mt-0'
+                            }`}
+                        >
+                          <a
+                            href={`${baseSepolia.blockExplorers.default.url}/tx/${txHash}`}
+                            target='_blank'
+                            className='flex items-center  gap-1 hover:underline'
+                          >
+                            Payment successful
+                            <svg
+                              stroke='currentColor'
+                              fill='none'
+                              stroke-width='2'
+                              viewBox='0 0 24 24'
+                              stroke-linecap='round'
+                              stroke-linejoin='round'
+                              height='1em'
+                              width='1em'
+                              xmlns='http://www.w3.org/2000/svg'
+                            >
+                              <path
+                                stroke='none'
+                                d='M0 0h24v24H0z'
+                                fill='none'
+                              ></path>
+                              <path d='M12 6h-6a2 2 0 0 0 -2 2v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-6'></path>
+                              <path d='M11 13l9 -9'></path>
+                              <path d='M15 4h5v5'></path>
+                            </svg>
+                          </a>
+                        </div>
+                      )}
                     </div>
 
                     <div className='space-y-4'>
@@ -324,7 +360,12 @@ export default function MyModal({
                           className='text-end hover:underline cursor-pointer text-[#625B71]'
                           onClick={async () => {
                             if (walletChosen.toLowerCase() === 'base') {
+                              toast.loading(
+                                'Sending funds 🚀🎉💸',
+                                toastStyles
+                              );
                               const resp = await getTestFundsBase(address);
+                              toast.remove()
                               if (resp.trxhash) {
                                 toast.success(
                                   'Wooho your funds have arrived 🚀🎉💸',
@@ -333,6 +374,7 @@ export default function MyModal({
                                 setTestTokensBaseHash(resp.trxhash);
                                 setLoadingState('Confirm Payment');
                               } else {
+                                toast.remove()
                                 toast.error(
                                   'Something went wrong',
                                   toastStyles
