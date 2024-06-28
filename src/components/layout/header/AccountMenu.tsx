@@ -25,7 +25,7 @@ export default function Example() {
   return (
     <div className="text-right ml-2">
       <Menu>
-        <MenuButton className="inline-flex items-center gap-2 rounded-md bg-button py-2 px-3 text-sm/6 font-semibold text-white shadow-inner shadow-white/10 focus:outline-none data-[hover]:bg-gray-700 data-[open]:bg-gray-700 data-[focus]:outline-1 data-[focus]:outline-white">
+        <MenuButton className="inline-flex items-center gap-2 rounded-md bg-button py-3 px-3 text-sm/6 font-semibold text-white shadow-inner shadow-white/10 focus:outline-none data-[hover]:bg-gray-700 data-[open]:bg-gray-700 data-[focus]:outline-1 data-[focus]:outline-white">
           <EllipsisVerticalIcon className="size-4 fill-white/60" />
         </MenuButton>
         <MenuItems

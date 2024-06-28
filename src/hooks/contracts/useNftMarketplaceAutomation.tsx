@@ -1,19 +1,19 @@
+import { PaymasterMode } from '@biconomy/paymaster';
+import { useWeb3Auth } from '@web3auth/modal-react-hooks';
 import { parseUnits } from 'ethers/lib/utils';
+import { useState } from 'react';
 import { encodeFunctionData } from 'viem';
 import { baseSepolia } from 'viem/chains';
 
 import { NFT_MARKETPLACE_ABI } from '@/hooks/abi/NFT_MARKETPLACE_ABI';
 import { generateContractHook } from '@/hooks/contracts/contracts';
 import { useMockUSDContract } from '@/hooks/contracts/useMockUSD';
+import useGlobalStore from '@/hooks/store/useGlobalStore';
 import useFetchUserDetails from '@/hooks/user/useFetchUserDetails';
 
-import useGlobalStore from '@/hooks/store/useGlobalStore';
 import { API_ROUTES, API_URL, createFetchOptions, fetchJSON } from '@/utils';
 import { NFT_MARKET_PLACE_ADDRESS } from '@/utils/addresses';
 import { getSubscriptionId } from '@/utils/getSubscriptionId';
-import { PaymasterMode } from '@biconomy/paymaster';
-import { useWeb3Auth } from '@web3auth/modal-react-hooks';
-import { useState } from 'react';
 
 export const useNftMarketplaceAutomationContract = generateContractHook({
   abi: NFT_MARKETPLACE_ABI,
@@ -47,6 +47,7 @@ const useNftMarketPlaceAutomation = ({ amount, modelId, onSuccess }: {
   const { refetch } = useFetchUserDetails()
   const mockUsdContract = useMockUSDContract()
   const nftMarketPlaceContract = useNftMarketplaceAutomationContract()
+
 
   const purchaseSubscription = async () => {
     try {
