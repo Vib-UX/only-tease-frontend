@@ -31,7 +31,7 @@ function Page() {
           );
         })}
       </div>
-      <div className='w-full md:max-w-[1100px]  md:ml-12'>
+      <div className='w-full md:max-w-[1000px] mx-auto '>
         <div className='flex text-white justify-center gap-4 md:justify-around px-10 pb-6 '>
           <span
             onClick={() => setCollection('Your Collection')}
