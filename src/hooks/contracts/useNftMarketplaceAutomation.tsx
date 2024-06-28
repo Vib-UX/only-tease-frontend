@@ -1,5 +1,6 @@
 import { parseUnits } from 'ethers/lib/utils';
 import { useSession } from 'next-auth/react';
+import { useCallback } from 'react';
 import { baseSepolia } from 'viem/chains';
 import { useCallsStatus, useWriteContracts } from 'wagmi/experimental';
 
@@ -53,7 +54,8 @@ const useNftMarketPlaceAutomation = ({ amount, modelId, onSuccess }: {
     },
   });
 
-  const purchaseSubscription = async () => {
+
+  const purchaseSubscription = useCallback(async () => {
     try {
       if (mockUsdContract.status === "ready" && nftMarketPlaceContract.status === "ready" && session.data?.user) {
         const subscriptionId = getSubscriptionId()
@@ -94,7 +96,8 @@ const useNftMarketPlaceAutomation = ({ amount, modelId, onSuccess }: {
     } catch (error) {
       throw new Error("purchase failed")
     }
-  }
+  }, [amount, modelId, onSuccess, mockUsdContract, nftMarketPlaceContract, session, writeContractsAsync, refetch]);
+
   return {
     purchaseSubscription, callsStatus,
     isLoading: isPending,

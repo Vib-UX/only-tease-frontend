@@ -11,24 +11,13 @@ import toast from 'react-hot-toast';
 import { useAccount } from 'wagmi';
 import { baseSepolia } from 'wagmi/chains';
 
-import {
-  batchSubscribeFor,
-  chainLinkAutomationSubscription,
-  checkUserBalanceAmoyWeb3Auth,
-  checkUserBalanceAvaWeb3Auth,
-  checkUserBalanceBase,
-  checkUserBalanceWeb3Auth,
-  getTestFundsBase,
-  getTestFundsWeb3Auth,
-  getTestFundsZkEvm,
-  PurchaseSubsAmoyGasslessBundle,
-  PurchaseSubsAvaGasslessBundle,
-  purchaseSubscriptionZkevm,
-} from '@/lib/func';
-import { cn, toastStyles } from '@/lib/utils';
 import useNftMarketPlaceAutomation from '@/hooks/contracts/useNftMarketplaceAutomation';
 import useFetchUserDetails from '@/hooks/user/useFetchUserDetails';
-import useWeb3auth, { chainConfig } from '@/hooks/useWeb3auth';
+import {
+  checkUserBalanceBase,
+  getTestFundsBase,
+} from '@/lib/func';
+import { cn, toastStyles } from '@/lib/utils';
 
 import Button from '@/components/buttons/Button';
 import RippleLoader from '@/components/buttons/rippleLoader';
@@ -36,10 +25,8 @@ import LinearWithValueLabel from '@/components/ui/progressBar';
 import RadioButton from '@/components/ui/radioGroup';
 import { VanishInput } from '@/components/ui/vanishInput';
 
-import { morph } from '@/app/Providers';
 import { coinData } from '@/utils/natworkData';
 
-const subscriptionId = Math.floor(Math.random() * (1e12 - 1 + 1)) + 1;
 
 const months = [3, 6, 12];
 export default function MyModal({
@@ -61,16 +48,7 @@ export default function MyModal({
   const [selectedMonth, setSelectedMonth] = useState(months[0]);
   const [isOpen, setIsOpen] = useState(false);
   const [walletChosen, setWalletChosen] = useState('');
-  const [batchGaslessTrx, setBatchGaslessTrx] = useState('');
-  const [approvetrx, setApproveTrx] = useState('');
-  const [Polygontrx, setPolygonTrx] = useState('');
-  const [avalancheCrossTxn, setAvalancheCrossTxn] = useState('');
-  const [chainlinkCrossTxn, setChainLinkCrossTxn] = useState('');
-  const [testTokensHash, setTestTokensHash] = useState('');
-  const [testTokensZekEvm, setTestTokensZekEvmHash] = useState('');
   const [testTokensBase, setTestTokensBaseHash] = useState('');
-  const [polygonTokensHash, setPolygonTokensHash] = useState('');
-  const [nftTrx, setNftTrx] = useState('');
   const [progress, setProgress] = React.useState(0);
   const { refetch } = useFetchUserDetails();
 
@@ -86,24 +64,20 @@ export default function MyModal({
       onSuccess: () => showMsgs(),
     });
 
-  const { smartAccount, login, email } = useWeb3auth();
 
   function open() {
     setIsOpen(true);
   }
-  console.log(txHash !== '', 'txHash');
 
   function close() {
     setIsOpen(false);
     if (txHash !== '') {
       setIsUnlocked(true);
     }
-    setTestTokensBaseHash('');
     setWalletChosen('');
     refetch();
     setProgress(0);
   }
-  const [provider, setProvider] = useState<any>(undefined);
   const [loadingState, setLoadingState] = useState<string>('Confirm Payment');
   const placeholders = [
     `We have notified ${name} 💃💌 of your interest. Hold on! ✨`,
@@ -113,183 +87,29 @@ export default function MyModal({
     'She is ready!🍾 Head over and enjoy the show! 🎵🥂',
   ];
 
-  const chainLinkNotifier = async () => {
-    try {
-      const resp = await fetch(
-        'https://db-graph-backend.onrender.com/api/purchase-subscription',
-        {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({
-            email: email,
-            modelId: modelId,
-            tokenId: (
-              BigInt(1e18) * BigInt(modelId) +
-              BigInt(subscriptionId)
-            ).toString(),
-          }),
-        }
-      );
-      const data = await resp.json();
-      if (data.success) {
-        return true;
-      }
-      return false;
-    } catch (error) {
-      toast.error('Something went wrong', toastStyles);
-    }
-  };
-
-  const zkEVMNotifier = async () => {
-    try {
-      const resp = await fetch(
-        'https://db-graph-backend.onrender.com/api/purchase-subscription-zkevm',
-        {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({
-            email: email,
-            modelId: modelId,
-            tokenId: (
-              BigInt(1e18) * BigInt(modelId) +
-              BigInt(subscriptionId)
-            ).toString(),
-          }),
-        }
-      );
-      const data = await resp.json();
-      if (data.success) {
-        return true;
-      }
-      return false;
-    } catch (error) {
-      toast.error('Something went wrong', toastStyles);
-    }
-  };
 
   const handleOperation = async (walletChosen: string) => {
-    try {
-      if (walletChosen.toLowerCase() === 'base') {
+    if (walletChosen.toLowerCase() === 'base') {
+      try {
         setProgress(10);
+        toast.loading(
+          'Purchasing....',
+          toastStyles
+        );
         await purchaseSubscription();
-      } else if (walletChosen === 'MoonBeam') {
-        setProgress(10);
-        const resp = await batchSubscribeFor({
-          modelId: modelId,
-          subscriptionId: subscriptionId,
-          priceInUsd: value,
-          provider,
-        });
-        setBatchGaslessTrx(resp.dispatch);
-        showMsgs();
-        if (resp.dispatch) {
-          // mintNft(resp.fromAddr);
-          setProgress(100);
-          toast.success('Transaction successfull 🚀', toastStyles);
-          localStorage.setItem(
-            modelId.toString(),
-            (BigInt(1e18) * BigInt(modelId) + BigInt(subscriptionId)).toString()
-          );
-          setIsOpen(true);
-          // setIsUnlocked(true);
-        }
-      } else if (walletChosen === 'avalanche') {
-        setProgress(10);
-        const resp = await PurchaseSubsAvaGasslessBundle(
-          smartAccount,
-          modelId,
-          subscriptionId,
-          value
+        toast.remove()
+        toast.success(
+          'Purchased Subscription',
+          toastStyles
         );
-        if (resp?.hash) {
-          await chainLinkNotifier();
-          setAvalancheCrossTxn(resp?.hash);
-          showMsgs();
-          setProgress(100);
-        }
-      } else if (walletChosen === 'Ethereum') {
-        setProgress(10);
-        const resp = await chainLinkAutomationSubscription(
-          smartAccount,
-          modelId,
-          subscriptionId,
-          value
+      } catch (error) {
+        toast.remove()
+        setProgress(0);
+        toast.success(
+          'Something went wrong',
+          toastStyles
         );
-        login(1);
-        if (resp?.hash) {
-          await chainLinkNotifier();
-          // if (res) {
-          setChainLinkCrossTxn(resp.hash);
-          showMsgs();
-          setProgress(100);
-          // }
-        }
-      } else if (walletChosen === 'Polygon') {
-        setProgress(10);
-        const resp = await PurchaseSubsAmoyGasslessBundle(
-          smartAccount,
-          modelId,
-          subscriptionId,
-          value
-        );
-        if (resp?.hash) {
-          await chainLinkNotifier();
-          setPolygonTrx(resp?.hash);
-          showMsgs();
-          setProgress(100);
-        }
-      } else if (walletChosen === 'Polygon_Zkevm') {
-        setProgress(10);
-        const resp = await purchaseSubscriptionZkevm(
-          smartAccount,
-          modelId,
-          subscriptionId,
-          value,
-          2592000
-        );
-        if (resp?.hash) {
-          await zkEVMNotifier();
-          showMsgs();
-          setProgress(100);
-        }
       }
-    } catch (error) {
-      setProgress(0);
-      // toast.error('Something went wrong', toastStyles);
-    }
-  };
-
-  const insufficiantBalance = async () => {
-    const amount = await checkUserBalanceWeb3Auth(smartAccount);
-    if (parseInt(amount.signerBalance) < value) {
-      setLoadingState(
-        `Insufficient Funds need ${value - parseInt(amount.signerBalance)
-        } 💸 to subscribe`
-      );
-    }
-  };
-
-  const insufficiantAvaBalance = async () => {
-    const amount = await checkUserBalanceAvaWeb3Auth(smartAccount);
-    if (parseInt(amount.signerBalance) < value) {
-      setLoadingState(
-        `Insufficient Funds need ${value - parseInt(amount.signerBalance)
-        }💸 to subscribe`
-      );
-    }
-  };
-
-  const insufficiantAmoyBalance = async () => {
-    const amount = await checkUserBalanceAmoyWeb3Auth(smartAccount);
-    if (parseInt(amount.signerBalance) < value) {
-      setLoadingState(
-        `Insufficient Funds need ${value - parseInt(amount.signerBalance)
-        }💸 to subscribe`
-      );
     }
   };
 
@@ -304,43 +124,11 @@ export default function MyModal({
   };
 
   React.useEffect(() => {
-    if (walletChosen === 'Ethereum') {
-      insufficiantBalance();
-    } else if (walletChosen === 'avalanche') {
-      insufficiantAvaBalance();
-    } else if (walletChosen === 'Polygon') {
-      console.log('there?');
-      insufficiantAmoyBalance();
-    } else if (walletChosen.toLowerCase() === 'base') {
+    if (walletChosen.toLowerCase() === 'base') {
       insufficiantBaseBalance();
     }
   }, [walletChosen]);
 
-  const paymentSuccessMessage = (walletChosen: string) => {
-    switch (walletChosen) {
-      case 'Ethereum':
-        return 'Autopay Success';
-      case 'avalanche':
-      case 'Polygon':
-        return 'CCIP Payment Success';
-      case 'Polygon_Zkevm':
-        return 'Payment Success';
-      default:
-        return 'Payment Success';
-    }
-  };
-
-  const transactionUrls = {
-    Morph: `${morph.explorerUrl}/tx/${approvetrx}`,
-    avalanche: `https://ccip.chain.link/tx/${avalancheCrossTxn}`,
-    Polygon: `https://ccip.chain.link/tx/${Polygontrx}`,
-    Ethereum: `${chainConfig[1].blockExplorerUrl}/tx/${chainlinkCrossTxn}`,
-    Polygon_Zkevm: `${chainConfig[3].blockExplorerUrl}/tx/${chainlinkCrossTxn}`,
-    default: `${baseSepolia.blockExplorers.default.url}/tx/${txHash}`,
-  };
-
-  const transactionUrl =
-    transactionUrls[walletChosen] || transactionUrls.default;
 
   return (
     <>
@@ -348,9 +136,7 @@ export default function MyModal({
         onMouseOver={() => setLocked && setLocked(false)}
         onMouseOut={() => setLocked && setLocked(true)}
         onClick={open}
-        className='flex items-center rounded-lg justify-center bg-white text-blue-500 border-2 border-blue-500 shadow-lg transition-all duration-200'
       >
-        {/* <span className='absolute bottom-0 left-0 z-0 h-0 w-full  transition-all duration-200 group-hover/button:h-full bg-white text-blue-500 border-2 border-blue-500 shadow-lg' /> */}
         <span className='relative flex gap-2 justify-center items-center z-10 transition-all duration-500 group-hover/button:text-whiterounded mx-auto'>
           {dialogFor === 'ends : 09h 36m 22s' ? <RippleLoader /> : null}
           {dialogFor}{' '}
@@ -445,146 +231,6 @@ export default function MyModal({
                       </span>
                     )}
                     <div className='absolute left-1/2 top-[62%] -translate-x-1/2 -translate-y-1/2 w-full'>
-                      {(approvetrx ||
-                        batchGaslessTrx ||
-                        txHash ||
-                        nftTrx ||
-                        avalancheCrossTxn ||
-                        chainlinkCrossTxn ||
-                        Polygontrx) && (
-                          <div
-                            className={`flex items-center ${batchGaslessTrx
-                                ? 'justify-center'
-                                : 'justify-between'
-                              }  w-full py-3`}
-                          >
-                            <a
-                              href={transactionUrl}
-                              target='_blank'
-                              className='flex items-center gap-1 hover:underline'
-                            >
-                              {paymentSuccessMessage(walletChosen)}
-                              <svg
-                                stroke='currentColor'
-                                fill='none'
-                                stroke-width='2'
-                                viewBox='0 0 24 24'
-                                stroke-linecap='round'
-                                stroke-linejoin='round'
-                                height='1em'
-                                width='1em'
-                                xmlns='http://www.w3.org/2000/svg'
-                              >
-                                <path
-                                  stroke='none'
-                                  d='M0 0h24v24H0z'
-                                  fill='none'
-                                ></path>
-                                <path d='M12 6h-6a2 2 0 0 0 -2 2v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-6'></path>
-                                <path d='M11 13l9 -9'></path>
-                                <path d='M15 4h5v5'></path>
-                              </svg>
-                            </a>
-                            {walletChosen === 'Morph' && (
-                              <a
-                                href={`https://testnets.opensea.io/assets/sepolia/0xB974E8Db0Ad4b573e8AFBC601146Fc8daE2FC4DD/${BigInt(1e18) * BigInt(5) + BigInt(18)
-                                  }`}
-                                target='_blank'
-                                className='flex items-center text-white gap-1 hover:underline'
-                              >
-                                Nft Minted
-                                <svg
-                                  stroke='currentColor'
-                                  fill='none'
-                                  stroke-width='2'
-                                  viewBox='0 0 24 24'
-                                  stroke-linecap='round'
-                                  stroke-linejoin='round'
-                                  height='1em'
-                                  width='1em'
-                                  xmlns='http://www.w3.org/2000/svg'
-                                >
-                                  <path
-                                    stroke='none'
-                                    d='M0 0h24v24H0z'
-                                    fill='none'
-                                  ></path>
-                                  <path d='M12 6h-6a2 2 0 0 0 -2 2v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-6'></path>
-                                  <path d='M11 13l9 -9'></path>
-                                  <path d='M15 4h5v5'></path>
-                                </svg>
-                              </a>
-                            )}
-                          </div>
-                        )}
-                      {testTokensHash && (
-                        <div
-                          className={`flex items-center w-full py-3 ${progress > 0 && progress < 99 ? 'mt-20' : 'mt-0'
-                            }`}
-                        >
-                          <a
-                            href={`${baseSepolia.blockExplorers.default.url}/tx/${testTokensHash}`}
-                            target='_blank'
-                            className='flex items-center gap-1 hover:underline'
-                          >
-                            Test funds{' '}
-                            <svg
-                              stroke='currentColor'
-                              fill='none'
-                              stroke-width='2'
-                              viewBox='0 0 24 24'
-                              stroke-linecap='round'
-                              stroke-linejoin='round'
-                              height='1em'
-                              width='1em'
-                              xmlns='http://www.w3.org/2000/svg'
-                            >
-                              <path
-                                stroke='none'
-                                d='M0 0h24v24H0z'
-                                fill='none'
-                              ></path>
-                              <path d='M12 6h-6a2 2 0 0 0 -2 2v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-6'></path>
-                              <path d='M11 13l9 -9'></path>
-                              <path d='M15 4h5v5'></path>
-                            </svg>
-                          </a>
-                        </div>
-                      )}
-                      {testTokensZekEvm && (
-                        <div
-                          className={`flex items-center w-full py-3 ${progress > 0 && progress < 99 ? 'mt-20' : 'mt-0'
-                            }`}
-                        >
-                          <a
-                            href={`${chainConfig[3].blockExplorerUrl}/tx/${testTokensZekEvm}`}
-                            target='_blank'
-                            className='flex items-center gap-1 hover:underline'
-                          >
-                            Test funds{' '}
-                            <svg
-                              stroke='currentColor'
-                              fill='none'
-                              stroke-width='2'
-                              viewBox='0 0 24 24'
-                              stroke-linecap='round'
-                              stroke-linejoin='round'
-                              height='1em'
-                              width='1em'
-                              xmlns='http://www.w3.org/2000/svg'
-                            >
-                              <path
-                                stroke='none'
-                                d='M0 0h24v24H0z'
-                                fill='none'
-                              ></path>
-                              <path d='M12 6h-6a2 2 0 0 0 -2 2v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-6'></path>
-                              <path d='M11 13l9 -9'></path>
-                              <path d='M15 4h5v5'></path>
-                            </svg>
-                          </a>
-                        </div>
-                      )}
                       {testTokensBase && (
                         <div
                           className={`flex items-center w-full py-3 ${progress > 0 && progress < 99 ? 'mt-20' : 'mt-0'
@@ -594,40 +240,6 @@ export default function MyModal({
                             href={`${baseSepolia.blockExplorers.default.url}/tx/${testTokensBase}`}
                             target='_blank'
                             className='flex items-center  gap-1 hover:underline'
-                          >
-                            Test funds{' '}
-                            <svg
-                              stroke='currentColor'
-                              fill='none'
-                              stroke-width='2'
-                              viewBox='0 0 24 24'
-                              stroke-linecap='round'
-                              stroke-linejoin='round'
-                              height='1em'
-                              width='1em'
-                              xmlns='http://www.w3.org/2000/svg'
-                            >
-                              <path
-                                stroke='none'
-                                d='M0 0h24v24H0z'
-                                fill='none'
-                              ></path>
-                              <path d='M12 6h-6a2 2 0 0 0 -2 2v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-6'></path>
-                              <path d='M11 13l9 -9'></path>
-                              <path d='M15 4h5v5'></path>
-                            </svg>
-                          </a>
-                        </div>
-                      )}
-                      {polygonTokensHash && (
-                        <div
-                          className={`flex items-center w-full py-3 ${progress > 0 && progress < 99 ? 'mt-20' : 'mt-0'
-                            }`}
-                        >
-                          <a
-                            href={`${chainConfig[2].blockExplorerUrl}/tx/${polygonTokensHash}`}
-                            target='_blank'
-                            className='flex items-center text-white gap-1 hover:underline'
                           >
                             Test funds{' '}
                             <svg
@@ -682,8 +294,6 @@ export default function MyModal({
                           );
                         })}
                       </div>
-
-                      {/* Conditionally render the RadioButton component if a wallet is chosen */}
                       {walletChosen && (
                         <RadioButton
                           walletChosen={walletChosen}
@@ -697,7 +307,7 @@ export default function MyModal({
                       <Button
                         disabled={
                           !walletChosen ||
-                          (nftTrx ? true : false) ||
+                          (false) ||
                           loadingState !== 'Confirm Payment'
                         }
                         onClick={() => handleOperation(walletChosen)}
@@ -714,43 +324,7 @@ export default function MyModal({
                         <div
                           className='text-end hover:underline cursor-pointer text-[#625B71]'
                           onClick={async () => {
-                            if (walletChosen === 'Ethereum') {
-                              const resp = await getTestFundsWeb3Auth(
-                                smartAccount
-                              );
-                              if (resp.trxhash) {
-                                toast.success(
-                                  'Wooho your funds have arrived 🚀🎉💸',
-                                  toastStyles
-                                );
-                                setTestTokensHash(resp.trxhash);
-                                setLoadingState('Confirm Payment');
-                              } else {
-                                toast.error(
-                                  'Something went wrong',
-                                  toastStyles
-                                );
-                                setTestTokensHash('');
-                              }
-                            } else if (walletChosen === 'Polygon_Zkevm') {
-                              const resp = await getTestFundsZkEvm(
-                                smartAccount
-                              );
-                              if (resp.trxhash) {
-                                toast.success(
-                                  'Wooho your funds have arrived 🚀🎉💸',
-                                  toastStyles
-                                );
-                                setTestTokensZekEvmHash(resp.trxhash);
-                                setLoadingState('Confirm Payment');
-                              } else {
-                                toast.error(
-                                  'Something went wrong',
-                                  toastStyles
-                                );
-                                setTestTokensZekEvmHash('');
-                              }
-                            } else if (walletChosen.toLowerCase() === 'base') {
+                            if (walletChosen.toLowerCase() === 'base') {
                               const resp = await getTestFundsBase(address);
                               if (resp.trxhash) {
                                 toast.success(
@@ -764,13 +338,7 @@ export default function MyModal({
                                   'Something went wrong',
                                   toastStyles
                                 );
-                                setTestTokensZekEvmHash('');
                               }
-                            } else {
-                              window.open(
-                                'https://faucet.circle.com/',
-                                '_blank'
-                              );
                             }
                           }}
                         >
