@@ -42,7 +42,15 @@ app.frame('/', (c) => {
         }}>
           <h1>Subscribe to ava adams</h1>
           &nbsp;
-          <img src='https://onlytease.vercel.app/_next/image?url=%2F_next%2Fstatic%2Fmedia%2Fmodel2.a1926d48.webp&w=1920&q=75' alt='ava adams' sizes='20' />
+          <img src='https://onlytease.vercel.app/_next/image?url=%2F_next%2Fstatic%2Fmedia%2Fmodel2.a1926d48.webp&w=1920&q=75' alt='ava adams' sizes='20' style={{
+            width: 40,
+            height: 40,
+            borderRadius: '50%', // Make the image round
+            overflow: 'hidden', // Add overflow hidden
+          }} />
+        </div>
+        <div style={{ display: 'flex', alignItems: 'center', padding: '0.5rem 0', justifyContent: 'space-between' }}>
+          <div style={{ fontSize: '1.25rem', fontWeight: '600' }}>Autopay 🔁</div>
         </div>
       </div>
     ),
