@@ -25,10 +25,7 @@ app.frame('/', (c) => {
       <div
         style={{
           alignItems: 'center',
-          background:
-            status === 'response'
-              ? 'linear-gradient(to right, #432889, #17101F)'
-              : 'black',
+          background: 'linear-gradient(180deg, rgba(255, 255, 255, 0.8) 0%, rgba(252, 183, 255, 0.8) 100%)',
           backgroundSize: '100% 100%',
           display: 'flex',
           flexDirection: 'column',
@@ -39,21 +36,13 @@ app.frame('/', (c) => {
           width: '100%',
         }}
       >
-        <div
-          style={{
-            color: 'white',
-            fontSize: 60,
-            fontStyle: 'normal',
-            letterSpacing: '-0.025em',
-            lineHeight: 1.4,
-            marginTop: 30,
-            padding: '0 120px',
-            whiteSpace: 'pre-wrap',
-          }}
-        >
-          {status === 'response'
-            ? `Nice choice.${fruit ? ` ${fruit.toUpperCase()}!!` : ''}`
-            : 'Welcome!'}
+        <div style={{
+          display: 'flex',
+          flexDirection: 'row',
+        }}>
+          <h1>Subscribe to ava adams</h1>
+          &nbsp;
+          <img src='https://onlytease.vercel.app/_next/image?url=%2F_next%2Fstatic%2Fmedia%2Fmodel2.a1926d48.webp&w=1920&q=75' alt='ava adams' sizes='20' />
         </div>
       </div>
     ),
