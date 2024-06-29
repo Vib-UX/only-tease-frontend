@@ -24,20 +24,20 @@ app.frame('/', (c) => {
     image: (
       <div
         style={{
-          alignItems: 'center',
           background: 'linear-gradient(180deg, rgba(255, 255, 255, 0.8) 0%, rgba(252, 183, 255, 0.8) 100%)',
           backgroundSize: '100% 100%',
           display: 'flex',
+          padding: "20px",
           flexDirection: 'column',
           flexWrap: 'nowrap',
           height: '100%',
-          justifyContent: 'center',
           textAlign: 'center',
           width: '100%',
         }}
       >
         <div style={{
           display: 'flex',
+          alignItems: 'center',
           flexDirection: 'row',
         }}>
           <h1>Subscribe to ava adams</h1>
