@@ -19,6 +19,8 @@
     "prepare": "husky install"
   },
   "dependencies": {
+    "frog": "latest",
+    "hono": "^4",
     "@biconomy/account": "^4.0.0",
     "@coinbase/onchainkit": "^0.19.7",
     "@coinbase/wallet-sdk": "4.0.0",
