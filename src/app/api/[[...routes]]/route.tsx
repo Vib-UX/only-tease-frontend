@@ -10,74 +10,14 @@ import { NFT_MARKETPLACE_ABI } from '@/hooks/abi/NFT_MARKETPLACE_ABI'
 
 import { ERC20 } from '@/components/ui/ERC20ABI'
 
+import { NFT_MARKET_PLACE_ADDRESS } from '@/utils/addresses'
+import { IndianModelCardData, MarketPlaceCardData } from '@/utils/modelData'
+import { MOCK_USD_BASE } from '@/utils/tokens'
 
 export const getSubscriptionId = () => {
   const subscriptionId = Math.floor(Math.random() * (1e12 - 1 + 1)) + 1;
   return subscriptionId;
 };
-
-
-const app = new Frog({
-  assetsPath: '/',
-  basePath: '/api',
-  title: "Only tease"
-  // Supply a Hub to enable frame verification.
-  // hub: neynar({ apiKey: 'NEYNAR_FROG_FM' })
-})
-
-const neynarMiddleware = neynar({
-  apiKey: 'NEYNAR_FROG_FM',
-  features: ['interactor', 'cast'],
-})
-
-// app.frame('/', neynarMiddleware, (c) => {
-//   console.log(c.var.interactor, "sscc");
-//   const { buttonValue, inputText, status } = c
-//   const fruit = inputText || buttonValue
-//   return c.res({
-//     image: (
-//       <div
-//         style={{
-//           alignItems: 'center',
-//           background:
-//             status === 'response'
-//               ? 'linear-gradient(to right, #432889, #17101F)'
-//               : 'black',
-//           backgroundSize: '100% 100%',
-//           display: 'flex',
-//           flexDirection: 'column',
-//           flexWrap: 'nowrap',
-//           height: '100%',
-//           justifyContent: 'center',
-//           textAlign: 'center',
-//           width: '100%',
-//         }}
-//       >
-//         <div
-//           style={{
-//             color: 'white',
-//             fontSize: 60,
-//             fontStyle: 'normal',
-//             letterSpacing: '-0.025em',
-//             lineHeight: 1.4,
-//             marginTop: 30,
-//             padding: '0 120px',
-//             whiteSpace: 'pre-wrap',
-//           }}
-//         >
-//           {status === 'response'
-//             ? `Nice choice.${fruit ? ` ${fruit.toUpperCase()}!!` : ''}`
-//             : 'Welcome!'}
-//         </div>
-//       </div>
-//     ),
-//     intents: [
-//       <TextInput placeholder="Enter custom fruit..." />,
-//       <Button value="bananas">Purchase</Button>,
-//     ],
-//   })
-// })
-
 
 const updateSubscription = async ({ email, subscriptionId, modelId }: {
   email: string, modelId: string, subscriptionId: number
@@ -96,9 +36,25 @@ const updateSubscription = async ({ email, subscriptionId, modelId }: {
 }
 
 
-app.frame('/', (c) => {
+const app = new Frog({
+  assetsPath: '/',
+  basePath: '/api',
+  title: "Only tease",
+})
 
-  console.log(c.req.query(), "cc")
+const neynarMiddleware = neynar({
+  apiKey: 'NEYNAR_FROG_FM',
+  features: ['interactor', 'cast'],
+})
+
+app.frame('/:name', neynarMiddleware, (c) => {
+  const name = c.req.param("name")
+
+  const model = [...IndianModelCardData, ...MarketPlaceCardData].find((s) => s.name.toLowerCase() === name.toLowerCase())
+
+  const modelId = model?.id
+  const amount = model?.value.toString()
+  const subscriptionId = getSubscriptionId()
 
   return c.res({
     action: '/finish',
@@ -239,12 +195,20 @@ app.frame('/', (c) => {
     ),
     intents: [
       // eslint-disable-next-line react/jsx-key
-      <Button.Transaction target="/approve" >Purchase Subscription</Button.Transaction>,
+      <Button.Transaction target={`/approve?amount=${amount}&modelId=${modelId}&subscriptionId=${subscriptionId}`} >Purchase Subscription</Button.Transaction>,
     ]
   })
 })
 
-app.frame('/final', neynarMiddleware, (c) => {
+app.frame('/final', async (c) => {
+  const modelId = c.req.queries('modelId')?.[0] || '';
+  const subscriptionId = c.req.queries('subscriptionId')?.[0] || '';
+  const tokenId = parseInt(modelId) * 1e18 + parseInt(subscriptionId)
+  // await updateSubscription({
+  //   email: ,
+  //   modelId: modelId,
+  //   subscriptionId: parseInt(subscriptionId)
+  // })
   return c.res({
     image: (
       <div
@@ -383,16 +347,19 @@ app.frame('/final', neynarMiddleware, (c) => {
     ),
     intents: [
       // eslint-disable-next-line react/jsx-key
-      <Button.Link href="https://google.com">Subscription successful</Button.Link>,
+      <Button.Link href={`https://onlytease.vercel.app/profile/${modelId}`}>Subscription successful</Button.Link>,
       // eslint-disable-next-line react/jsx-key
-      <Button.Link href="https://google.com">View your NFT</Button.Link>,
+      <Button.Link href={`https://testnets.opensea.io/assets/base-sepolia/0x054ba199ef61ef15226e2ceb61138f7d5e2f8408/${tokenId}`}>View your NFT</Button.Link>,
     ]
   })
 })
 
 app.frame('/finish', (c) => {
+  const modelId = c.req.queries('modelId')?.[0] || '';
+  const subscriptionId = c.req.queries('subscriptionId')?.[0] || '';
+
   return c.res({
-    action: "/final",
+    action: `/final?modelId=${modelId}&subscriptionId=${subscriptionId}`,
     image: (
       <div
         style={{
@@ -530,32 +497,35 @@ app.frame('/finish', (c) => {
     ),
     intents: [
       // eslint-disable-next-line react/jsx-key
-      <Button.Transaction target="/mint" >Mint</Button.Transaction>,
+      <Button.Transaction target={`/mint?&modelId=${modelId}&subscriptionId=${subscriptionId}`} >Mint</Button.Transaction>,
     ]
   })
 })
 
 app.transaction('/mint', async (c) => {
-  const subscriptionId = getSubscriptionId()
+  const modelId = c.req.queries('modelId')?.[0] || '';
+  const subscriptionId = c.req.queries('subscriptionId')?.[0] || '';
+
   return c.contract({
     abi: NFT_MARKETPLACE_ABI,
-    to: "0xD55E9250959D8689819015e24761eCB3891126dc",
+    to: NFT_MARKET_PLACE_ADDRESS,
     chainId: 'eip155:84532',
     functionName: "purchaseSubscription",
-    args: [BigInt(10),
+    args: [BigInt(modelId),
     BigInt(subscriptionId),
     ]
   })
 })
 
-app.transaction('/approve', async (c) => {
-  const amountToApprove = BigInt(1e8);
+app.transaction('/approve', neynarMiddleware, async (c) => {
+  const amount = parseFloat(c.req.queries('amount') ? c.req.queries('amount') as unknown as string : '') * Math.pow(10, 6)
+  const amountToApprove = BigInt(amount);
   return c.contract({
     abi: ERC20,
-    to: "0x309222b7833D3D0A59A8eBf9C64A5790bf43E2aA",
+    to: MOCK_USD_BASE.address,
     chainId: 'eip155:84532',
     functionName: "approve",
-    args: ["0xD55E9250959D8689819015e24761eCB3891126dc",
+    args: [NFT_MARKET_PLACE_ADDRESS,
       amountToApprove
     ]
   })
