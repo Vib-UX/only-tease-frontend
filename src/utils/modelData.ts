@@ -48,6 +48,8 @@ export const modelCardData = [
     id: 9,
     name: 'Sophia Silva',
     slug: 'Sophia_Silva',
+    image_url:
+      'https://res.cloudinary.com/dasemqn5x/image/upload/v1719172005/avatar_bbruik.jpg',
     fees: 7,
     icon: model8,
     location: 'Tango in Buenos Aires',
@@ -63,6 +65,8 @@ export const modelCardData = [
     id: 10,
     name: 'Isabella Blue',
     slug: 'Isabella_Blue',
+    image_url:
+      'https://res.cloudinary.com/dmsa5b0di/image/upload/v1719774872/llyhwzmwtkvhnwpu5jak.png',
     fees: 16,
     icon: model2,
     location: 'Viva las summer ',
@@ -78,6 +82,8 @@ export const modelCardData = [
     id: 11,
     name: 'Ruby Spark',
     slug: 'Ruby_Spark',
+    image_url:
+      'https://res.cloudinary.com/dasemqn5x/image/upload/v1719172115/shotsofsimone-onlyfans_jxye1x.jpg',
     icon: model6,
     fees: 2,
     location: 'Rumba in Havana: Ruby',
@@ -89,13 +95,13 @@ export const modelCardData = [
     Tease: 65,
     posts: 12,
   },
-
   {
     id: 12,
     name: 'Alice Gold',
     slug: 'Alice_Gold',
+    image_url:
+      'https://res.cloudinary.com/dasemqn5x/image/upload/v1719172249/Group_35_gwows7.jpg',
     fees: 11,
-
     icon: model4,
     location: 'Cha-Cha in New York: Stella',
     image: model4BannerImage,
@@ -108,9 +114,11 @@ export const modelCardData = [
   },
   {
     id: 13,
-    fees: 5,
     name: 'Poonam Pandey',
     slug: 'Poonam_Pandey',
+    image_url:
+      'https://res.cloudinary.com/dco4gq39f/image/upload/v1716456840/Poonam_Pandey_kwnbpw.jpg',
+    fees: 5,
     icon: PoonamPandeyProfileIcon,
     location: 'Delhi',
     image: PoonamPandeyBannerImage,
@@ -126,9 +134,10 @@ export const modelCardData = [
   {
     id: 14,
     name: 'Samantha Rose',
-    fees: 13,
-
     slug: 'Samantha_Rose',
+    image_url:
+      'https://res.cloudinary.com/dasemqn5x/image/upload/v1719172377/model5_hkclwd.png',
+    fees: 13,
     icon: model5,
     location: 'Flamenco in Seville: Scarlett',
     image: model5BannerImage,
@@ -143,6 +152,8 @@ export const modelCardData = [
     id: 15,
     name: 'Ava adams',
     slug: 'Ava_adams',
+    image_url:
+      'https://res.cloudinary.com/dasemqn5x/image/upload/v1719172489/Group_37_p0rudo.jpg',
     icon: model3,
     fees: 4,
     location: 'Tango in Paris: Penelope',
@@ -154,13 +165,13 @@ export const modelCardData = [
     Tease: 41,
     posts: 42,
   },
-
   {
     id: 16,
     name: 'Lily Cruz',
     slug: 'Lily_Cruz',
+    image_url:
+      'https://res.cloudinary.com/dasemqn5x/image/upload/v1719172596/Group_34_jowlmg.jpg',
     fees: 15,
-
     icon: model7,
     location: 'Samba in Rio de Janeiro: Lily',
     image: model7BannerImage,
@@ -175,6 +186,8 @@ export const modelCardData = [
     id: 17,
     name: 'Evelyn Green',
     slug: 'Evelyn_Green',
+    image_url:
+      'https://res.cloudinary.com/dasemqn5x/image/upload/v1719172763/Group_32_y6aiid.jpg',
     fees: 10,
     icon: model1,
     location: 'Viva Las Vegas: Hazel',
@@ -193,6 +206,8 @@ export const IndianModelCardData = [
     id: 1,
     name: 'Priya Anjali Rai',
     slug: 'Priya_Anjali_Rai',
+    image_url:
+      'https://res.cloudinary.com/dasemqn5x/image/upload/v1719170221/avatar_1_bmsjjg.jpg',
     icon: indianModel1ProfileIcon,
     location: 'Mumbai',
     fees: 1,
@@ -209,8 +224,10 @@ export const IndianModelCardData = [
   {
     id: 2,
     name: 'Poonam Pandey',
-    fees: 5,
     slug: 'Poonam_Pandey',
+    image_url:
+      'https://res.cloudinary.com/dco4gq39f/image/upload/v1716456840/Poonam_Pandey_kwnbpw.jpg',
+    fees: 5,
     icon: PoonamPandeyProfileIcon,
     location: 'Delhi',
     image: PoonamPandeyBannerImage,
@@ -227,6 +244,8 @@ export const IndianModelCardData = [
     id: 3,
     name: 'Sahara Knite',
     slug: 'Sahara_Knite',
+    image_url:
+      'https://res.cloudinary.com/dasemqn5x/image/upload/v1719171527/avatar_5_szvr9w.jpg',
     fees: 3,
     icon: indianModel2ProfileIcon,
     location: 'Kolkata',
@@ -244,8 +263,9 @@ export const IndianModelCardData = [
     id: 4,
     name: 'Persia Pele',
     slug: 'Persia_Pele',
+    image_url:
+      'https://res.cloudinary.com/dasemqn5x/image/upload/v1719171641/avatar_4_mm6p66.jpg',
     fees: 14,
-
     icon: indianModel3ProfileIcon,
     location: 'Bangalore',
     image: indianModel3BannerImage,
@@ -262,8 +282,9 @@ export const IndianModelCardData = [
     id: 5,
     name: 'Serena Mann',
     slug: 'Serena_Mann',
+    image_url:
+      'https://res.cloudinary.com/dasemqn5x/image/upload/v1719173144/OIP_etuirx.jpg',
     fees: 8,
-
     icon: indianModel4ProfileIcon,
     location: 'Chennai',
     image: indianModel4BannerImage,
@@ -279,9 +300,10 @@ export const IndianModelCardData = [
   {
     id: 6,
     name: 'Viva Athena',
-    fees: 9,
-
     slug: 'Viva_Athena',
+    image_url:
+      'https://res.cloudinary.com/dasemqn5x/image/upload/v1719171703/tumblr_1abbf38120ab329c6890f041924927bf_a461ecc9_1280_pzljqu.jpg',
+    fees: 9,
     icon: indianModel5ProfileIcon,
     location: 'Hyderabad',
     image: indianModel5BannerImage,
@@ -297,8 +319,10 @@ export const IndianModelCardData = [
   {
     id: 7,
     name: 'Anjali Kara',
-    fees: 12,
     slug: 'Anjali_Kara',
+    image_url:
+      'https://res.cloudinary.com/dasemqn5x/image/upload/v1719171890/Group_6_ax90qa.jpg',
+    fees: 12,
     icon: indianModel6ProfileIcon,
     location: 'Pune',
     image: indianModel6BannerImage,
@@ -314,8 +338,10 @@ export const IndianModelCardData = [
   {
     id: 8,
     name: 'Sherlyn Chopra',
-    fees: 6,
     slug: 'Sherlyn_Chopra',
+    image_url:
+      'https://res.cloudinary.com/dasemqn5x/image/upload/v1719171951/92368922_ld6ytw.jpg',
+    fees: 6,
     icon: shrelyProfileIcon,
     location: 'Jaipur',
     image: shrelyBannerImage,
