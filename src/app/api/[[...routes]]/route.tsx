@@ -238,6 +238,7 @@ app.frame('/', (c) => {
       </div>
     ),
     intents: [
+      // eslint-disable-next-line react/jsx-key
       <Button.Transaction target="/approve" >Purchase Subscription</Button.Transaction>,
     ]
   })
@@ -381,7 +382,9 @@ app.frame('/final', neynarMiddleware, (c) => {
       </div>
     ),
     intents: [
+      // eslint-disable-next-line react/jsx-key
       <Button.Link href="https://google.com">Subscription successful</Button.Link>,
+      // eslint-disable-next-line react/jsx-key
       <Button.Link href="https://google.com">View your NFT</Button.Link>,
     ]
   })
@@ -526,6 +529,7 @@ app.frame('/finish', (c) => {
       </div>
     ),
     intents: [
+      // eslint-disable-next-line react/jsx-key
       <Button.Transaction target="/mint" >Mint</Button.Transaction>,
     ]
   })
