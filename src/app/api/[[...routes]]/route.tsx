@@ -18,6 +18,7 @@ import { MOCK_USD_BASE } from '@/utils/tokens'
 
 type State = {
   modelId: string
+  subscriptionId: string
 }
 
 export const getSubscriptionId = () => {
@@ -47,7 +48,8 @@ const app = new Frog<{ State: State }>({
   basePath: '/api',
   title: "Only tease",
   initialState: {
-    modelId: ''
+    modelId: '',
+    subscriptionId: ''
   }
 })
 
@@ -64,16 +66,13 @@ app.frame('/', neynarMiddleware, async (c) => {
   const amount = model?.value?.toString() || '';
   const subscriptionId = getSubscriptionId()
 
-  const { deriveState, buttonValue, buttonIndex } = c
+  const { previousState } = c
 
-  const state = await deriveState(async previousState => {
-    previousState.modelId = await Promise.resolve("30")
-  })
-
-  console.log(state, "state-modelId", buttonValue, "Button", buttonIndex);
+  previousState.modelId = modelId;
+  previousState.subscriptionId = subscriptionId.toString();
 
   return c.res({
-
+    action: "/finish",
     image: (
       <div
         style={{
@@ -95,7 +94,7 @@ app.frame('/', neynarMiddleware, async (c) => {
           flexDirection: 'row',
           fontSize: '1.25rem',
         }}>
-          <h1>Subscribe to {model?.name}</h1>
+          <h1>Subscribe to {model?.name}{previousState.modelId}</h1>
           &nbsp;
           <img src={model?.image_url} alt='ava adams' sizes='20' style={{
             width: 200,
@@ -210,14 +209,16 @@ app.frame('/', neynarMiddleware, async (c) => {
       </div>
     ),
     intents: [
-      <Button.Transaction action={`/finish#modelId=${modelId}&subscriptionId=${subscriptionId}`} target={`/approve?amount=${amount}&modelId=${modelId}&subscriptionId=${subscriptionId}`} >Purchase Subscription</Button.Transaction>,
+      <Button.Transaction target={`/approve?amount=${amount}&modelId=${modelId}&subscriptionId=${subscriptionId}`} >Purchase Subscription</Button.Transaction>,
     ]
   })
 })
 
+
 app.frame('/finish', (c) => {
-  const modelId = c.frameData?.url.split("?")[0].split("#")[1].split("&")[0].split("=")[1]
-  const subscriptionId = c.frameData?.url.split("?")[0].split("#")[1].split("&")[1].split("=")[1]
+  const { previousState } = c
+  const modelId = previousState.modelId
+  const subscriptionId = previousState.subscriptionId
   const model = [...modelCardData].find((s) => s.id?.toString() === modelId?.toLowerCase())
 
   return c.res({
@@ -242,7 +243,7 @@ app.frame('/finish', (c) => {
           flexDirection: 'row',
           fontSize: '1.25rem',
         }}>
-          <h1>Subscribe to {model?.name}</h1>
+          <h1>Subscribe to {model?.name}{modelId}</h1>
           &nbsp;
           <img src={model?.image_url} alt='ava adams' sizes='20' style={{
             width: 200,
@@ -364,9 +365,10 @@ app.frame('/finish', (c) => {
 
 
 app.frame('/final', async (c) => {
-  const modelId = c.frameData?.url.split("?")[0].split("#")[1].split("&")[0].split("=")[1]
+  const { previousState } = c
+  const modelId = previousState.modelId
+  const subscriptionId = previousState.subscriptionId
   const model = [...modelCardData].find((s) => s.id?.toString() === modelId?.toLowerCase())
-  const subscriptionId = c.frameData?.url.split("?")[0].split("#")[1].split("&")[1].split("=")[1]
   const tokenId = Big(modelId).mul(1e18).plus(subscriptionId).toString()
   console.log("tokenId", tokenId);
   // const tokenId = (parseInt(modelId || "14") * 1e18) + parseInt(subscriptionId as string);
@@ -521,8 +523,9 @@ app.frame('/final', async (c) => {
 })
 
 app.transaction('/mint', async (c) => {
-  const modelId = c.req.queries('modelId')?.[0] || '';
-  const subscriptionId = c.req.queries('subscriptionId')?.[0] || '';
+  const { previousState } = c
+  const modelId = previousState.modelId
+  const subscriptionId = previousState.subscriptionId
 
   return c.contract({
     abi: NFT_MARKETPLACE_ABI,
