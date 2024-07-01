@@ -11,6 +11,7 @@ Welcome to OnlyTease, where the allure of content creation meets the revolutiona
 🎥 **Demo Video**:
 - [Demo with Coinbase Smart Wallet](https://www.loom.com/share/fc23cf8866204991a835a1ee032d8f1a?sid=19ecf812-717d-478a-b950-204115eafc10)
 - [Demo with Dapp Integrated Smart Account](https://www.loom.com/share/4beeaa72791c4ab9b6100e96a62cfca2?sid=f0af6ec2-69b3-429e-85b2-cc70f6bbebe7)
+- [Demo Using Warpcast (Farcaster Frames)](https://www.loom.com/share/e44975bcbcbb423e98cd57d229ab6016?sid=c02ef75f-0b16-4a06-a1d6-960ddc470bc7)
 
 📄 **OnlyTease Devfolio**: [View Devfolio](https://devfolio.co/projects/onlytease-199d)
 
