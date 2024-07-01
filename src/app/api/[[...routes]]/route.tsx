@@ -60,10 +60,13 @@ const neynarMiddleware = neynar({
 
 app.frame('/', neynarMiddleware, async (c) => {
   const name = c.req.queries('name')?.[0] || '';
+  console.log(name);
+
   const model = [...IndianModelCardData, ...modelCardData].find((s) => s.slug.toLowerCase() === name.toLowerCase())
+  console.log(model, "mode");
 
   const modelId = model?.id?.toString() || '';
-  const amount = model?.value?.toString() || '';
+  const amount = parseInt(model?.fees?.toString() as string) * 3 || '';
   const subscriptionId = getSubscriptionId()
 
   const { previousState } = c
@@ -202,7 +205,7 @@ app.frame('/', neynarMiddleware, async (c) => {
                 border: '1px solid #0051FE'
               }}
             >
-              {model?.value}&nbsp;USDC
+              {model?.fees}&nbsp;USDC
             </div>
           </div>
         </div>
@@ -351,7 +354,7 @@ app.frame('/finish', (c) => {
                 border: '1px solid #0051FE'
               }}
             >
-              {model?.value}&nbsp;USDC
+              {model?.fees}&nbsp;USDC
             </div>
           </div>
         </div>
@@ -509,7 +512,7 @@ app.frame('/final', async (c) => {
                 border: '1px solid #0051FE'
               }}
             >
-              {model?.value}&nbsp;USDC
+              {model?.fees}&nbsp;USDC
             </div>
           </div>
         </div>
