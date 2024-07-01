@@ -209,6 +209,7 @@ app.frame('/', neynarMiddleware, (c) => {
 
 
 app.frame('/finish', (c) => {
+  console.log(c.frameData, c);
   const modelId = c.frameData?.url.split("?")[0].split("#")[1].split("&")[0].split("=")[1]
   const subscriptionId = c.frameData?.url.split("?")[0].split("#")[1].split("&")[1].split("=")[1]
   const model = [...modelCardData].find((s) => s.id?.toString() === modelId?.toLowerCase())
