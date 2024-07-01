@@ -12,7 +12,7 @@ import { NFT_MARKETPLACE_ABI } from '@/hooks/abi/NFT_MARKETPLACE_ABI'
 import { ERC20 } from '@/components/ui/ERC20ABI'
 
 import { NFT_MARKET_PLACE_ADDRESS } from '@/utils/addresses'
-import { modelCardData } from '@/utils/modelData'
+import { IndianModelCardData, modelCardData } from '@/utils/modelData'
 import { MOCK_USD_BASE } from '@/utils/tokens'
 
 
@@ -60,7 +60,7 @@ const neynarMiddleware = neynar({
 
 app.frame('/', neynarMiddleware, async (c) => {
   const name = c.req.queries('name')?.[0] || '';
-  const model = [...modelCardData].find((s) => s.slug.toLowerCase() === name.toLowerCase())
+  const model = [...IndianModelCardData, ...modelCardData].find((s) => s.slug.toLowerCase() === name.toLowerCase())
 
   const modelId = model?.id?.toString() || '';
   const amount = model?.value?.toString() || '';
@@ -94,7 +94,7 @@ app.frame('/', neynarMiddleware, async (c) => {
           flexDirection: 'row',
           fontSize: '1.25rem',
         }}>
-          <h1>Subscribe to {model?.name}{previousState.modelId}</h1>
+          <h1>Subscribe to {model?.name}</h1>
           &nbsp;
           <img src={model?.image_url} alt='ava adams' sizes='20' style={{
             width: 200,
@@ -219,7 +219,7 @@ app.frame('/finish', (c) => {
   const { previousState } = c
   const modelId = previousState.modelId
   const subscriptionId = previousState.subscriptionId
-  const model = [...modelCardData].find((s) => s.id?.toString() === modelId?.toLowerCase())
+  const model = [...IndianModelCardData, ...modelCardData].find((s) => s.id?.toString() === modelId?.toLowerCase())
 
   return c.res({
     image: (
@@ -243,7 +243,7 @@ app.frame('/finish', (c) => {
           flexDirection: 'row',
           fontSize: '1.25rem',
         }}>
-          <h1>Subscribe to {model?.name}{modelId}</h1>
+          <h1>Subscribe to {model?.name}</h1>
           &nbsp;
           <img src={model?.image_url} alt='ava adams' sizes='20' style={{
             width: 200,
@@ -368,7 +368,7 @@ app.frame('/final', async (c) => {
   const { previousState } = c
   const modelId = previousState.modelId
   const subscriptionId = previousState.subscriptionId
-  const model = [...modelCardData].find((s) => s.id?.toString() === modelId?.toLowerCase())
+  const model = [...IndianModelCardData, ...modelCardData].find((s) => s.id?.toString() === modelId?.toLowerCase())
   const tokenId = Big(modelId).mul(1e18).plus(subscriptionId).toString()
   console.log("tokenId", tokenId);
   // const tokenId = (parseInt(modelId || "14") * 1e18) + parseInt(subscriptionId as string);
