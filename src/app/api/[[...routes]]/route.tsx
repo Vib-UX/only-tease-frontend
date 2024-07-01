@@ -64,6 +64,13 @@ app.frame('/', neynarMiddleware, (c) => {
   const amount = model?.value?.toString() || '';
   const subscriptionId = getSubscriptionId()
 
+  const { deriveState } = c
+  const state
+    = deriveState(previousState => {
+      previousState.id = modelId
+    })
+
+  console.log(state, "state")
   return c.res({
     action: `/finish#modelId=${modelId}&subscriptionId=${subscriptionId}`,
     image: (
