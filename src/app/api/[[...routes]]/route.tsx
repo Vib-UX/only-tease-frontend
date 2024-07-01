@@ -17,7 +17,7 @@ import { MOCK_USD_BASE } from '@/utils/tokens'
 
 
 type State = {
-  id: string
+  modelId: string
 }
 
 export const getSubscriptionId = () => {
@@ -47,7 +47,7 @@ const app = new Frog<{ State: State }>({
   basePath: '/api',
   title: "Only tease",
   initialState: {
-    id: '2112'
+    modelId: ''
   }
 })
 
@@ -56,7 +56,7 @@ const neynarMiddleware = neynar({
   features: ['interactor', 'cast'],
 })
 
-app.frame('/', neynarMiddleware, (c) => {
+app.frame('/', neynarMiddleware, async (c) => {
   const name = c.req.queries('name')?.[0] || '';
   const model = [...modelCardData].find((s) => s.slug.toLowerCase() === name.toLowerCase())
 
@@ -64,15 +64,16 @@ app.frame('/', neynarMiddleware, (c) => {
   const amount = model?.value?.toString() || '';
   const subscriptionId = getSubscriptionId()
 
-  const { deriveState } = c
-  const state
-    = deriveState(previousState => {
-      previousState.id = modelId
-    })
+  const { deriveState, buttonValue, buttonIndex } = c
 
-  console.log(state, "state")
+  const state = await deriveState(async previousState => {
+    previousState.modelId = await Promise.resolve("30")
+  })
+
+  console.log(state, "state-modelId", buttonValue, "Button", buttonIndex);
+
   return c.res({
-    action: `/finish#modelId=${modelId}&subscriptionId=${subscriptionId}`,
+
     image: (
       <div
         style={{
@@ -209,20 +210,17 @@ app.frame('/', neynarMiddleware, (c) => {
       </div>
     ),
     intents: [
-      <Button.Transaction target={`/approve?amount=${amount}&modelId=${modelId}&subscriptionId=${subscriptionId}`} >Purchase Subscription</Button.Transaction>,
+      <Button.Transaction action={`/finish#modelId=${modelId}&subscriptionId=${subscriptionId}`} target={`/approve?amount=${amount}&modelId=${modelId}&subscriptionId=${subscriptionId}`} >Purchase Subscription</Button.Transaction>,
     ]
   })
 })
 
-
 app.frame('/finish', (c) => {
-  console.log(c.frameData, c);
   const modelId = c.frameData?.url.split("?")[0].split("#")[1].split("&")[0].split("=")[1]
   const subscriptionId = c.frameData?.url.split("?")[0].split("#")[1].split("&")[1].split("=")[1]
   const model = [...modelCardData].find((s) => s.id?.toString() === modelId?.toLowerCase())
 
   return c.res({
-    action: `/final#modelId=${modelId}&subscriptionId=${subscriptionId}`,
     image: (
       <div
         style={{
@@ -359,7 +357,7 @@ app.frame('/finish', (c) => {
       </div>
     ),
     intents: [
-      <Button.Transaction target={`/mint?&modelId=${modelId}&subscriptionId=${subscriptionId}`} >Mint</Button.Transaction>,
+      <Button.Transaction action={`/final#modelId=${modelId}&subscriptionId=${subscriptionId}`} target={`/mint?&modelId=${modelId}&subscriptionId=${subscriptionId}`} >Mint</Button.Transaction>,
     ]
   })
 })
