@@ -302,7 +302,7 @@ export default function MyModal({
                       )}
                     </div>
 
-                    <div className='space-y-4'>
+                    <div className='space-y-4' >
                       <div className='flex gap-4 flex-wrap'>
                         {coinData.map((coin) => {
                           return (

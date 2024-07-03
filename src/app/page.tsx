@@ -1,8 +1,8 @@
 'use client';
 
+import '@/lib/env';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
-import '@/lib/env';
 
 import Button from '@/components/buttons/Button';
 
