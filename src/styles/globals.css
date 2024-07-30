@@ -188,7 +188,9 @@
   justify-content: center;
   align-items: center;
 }
-
+.react-date-picker__wrapper {
+  border-color: transparent !important;
+}
 .swiper-pagination-bullet-active {
   background: rgb(251, 3, 147) !important;
   background: linear-gradient(
