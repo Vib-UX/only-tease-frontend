@@ -13,7 +13,7 @@ const UserInfo = () => {
           htmlFor='firstName'
           className='block text-sm font-medium leading-6 text-gray-900'
         >
-          Legal first name
+          Legal first name*
         </label>
         <div className='mt-2'>
           <div className='flex rounded-md shadow-sm ring-1 ring-inset ring-gray-300 focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-600 sm:max-w-md'>
@@ -34,7 +34,7 @@ const UserInfo = () => {
         htmlFor='lastName'
         className='block text-sm font-medium leading-6 text-gray-900'
       >
-        Legal last name
+        Legal last name*
       </label>
       <div className='mt-2'>
         <div className='flex rounded-md shadow-sm ring-1 ring-inset ring-gray-300 focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-600 sm:max-w-md'>
@@ -54,7 +54,7 @@ const UserInfo = () => {
         htmlFor='lastName'
         className='block text-sm font-medium leading-6 text-gray-900 pt-5 pb-2'
       >
-        Date of Birth
+        Date of Birth*
       </label>
       <DatePicker
         value={new Date(userInfo.dob)}

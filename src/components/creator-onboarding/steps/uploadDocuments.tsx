@@ -11,7 +11,7 @@ const UploadDocuments = () => {
       const reader = new FileReader();
       reader.onload = () => {
         const base64String = reader.result as string;
-        setUserInfo({ profileImage: base64String });
+        setUserInfo({ idDoc: base64String });
       };
       reader.readAsDataURL(file);
     }
@@ -43,7 +43,7 @@ const UploadDocuments = () => {
                   className='cursor-pointer'
                   onClick={() => {
                     setSelectedFile(null);
-                    setUserInfo({ profileImage: '' });
+                    setUserInfo({ idDoc: '' });
                   }}
                 />
               </div>

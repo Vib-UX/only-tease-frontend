@@ -1,10 +1,11 @@
 import { BiconomySmartAccountV2 } from '@biconomy/account';
 import { create } from 'zustand';
-interface UserInfo {
+export interface UserInfo {
   firstName: string;
   lastName: string;
   dob: Date;
   profileImage: string;
+  idDoc: string;
   kycDoc: string;
 }
 
@@ -27,6 +28,7 @@ const useGlobalStore = create<GlobalStore>()((set) => ({
     lastName: '',
     dob: new Date(),
     profileImage: '',
+    idDoc: '',
     kycDoc: '',
   },
   setUserInfo: (userInfo) =>

@@ -15,6 +15,10 @@ import {
   TransitionChild,
 } from '@headlessui/react';
 import { useState } from 'react';
+import useGlobalStore from '@/hooks/store/useGlobalStore';
+import toast from 'react-hot-toast';
+import { toastStyles } from '@/lib/utils';
+import { onBoadingValidtion } from '@/lib/helper';
 
 const CreatorOnboarding = () => {
   let [isOpen, setIsOpen] = useState(false);
@@ -26,6 +30,28 @@ const CreatorOnboarding = () => {
   function close() {
     setIsOpen(false);
   }
+  const { userInfo } = useGlobalStore();
+
+  const handleRegisterUser = async () => {
+    try {
+      const response = await fetch('/api/user', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(userInfo),
+      });
+
+      if (response.ok) {
+        setCurrentState(4);
+      } else {
+        return toast.error('Something went wrong', toastStyles);
+      }
+    } catch (error) {
+      return toast.error('Something went wrong', toastStyles);
+    }
+  };
+
   return (
     <div className='flex items-start   justify-start gap-2 text-[#625B71] pl-7  flex-wrap max-w-[100%]'>
       <Button
@@ -109,12 +135,18 @@ const CreatorOnboarding = () => {
                   <div className='mt-8 flex items-center justify-center'>
                     <Button
                       onClick={() => {
+                        if (currentState === 3) {
+                          handleRegisterUser();
+                        }
                         if (currentState === 4) {
                           setIsOpen(false);
-                        } else {
+                        }
+                        if (currentState < 3) {
                           setCurrentState(currentState + 1);
                         }
                       }}
+                      className='disabled:opacity-50 disabled:cursor-not-allowed'
+                      disabled={!onBoadingValidtion({ userInfo, currentState })}
                     >
                       {currentState === 4 ? 'Ok' : 'Continue'}
                     </Button>
