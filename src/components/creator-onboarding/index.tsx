@@ -6,7 +6,7 @@ import UploadDocuments from '@/components/creator-onboarding/steps/uploadDocumen
 import { AnimatePresence, motion } from 'framer-motion';
 import UploadProfile from '@/components/creator-onboarding/steps/uploadProfile';
 import UserInfo from '@/components/creator-onboarding/steps/userInfo';
-
+import { ImSpinner2 } from 'react-icons/im';
 import {
   Dialog,
   DialogPanel,
@@ -23,6 +23,7 @@ import { onBoadingValidtion } from '@/lib/helper';
 const CreatorOnboarding = () => {
   let [isOpen, setIsOpen] = useState(false);
   const [currentState, setCurrentState] = useState(0);
+  const [isLoading, setIsLoading] = useState(false);
   function open() {
     setIsOpen(true);
   }
@@ -34,6 +35,7 @@ const CreatorOnboarding = () => {
 
   const handleRegisterUser = async () => {
     try {
+      setIsLoading(true);
       const response = await fetch('/api/user', {
         method: 'POST',
         headers: {
@@ -45,13 +47,15 @@ const CreatorOnboarding = () => {
       if (response.ok) {
         setCurrentState(4);
       } else {
-        return toast.error('Something went wrong', toastStyles);
+        toast.error('Something went wrong', toastStyles);
       }
+      setIsLoading(false);
     } catch (error) {
+      setIsLoading(false);
       return toast.error('Something went wrong', toastStyles);
     }
   };
-
+  console.log(userInfo);
   return (
     <div className='flex items-start   justify-start gap-2 text-[#625B71] pl-7  flex-wrap max-w-[100%]'>
       <Button
@@ -148,7 +152,13 @@ const CreatorOnboarding = () => {
                       className='disabled:opacity-50 disabled:cursor-not-allowed'
                       disabled={!onBoadingValidtion({ userInfo, currentState })}
                     >
-                      {currentState === 4 ? 'Ok' : 'Continue'}
+                      {currentState === 4 ? (
+                        'Ok'
+                      ) : isLoading ? (
+                        <ImSpinner2 className='animate-spin' />
+                      ) : (
+                        'Continue'
+                      )}
                     </Button>
                   </div>
                 </DialogPanel>

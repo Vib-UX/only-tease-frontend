@@ -5,12 +5,14 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
   await dbConnect();
 
   try {
-    const { firstName, lastName, dob, profileImage, kycDoc } = await req.json();
+    const { firstName, lastName, dob, profileImage, idDoc, kycDoc } =
+      await req.json();
     const user = new User({
       firstName,
       lastName,
       dob: new Date(dob),
       profileImage,
+      idDoc,
       kycDoc,
     });
     await user.save();
