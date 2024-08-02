@@ -17,6 +17,7 @@ import Avatar from '@/components/ui/avatar';
 
 import logo from '../../../public/images/logoWithoutGradient.webp';
 import smartWallet from '../../../public/images/Subtract.png';
+import CreatorOnboarding from '@/components/creator-onboarding';
 
 type props = {
   isOpen: boolean;
@@ -79,14 +80,17 @@ const Header = ({ isOpen, setIsOpen }: props) => {
       {/*   )} */}
       {/* </div> */}
       <Link href='/' className='hidden md:block'>
-        <div className='flex items-end justify-center bg-red-50 text-center'>
+        <div className='flex-col items-end justify-center bg-red-50 text-center'>
           <Image src={logo} priority alt='logo' width={200} height={100} />
-          <div className='text-[#000] font-semibold -mb-2 hidden sm:inline-block'>
+          <div className='text-[#000] font-semibold hidden sm:inline-block pt-1'>
             only<span className='text-[#272C8A]'>Fans</span> for{' '}
             <span className='text-[#272C8A]'>Web3</span>
           </div>
         </div>
       </Link>
+      <div className='flex items-center justify-center fixed  space-x-4 mx-4 right-[38%]'>
+        <CreatorOnboarding />
+      </div>
       <div className='flex items-center justify-end fixed right-0 space-x-2 mx-4'>
         {session && (
           <Avatar

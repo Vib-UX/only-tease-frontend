@@ -6,7 +6,10 @@ const Success = () => {
   return (
     <div className='pt-5 text-center'>
       {`Thank you ${userInfo.firstName + ' ' + userInfo.lastName}  `}
-      <div>Your application was successfully submitted</div>
+      <div>
+        Your application has been successfully submitted. Our team will get in
+        touch with you soon.
+      </div>
     </div>
   );
 };

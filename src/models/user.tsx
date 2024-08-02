@@ -19,5 +19,5 @@ const userSchema = new Schema<IUser>({
   kycDoc: { type: String, required: true },
 });
 
-export default mongoose.models.User ||
-  mongoose.model<IUser>('User', userSchema);
+export default mongoose.models.creatorOnboarding ||
+  mongoose.model<IUser>('creatorOnboarding', userSchema);

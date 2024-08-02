@@ -6,7 +6,9 @@ import UploadDocuments from '@/components/creator-onboarding/steps/uploadDocumen
 import { AnimatePresence, motion } from 'framer-motion';
 import UploadProfile from '@/components/creator-onboarding/steps/uploadProfile';
 import UserInfo from '@/components/creator-onboarding/steps/userInfo';
+import CreatorOnboardingImage from '../../../public/images/become-creator.webp';
 import { ImSpinner2 } from 'react-icons/im';
+import { BiSolidBadgeCheck } from 'react-icons/bi';
 import {
   Dialog,
   DialogPanel,
@@ -19,6 +21,7 @@ import useGlobalStore from '@/hooks/store/useGlobalStore';
 import toast from 'react-hot-toast';
 import { toastStyles } from '@/lib/utils';
 import { onBoadingValidtion } from '@/lib/helper';
+import Image from 'next/image';
 
 const CreatorOnboarding = () => {
   let [isOpen, setIsOpen] = useState(false);
@@ -55,17 +58,39 @@ const CreatorOnboarding = () => {
       return toast.error('Something went wrong', toastStyles);
     }
   };
-  console.log(userInfo);
+
   return (
-    <div className='flex items-start   justify-start gap-2 text-[#625B71] pl-7  flex-wrap max-w-[100%]'>
-      <Button
+    <div className='flex items-center   justify-start text-[#625B71] pl-7  flex-wrap max-w-[100%]'>
+      <Image
+        src={CreatorOnboardingImage}
+        alt='creator-onboarding'
+        height={80}
+        width={80}
+        className='rounded-full'
+      />
+
+      <div
         onClick={open}
         className={
-          'rounded-lg bg-[#FA78FF] bg-opacity-30 hover:bg-opacity-60 transition-all px-3 py-2'
+          'text-[#272C8A] transition-all pl-2 pr-3 py-2 cursor-pointer hover:underline flex items-center gap-x-2'
         }
       >
-        Become a creator
-      </Button>
+        Become a Creator
+        <svg
+          xmlns='http://www.w3.org/2000/svg'
+          fill='none'
+          viewBox='0 0 24 24'
+          strokeWidth={1.5}
+          stroke='currentColor'
+          className='w-5 h-5'
+        >
+          <path
+            strokeLinecap='round'
+            strokeLinejoin='round'
+            d='M9 12.75 11.25 15 15 9.75M21 12c0 1.268-.63 2.39-1.593 3.068a3.745 3.745 0 0 1-1.043 3.296 3.745 3.745 0 0 1-3.296 1.043A3.745 3.745 0 0 1 12 21c-1.268 0-2.39-.63-3.068-1.593a3.746 3.746 0 0 1-3.296-1.043 3.745 3.745 0 0 1-1.043-3.296A3.745 3.745 0 0 1 3 12c0-1.268.63-2.39 1.593-3.068a3.745 3.745 0 0 1 1.043-3.296 3.746 3.746 0 0 1 3.296-1.043A3.746 3.746 0 0 1 12 3c1.268 0 2.39.63 3.068 1.593a3.746 3.746 0 0 1 3.296 1.043 3.746 3.746 0 0 1 1.043 3.296A3.745 3.745 0 0 1 21 12Z'
+          />
+        </svg>
+      </div>
       <Transition appear show={isOpen}>
         <Dialog
           open={isOpen}
@@ -88,7 +113,7 @@ const CreatorOnboarding = () => {
                     as='h3'
                     className='text-base/7 font-medium text-[#272C8A]'
                   >
-                    Become a creator 🎉
+                    Become a Creator 🎉
                   </DialogTitle>
                   {currentState === 0 ? (
                     <motion.div

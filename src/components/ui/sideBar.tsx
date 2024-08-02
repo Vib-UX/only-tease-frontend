@@ -214,8 +214,6 @@ const SideBar = ({ isOpen, setIsOpen }: props) => {
             👀 VR cams
           </button>
         </div>
-
-        <CreatorOnboarding />
       </div>
     </div>
   );

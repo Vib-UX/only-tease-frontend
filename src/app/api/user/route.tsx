@@ -1,13 +1,13 @@
 import dbConnect from '@/lib/dbConnect';
 import { NextRequest, NextResponse } from 'next/server';
-import User from '@/models/user';
+import CreatorOnboarding from '@/models/user';
 export async function POST(req: NextRequest): Promise<NextResponse> {
   await dbConnect();
 
   try {
     const { firstName, lastName, dob, profileImage, idDoc, kycDoc } =
       await req.json();
-    const user = new User({
+    const user = new CreatorOnboarding({
       firstName,
       lastName,
       dob: new Date(dob),
