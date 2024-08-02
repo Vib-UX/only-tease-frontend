@@ -199,6 +199,7 @@
     rgba(154, 60, 255, 1) 100%
   );
 }
+
 .swiper-pagination-bullet {
   background: rgb(251, 3, 147) !important;
   background: linear-gradient(
