@@ -7,8 +7,16 @@ import React, { useEffect, useRef } from 'react';
 
 import { cn } from '@/lib/utils';
 
-import { BagIcon, FavIcon, HomeIcon, PaymentIcon, StakingIcon, StarIcon, TvIcon } from '@/components/ui/icons';
-
+import CreatorOnboarding from '@/components/creator-onboarding';
+import {
+  BagIcon,
+  FavIcon,
+  HomeIcon,
+  PaymentIcon,
+  StakingIcon,
+  StarIcon,
+  TvIcon,
+} from '@/components/ui/icons';
 
 const sideBarContentGenral = [
   {
@@ -73,7 +81,7 @@ type props = {
 
 const SideBar = ({ isOpen, setIsOpen }: props) => {
   const sidebarRef = useRef(null);
-  const navigation = useRouter()
+  const navigation = useRouter();
 
   const handleEscKey = (event: KeyboardEvent) => {
     if (event.key === 'Escape') {
@@ -96,17 +104,27 @@ const SideBar = ({ isOpen, setIsOpen }: props) => {
   return (
     <div
       ref={sidebarRef}
-      className={` text-white ${isOpen ? "w-[20rem]" : "w-[20rem] border-2 border-[#FCC0FF] border-y-0"}`}
+      className={` text-white ${
+        isOpen ? 'w-[20rem]' : 'w-[20rem] border-2 border-[#FCC0FF] border-y-0'
+      }`}
     >
       <div className='flex pt-10 flex-col justify-between gap-4 overflow-hidden w-full h-full'>
         <div className='flex items-center justify-center w-full '>
-          <Image src="/images/onchain-summer.webp" alt='onchain' width={213} height={178} />
+          <Image
+            src='/images/onchain-summer.webp'
+            alt='onchain'
+            width={213}
+            height={178}
+          />
         </div>
         <div className='px-5 w-full'>
           <div className='h-[1px] bg-[#625B71] w-full' />
         </div>
         <SideBarSections sectionFor='general' content={sideBarContentGenral} />
-        <SideBarSections sectionFor='special' content={sideBarcontentSpecials} />
+        <SideBarSections
+          sectionFor='special'
+          content={sideBarcontentSpecials}
+        />
 
         <div className='m-4 p-[0.8px] rounded-xl max-w-sm relative'>
           <input
@@ -128,14 +146,27 @@ const SideBar = ({ isOpen, setIsOpen }: props) => {
             />
           </svg>
         </div>
-        <p className='text-[#0051FE] underline text-[16px] -mt-3 pl-5 font-semibold'> Country</p>
+        <p className='text-[#0051FE] underline text-[16px] -mt-3 pl-5 font-semibold'>
+          {' '}
+          Country
+        </p>
         <div className='flex items-start   justify-start gap-2 text-[#625B71] pl-4  flex-wrap max-w-[100%]'>
-          <button onClick={() => {
-            navigation.push("/feed?type=global")
-          }} className={cn('rounded-lg bg-[#FA78FF] bg-opacity-30 hover:bg-opacity-60 transition-all px-3 py-2')}>🌍 Global</button>
-          <button onClick={() => {
-            navigation.push("/feed?type=indian")
-          }} className='rounded-lg bg-[#FA78FF] bg-opacity-30 hover:bg-opacity-60 transition-all px-3 flex items-center justify-center py-2'>
+          <button
+            onClick={() => {
+              navigation.push('/feed?type=global');
+            }}
+            className={cn(
+              'rounded-lg bg-[#FA78FF] bg-opacity-30 hover:bg-opacity-60 transition-all px-3 py-2'
+            )}
+          >
+            🌍 Global
+          </button>
+          <button
+            onClick={() => {
+              navigation.push('/feed?type=indian');
+            }}
+            className='rounded-lg bg-[#FA78FF] bg-opacity-30 hover:bg-opacity-60 transition-all px-3 flex items-center justify-center py-2'
+          >
             <svg
               xmlns='http://www.w3.org/2000/svg'
               className='w-4'
@@ -155,19 +186,33 @@ const SideBar = ({ isOpen, setIsOpen }: props) => {
             &nbsp;Indian
           </button>
         </div>
-        <p className='text-[#0051FE] mt-2 underline text-[16px]  pl-5 font-semibold'> Categories</p>
+        <p className='text-[#0051FE] mt-2 underline text-[16px]  pl-5 font-semibold'>
+          {' '}
+          Categories
+        </p>
         <div className='flex items-center pb-4 justify-start gap-2 text-[#625B71] pl-3 flex-wrap max-w-[90%] mx-auto'>
-
-          <button className='rounded-lg bg-[#FA78FF] bg-opacity-30 hover:bg-opacity-60 transition-all px-3 py-2'>🫦 Flirting</button>
-          <button className='rounded-lg bg-[#FA78FF] bg-opacity-30 hover:bg-opacity-60 transition-all px-3 py-2'>💃 Dance</button>
-          <button className='rounded-lg bg-[#FA78FF] bg-opacity-30 hover:bg-opacity-60 transition-all px-3 py-2'>🗾 Asian</button>
-          <button className='rounded-lg bg-[#FA78FF] bg-opacity-30 hover:bg-opacity-60 transition-all px-3 py-2'>🌇 Outdoor</button>
+          <button className='rounded-lg bg-[#FA78FF] bg-opacity-30 hover:bg-opacity-60 transition-all px-3 py-2'>
+            🫦 Flirting
+          </button>
+          <button className='rounded-lg bg-[#FA78FF] bg-opacity-30 hover:bg-opacity-60 transition-all px-3 py-2'>
+            💃 Dance
+          </button>
+          <button className='rounded-lg bg-[#FA78FF] bg-opacity-30 hover:bg-opacity-60 transition-all px-3 py-2'>
+            🗾 Asian
+          </button>
+          <button className='rounded-lg bg-[#FA78FF] bg-opacity-30 hover:bg-opacity-60 transition-all px-3 py-2'>
+            🌇 Outdoor
+          </button>
           <button className='rounded-lg bg-[#FA78FF] bg-opacity-30 hover:bg-opacity-60 transition-all px-3 flex items-center justify-center py-2'>
             <Image src={amFlag} alt='amflag' className='w-5' />
             American
           </button>
-          <button className='rounded-lg bg-[#FA78FF] bg-opacity-30 hover:bg-opacity-60 transition-all px-3 py-2'>😈 ASMR</button>
-          <button className='rounded-lg bg-[#FA78FF] bg-opacity-30 hover:bg-opacity-60 transition-all px-3 py-2'>👀 VR cams</button>
+          <button className='rounded-lg bg-[#FA78FF] bg-opacity-30 hover:bg-opacity-60 transition-all px-3 py-2'>
+            😈 ASMR
+          </button>
+          <button className='rounded-lg bg-[#FA78FF] bg-opacity-30 hover:bg-opacity-60 transition-all px-3 py-2'>
+            👀 VR cams
+          </button>
         </div>
       </div>
     </div>
@@ -183,13 +228,14 @@ export const SideBarSections = ({
   sectionFor: string;
   content: any[];
 }) => {
-  const pathname = usePathname()
+  const pathname = usePathname();
   return (
     <div
-      className={`${sectionFor === 'specials'
-        ? 'border-[#CEB9E9] border-y-[0.5px] py-6 px-4 w-[80%]'
-        : ''
-        } flex flex-col  items-start w-full justify-around`}
+      className={`${
+        sectionFor === 'specials'
+          ? 'border-[#CEB9E9] border-y-[0.5px] py-6 px-4 w-[80%]'
+          : ''
+      } flex flex-col  items-start w-full justify-around`}
     >
       <p className='capitalize pl-10 mb-3 text-xl lg:text-2xl font-bold !text-[#0051FE] bg-clip-text text-transparent text-center'>
         {sectionFor}
@@ -199,10 +245,17 @@ export const SideBarSections = ({
           <Link
             href={item.link}
             key={index}
-            className={cn('text-[#625B71] group pl-10 py-2 relative hover:bg-link w-full flex gap-x-4 items-center', pathname === item.link && "bg-link")}
+            className={cn(
+              'text-[#625B71] group pl-10 py-2 relative hover:bg-link w-full flex gap-x-4 items-center',
+              pathname === item.link && 'bg-link'
+            )}
           >
-
-            <div className={cn('absolute hidden group-hover:block top-0 h-full w-[12px] shadow-link left-0 bg-[#FB0393] blur-sm', pathname === item.link && 'block bg-[#FB0393]')} />
+            <div
+              className={cn(
+                'absolute hidden group-hover:block top-0 h-full w-[12px] shadow-link left-0 bg-[#FB0393] blur-sm',
+                pathname === item.link && 'block bg-[#FB0393]'
+              )}
+            />
             {/* <Image
               src={item.icon}
               priority
@@ -210,7 +263,12 @@ export const SideBarSections = ({
               width={20}
               height={20}
             /> */}
-            <p className={cn('group-hover:text-[#FB0393]', pathname === item.link && 'text-[#FB0393]')}>
+            <p
+              className={cn(
+                'group-hover:text-[#FB0393]',
+                pathname === item.link && 'text-[#FB0393]'
+              )}
+            >
               {item.icon}
               {/* <svg
                 width={20}
@@ -225,7 +283,14 @@ export const SideBarSections = ({
                 />
               </svg> */}
             </p>
-            <p className={cn('block text-lg font-medium group-hover:text-[#FB0393]', pathname === item.link && 'text-[#FB0393]')}>{item.tag}</p>
+            <p
+              className={cn(
+                'block text-lg font-medium group-hover:text-[#FB0393]',
+                pathname === item.link && 'text-[#FB0393]'
+              )}
+            >
+              {item.tag}
+            </p>
             {item.iconAfter ? item.iconAfter : null}
           </Link>
         ))}
