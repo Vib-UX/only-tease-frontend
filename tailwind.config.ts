@@ -9,6 +9,7 @@ export default {
         primary: ['Inter', ...defaultTheme.fontFamily.sans],
         roboto: ['Roboto', 'sans-serif'],
       },
+
       backgroundImage: {
         link: 'linear-gradient(89.96deg, rgba(251, 3, 147, 0.51) -19.7%, rgba(251, 3, 147, 0) 100.08%)',
         button: 'linear-gradient(90deg, #161848 0%, #2C319E 100%)',
@@ -37,6 +38,14 @@ export default {
         dark: '#222222',
       },
       keyframes: {
+        leftToRight: {
+          '0%': { transform: 'translateX(-100%)' },
+          '100%': { transform: 'translateX(100%)' },
+        },
+        rightToLeft: {
+          '0%': { transform: 'translateX(100%)' },
+          '100%': { transform: 'translateX(-100%)' },
+        },
         flicker: {
           '0%, 19.999%, 22%, 62.999%, 64%, 64.999%, 70%, 100%': {
             opacity: '0.99',
@@ -60,6 +69,8 @@ export default {
       animation: {
         flicker: 'flicker 3s linear infinite',
         shimmer: 'shimmer 1.3s linear infinite',
+        leftToRight: 'leftToRight 10s linear infinite',
+        rightToLeft: 'rightToLeft 10s linear infinite',
       },
     },
     screens: {
