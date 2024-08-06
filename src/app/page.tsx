@@ -26,14 +26,16 @@ export default function HomePage() {
             <Image src={LogoText} alt='logo-text' />
             <Link
               href={'/feed'}
-              className=' py-1 px-6 rounded-lg text-black no-underline border-gradient'
+              className=' py-1 px-6 rounded-xl text-black no-underline border-gradient'
             >
               Open App
             </Link>
           </div>
 
           <div className='pt-2 text-5xl text-black font-extrabold flex flex-col items-center justify-center leading-tight relative'>
-            <div> Tease with flair,</div>
+            <div>
+              <span className='gradient-text'>Tease</span> with flair,
+            </div>
             Memerise with style!
             <Image src={Laptop} alt='laptop' className='py-4 h-[350px] w-fit' />
             <Image

@@ -51,8 +51,8 @@ const Features = () => {
         <div className='w-fit'>
           {features.map((item, index) => (
             <div
-              className={`py-4 w-fit text-black cursor-pointer ${
-                activeState === index ? 'bg-[#B4F0FD]' : ''
+              className={`py-2 w-fit text-black cursor-pointer ${
+                activeState === index ? 'radial-gradient-bg rounded-lg' : ''
               }`}
               key={index}
               onClick={() => setActiveState(index)}
@@ -61,13 +61,15 @@ const Features = () => {
             </div>
           ))}
         </div>
-        <div className='grid grid-cols-3 items-center h-full w-full gap-x-8'>
-          <Image
-            src={features[activeState].img}
-            alt='feature'
-            className='w-full h-[300px] rounded-lg col-span-2'
-          />
-          <div className='bg-[#B4F0FD] rounded-lg p-4 h-full text-black'>
+        <div className='flex items-center h-full w-full gap-x-4'>
+          <div className='w-full'>
+            <Image
+              src={features[activeState].img}
+              alt='feature'
+              className='w-full h-[400px] rounded-lg'
+            />
+          </div>
+          <div className='radial-gradient-bg-card rounded-lg p-4 h-full text-black w-fit'>
             <h2 className='text-2xl font-bold mb-4'>
               {features[activeState].title}
             </h2>

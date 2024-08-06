@@ -1,11 +1,14 @@
+'use client';
 import Image from 'next/image';
-import React from 'react';
+import React, { useState } from 'react';
 import Wave from '../../../public/landingPage/waves.webp';
 import creator1 from '../../../public/landingPage/creators-1.webp';
 import creator2 from '../../../public/landingPage/creatos-2.webp';
 import Subscribe from '../../../public/landingPage/subscribe.png';
-
+import { AnimatedSubscribeButton } from '@/components/landing-page/subscribe';
+import { FaCheck } from 'react-icons/fa6';
 const JoinCommunities = () => {
+  const [searchData, setSearchData] = useState('');
   return (
     <div className='relative h-screen flex items-center justify-center'>
       <Image src={Wave} alt='wave' className='absolute h-full w-full' />
@@ -24,13 +27,28 @@ const JoinCommunities = () => {
             </div>
             <div className='w-full flex items-center gap-x-6'>
               <input
-                className='my-10 w-full p-2 border border-gray-300 rounded-md'
+                className='my-10 w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-none'
                 placeholder='Enter your email'
                 type='email'
+                value={searchData}
+                onChange={(e) => setSearchData(e.target.value)}
               />
-              <button className='border-2 border-red-200 p-2 rounded-md'>
-                Subscribe
-              </button>
+              <AnimatedSubscribeButton
+                buttonColor='#4b4b4b'
+                buttonTextColor='#aaaaaa'
+                searchValue={searchData}
+                initialText={
+                  <span className='group inline-flex items-center'>
+                    Subscribe
+                  </span>
+                }
+                changeText={
+                  <span className='group inline-flex items-center gap-x-3'>
+                    <FaCheck />
+                    Subscribed
+                  </span>
+                }
+              />
             </div>
             <Image src={Subscribe} alt='subscribe' className='mx-auto' />
           </div>

@@ -14,11 +14,33 @@
 .ock-connectaccount-inner {
   @apply text-sm font-medium leading-5 text-white;
 }
-.border-gradient {
-  border: 3px solid;
-  borderimagesource: linear-gradient(to right, #0051fe, #ff6bea);
-  borderimageslice: 1;
+
+.radial-gradient-bg {
+  background: radial-gradient(circle, #b4f0fd 0%, #fa78ff 100%);
 }
+.radial-gradient-bg-card {
+  background: radial-gradient(
+      131.18% 258.2% at 2.5% 4.44%,
+      #b4f0fd 0%,
+      #ffffff 35.9%,
+      #ffffff 46.58%,
+      #fa78ff 94.02%
+    )
+    /* warning: gradient uses a rotation that is not supported by CSS and may not behave as expected */;
+}
+.gradient-text {
+  background: linear-gradient(91.68deg, #0051fe 20.08%, #ff6bea 41.02%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  text-fill-color: transparent;
+}
+.border-gradient {
+  border: 3px solid; /* Adjust the width as needed */
+  border-image: linear-gradient(91.68deg, #0051fe 20.08%, #ff6bea 41.02%);
+  border-image-slice: 1;
+}
+
 /* src/components/ui/styles.css */
 @keyframes ring {
   0% {
