@@ -39,7 +39,7 @@ export default function HomePage() {
             <div>
               <span className='gradient-text'>Tease</span> with flair,
             </div>
-            Memerise with style!
+            Mesmerize with style!
             <Image src={Laptop} alt='laptop' className='py-4 h-[350px] w-fit' />
             <video
               width='320'

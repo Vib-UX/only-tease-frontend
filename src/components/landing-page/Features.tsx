@@ -1,7 +1,7 @@
 'use client';
 import React, { useEffect } from 'react';
 import LogoText from '../../../public/landingPage/onlytease-text.png';
-
+import { CircularProgress } from '@mui/material';
 import Feature1 from '../../../public/landingPage/feature-1.png';
 import Feature2 from '../../../public/landingPage/feature-2.png';
 import Feature3 from '../../../public/landingPage/feature-3.png';
@@ -33,14 +33,32 @@ const features = [
 
 const Features = () => {
   const [activeState, setActiveState] = React.useState(0);
+  const [progressBar, setProgressBar] = React.useState(0);
 
   useEffect(() => {
-    const interval = setInterval(() => {
-      setActiveState((prevState) => (prevState + 1) % features.length);
+    const progressBarInterval = setInterval(() => {
+      setProgressBar((prevProgressBar) => {
+        if (prevProgressBar <= 100) {
+          return prevProgressBar + 1;
+        } else {
+          return 0;
+        }
+      });
+    }, 80);
+
+    // Progresser timeout
+    const timer = setTimeout(() => {
+      setActiveState((prevProgresser) =>
+        prevProgresser === 3 ? 0 : prevProgresser + 1
+      );
+      setProgressBar(0);
     }, 8000);
 
-    return () => clearInterval(interval); // Cleanup interval on component unmount
-  }, []);
+    return () => {
+      clearTimeout(timer);
+      clearInterval(progressBarInterval);
+    };
+  }, [activeState]);
   return (
     <div className='py-28'>
       <div className='flex items-center justify-center text-4xl text-[#4B4B4B] landing-font pb-16'>
@@ -51,13 +69,27 @@ const Features = () => {
         <div className='w-fit'>
           {features.map((item, index) => (
             <div
-              className={`py-2 w-fit text-black cursor-pointer ${
+              className={`py-2 w-full text-black cursor-pointer ${
                 activeState === index ? 'radial-gradient-bg rounded-lg' : ''
               }`}
               key={index}
               onClick={() => setActiveState(index)}
             >
-              <div className='p-4 rounded-lg'>{item.title}</div>
+              <div className='p-4 rounded-lg  items-center flex justify-between'>
+                {item.title}{' '}
+                {index === activeState && (
+                  <CircularProgress
+                    variant='determinate'
+                    value={progressBar}
+                    sx={{
+                      color: '#ffffffde',
+                    }}
+                    size={22}
+                    className=''
+                    thickness={6}
+                  />
+                )}
+              </div>
             </div>
           ))}
         </div>
