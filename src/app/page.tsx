@@ -38,22 +38,49 @@ export default function HomePage() {
             </div>
             Memerise with style!
             <Image src={Laptop} alt='laptop' className='py-4 h-[350px] w-fit' />
+            <video
+              width='320'
+              height='240'
+              muted
+              loop
+              autoPlay
+              className='w-[430px] absolute rounded-lg'
+            >
+              <source src='/landingPage/laptop_recoding.mp4' type='video/mp4' />
+            </video>
             <Image
               src={Mobile}
               alt='mobile'
               className='absolute left-[22%] top-[38%] w-fit h-[300px]'
             />
+            <video
+              width='320'
+              height='240'
+              muted
+              loop
+              autoPlay
+              className='absolute left-[22.75%] top-[40%] w-fit h-[280px] rounded-xl'
+            >
+              <source
+                src='/landingPage/mobile_recording.mp4'
+                type='video/mp4'
+              />
+            </video>
             <div className='text-lg flex items-center flex-col pt-3'>
-              <div className=''>Available on</div>
+              <div className='flex items-center w-full justify-between text-[#aaaaaa]'>
+                <div className='pl-24 text-lg'>Coming soon</div>
+                <div className='pr-6'>Try with</div>
+              </div>
               <div className='pt-3 flex items-center gap-x-4'>
                 {AvailableOn.map((elem, index) => {
                   return (
-                    <div
+                    <Link
+                      href={elem.item === 'Browser' ? '/feed' : '#'}
                       key={index}
                       className=' py-1 px-6 rounded-lg text-black no-underline border border-red-200'
                     >
                       {elem.item}
-                    </div>
+                    </Link>
                   );
                 })}
               </div>
