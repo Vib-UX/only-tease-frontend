@@ -16,7 +16,7 @@ const features = [
   },
   {
     title: 'Hassle-Free Onboarding',
-    desc: 'Join OnlyTease effortlessly by signing in with your existing social accounts. Thanks to Web3Auth, theres no need for deep blockchain knowledge. When you log in with your social accounts, we create a Smart Account thats linked to your socials, making your entry into the exciting world of OnlyTease simple and barrier-free.',
+    desc: 'Join OnlyTease effortlessly by signing in with your existing social accounts. When you log in with your social accounts, we create a Smart Account thats linked to your socials, making your entry into the exciting world of OnlyTease simple and barrier-free.',
     img: Feature2,
   },
   {

@@ -21,8 +21,11 @@ const JoinCommunities = () => {
                 Subscribe to access
               </div>
               <p>
-                OnlyTease makes it simple for fans and creators to manage their
-                funds with our Crypto OnRamp and OffRamp features.
+                Join our early waitlist to be among the first to experience
+                OnlyTease – the next-gen platform for exclusive content and
+                creator engagement. Get early access, special rewards, and stay
+                ahead of the curve with onChain. Don't miss out on the
+                revolution – sign up now!
               </p>
             </div>
             <div className='w-full flex items-center gap-x-6'>
