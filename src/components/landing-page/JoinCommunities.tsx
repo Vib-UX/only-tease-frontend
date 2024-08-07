@@ -7,13 +7,14 @@ import creator2 from '../../../public/landingPage/creatos-2.webp';
 import Subscribe from '../../../public/landingPage/subscribe.png';
 import { AnimatedSubscribeButton } from '@/components/landing-page/subscribe';
 import { FaCheck } from 'react-icons/fa6';
+import { MarqueeDemo } from '@/components/landing-page/Scroller';
 const JoinCommunities = () => {
   const [searchData, setSearchData] = useState('');
   return (
     <div className='relative h-screen flex items-center justify-center'>
       <Image src={Wave} alt='wave' className='absolute h-full w-full' />
 
-      <div className='container mx-auto relative bg-white p-10 rounded-lg shadow-lg z-10 w-11/12 max-w-screen-lg'>
+      <div className='container mx-auto relative bg-white py-10 pl-10 rounded-lg shadow-lg z-10 w-11/12 max-w-screen-lg'>
         <div className='grid grid-cols-2 gap-x-12'>
           <div className='flex flex-col items-start justify-between gap-y-4'>
             <div>
@@ -55,7 +56,7 @@ const JoinCommunities = () => {
             </div>
             <Image src={Subscribe} alt='subscribe' className='mx-auto' />
           </div>
-          <div>
+          {/* <div>
             <div className='relative overflow-hidden h-32 mb-5'>
               <Image
                 src={creator1}
@@ -70,7 +71,8 @@ const JoinCommunities = () => {
                 className='absolute opacity-70 h-32 w-full rounded-lg animate-rightToLeft'
               />
             </div>
-          </div>
+          </div> */}
+          <MarqueeDemo />
         </div>
       </div>
     </div>

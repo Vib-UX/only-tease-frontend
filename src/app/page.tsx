@@ -29,7 +29,7 @@ export default function HomePage() {
             <Image src={LogoText} alt='logo-text' />
             <Link
               href={'/feed'}
-              className=' py-1 px-6 rounded-xl text-black no-underline border-gradient'
+              className=' py-1 px-6 rounded-xl text-black no-underline border-gradient bg-white'
             >
               Open App
             </Link>
