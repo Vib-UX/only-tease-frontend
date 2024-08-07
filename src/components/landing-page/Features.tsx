@@ -60,8 +60,8 @@ const Features = () => {
     };
   }, [activeState]);
   return (
-    <div className='py-28'>
-      <div className='flex items-center justify-center text-4xl text-[#4B4B4B] landing-font pb-16'>
+    <div className='py-28 px-5 md:px-0'>
+      <div className='flex items-center justify-center text-3xl md:text-4xl text-[#4B4B4B] landing-font pb-16'>
         Features of
         <Image src={LogoText} alt='logo-text' className='mt-3 ml-2' />
       </div>
@@ -98,7 +98,7 @@ const Features = () => {
             <Image
               src={features[activeState].img}
               alt='feature'
-              className='w-full h-[400px] rounded-lg'
+              className='w-full h-[400px] rounded-lg hidden md:block'
             />
           </div>
           <div className='radial-gradient-bg-card rounded-lg p-4 h-full text-black w-fit'>

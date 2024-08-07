@@ -29,9 +29,9 @@ const JoinCommunities = () => {
                 revolution – sign up now!
               </p>
             </div>
-            <div className='w-full flex items-center gap-x-6'>
+            <div className='w-full flex flex-col md:flex-row items-center gap-x-6'>
               <input
-                className='my-10 w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-none'
+                className='my-4 md:my-10 w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-none'
                 placeholder='Enter your email'
                 type='email'
                 value={searchData}

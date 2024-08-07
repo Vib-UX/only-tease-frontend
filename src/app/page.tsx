@@ -22,39 +22,28 @@ export default function HomePage() {
     <main className='text-[#AAAAAA] font-bold bg-white w-full'>
       <Image src={BgImage} alt='bg' className='absolute h-screen w-full' />
       <div className='container mx-auto relative'>
-        <div className='h-screen xl:h-full'>
+        <div className='h-full md:h-screen xl:h-full px-5 md:px-0'>
           <div className='flex items-center justify-between  pt-8 pb-5'>
-            <Image src={Logo} alt='logo' className='ml-10' />
+            <Image src={Logo} alt='logo' className='ml-0 md:ml-10' />
 
             <Image src={LogoText} alt='logo-text' />
             <Link
               href={'/feed'}
-              className=' py-1 px-6 rounded-xl text-black no-underline border-gradient bg-white'
+              className=' py-1 px-2 md:px-6 rounded-xl text-black no-underline border-gradient bg-white'
             >
               Open App
             </Link>
           </div>
 
-          <div className='pt-2 text-5xl text-black font-extrabold flex flex-col items-center justify-center leading-tight relative'>
-            <div>
+          <div className='pt-2 text-3xl md:text-5xl text-black font-extrabold flex flex-col items-center justify-center leading-tight relative'>
+            <div className='pb-0 md:pb-2'>
               <span className='gradient-text'>Tease</span> with flair,
             </div>
             Mesmerize with style!
-            <Image src={Laptop} alt='laptop' className='py-4 h-[350px] w-fit' />
-            <video
-              width='320'
-              height='240'
-              muted
-              loop
-              autoPlay
-              className='w-[430px] absolute rounded-lg'
-            >
-              <source src='/landingPage/laptop_recoding.mp4' type='video/mp4' />
-            </video>
             <Image
-              src={Mobile}
-              alt='mobile'
-              className='absolute left-[22%] top-[38%] w-fit h-[300px]'
+              src={Laptop}
+              alt='laptop'
+              className='py-4 h-[240px] md:h-[350px] w-fit'
             />
             <video
               width='320'
@@ -62,19 +51,34 @@ export default function HomePage() {
               muted
               loop
               autoPlay
-              className='absolute left-[22.75%] top-[40%] w-fit h-[280px] rounded-xl'
+              className='w-[270px] md:w-[430px] absolute rounded-lg top-[105px] md:top-[134px]'
+            >
+              <source src='/landingPage/laptop_recoding.mp4' type='video/mp4' />
+            </video>
+            <Image
+              src={Mobile}
+              alt='mobile'
+              className='absolute left-[7%] md:left-[22%] top-[40%] md:top-[38%] w-fit h-[220px] md:h-[300px]'
+            />
+            <video
+              width='320'
+              height='240'
+              muted
+              loop
+              autoPlay
+              className='absolute left-[9%] md:left-[22.75%] top-[42%] md:top-[40%] w-fit h-[200px] md:h-[280px] rounded-xl'
             >
               <source
                 src='/landingPage/mobile_recording.mp4'
                 type='video/mp4'
               />
             </video>
-            <div className='text-lg flex items-center flex-col pt-3'>
-              <div className='flex items-center w-full justify-between text-[#aaaaaa]'>
-                <div className='pl-24 text-lg'>Coming soon</div>
-                <div className='pr-6'>Try with</div>
+            <div className='text-lg flex items-center flex-col pt-44 md:pt-6'>
+              <div className='flex items-center w-full justify-between text-[#aaaaaa] gap-x-4 md:gap-x-0'>
+                <div className='pl-0 md:pl-32 text-lg'>Coming soon</div>
+                <div className='pr-8'>Try with</div>
               </div>
-              <div className='pt-3 flex items-center gap-x-4'>
+              <div className='pt-3 flex flex-wrap items-center gap-y-4 md:gap-y-0 gap-x-4'>
                 {AvailableOn.map((elem, index) => {
                   return (
                     <Link
