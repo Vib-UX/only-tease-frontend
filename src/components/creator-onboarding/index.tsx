@@ -3,12 +3,11 @@ import KycVerification from '@/components/creator-onboarding/steps/kycVerificati
 
 import Success from '@/components/creator-onboarding/steps/Success';
 import UploadDocuments from '@/components/creator-onboarding/steps/uploadDocuments';
-import { AnimatePresence, motion } from 'framer-motion';
 import UploadProfile from '@/components/creator-onboarding/steps/uploadProfile';
 import UserInfo from '@/components/creator-onboarding/steps/userInfo';
-import CreatorOnboardingImage from '../../../public/images/become-creator.webp';
-import { ImSpinner2 } from 'react-icons/im';
-import { BiSolidBadgeCheck } from 'react-icons/bi';
+import useGlobalStore from '@/hooks/store/useGlobalStore';
+import { onBoadingValidtion } from '@/lib/helper';
+import { toastStyles } from '@/lib/utils';
 import {
   Dialog,
   DialogPanel,
@@ -16,15 +15,15 @@ import {
   Transition,
   TransitionChild,
 } from '@headlessui/react';
-import { useState } from 'react';
-import useGlobalStore from '@/hooks/store/useGlobalStore';
-import toast from 'react-hot-toast';
-import { toastStyles } from '@/lib/utils';
-import { onBoadingValidtion } from '@/lib/helper';
+import { AnimatePresence, motion } from 'framer-motion';
 import Image from 'next/image';
+import { useState } from 'react';
+import toast from 'react-hot-toast';
+import { ImSpinner2 } from 'react-icons/im';
+import CreatorOnboardingImage from '../../../public/images/become-creator.webp';
 
 const CreatorOnboarding = () => {
-  let [isOpen, setIsOpen] = useState(false);
+  const [isOpen, setIsOpen] = useState(false);
   const [currentState, setCurrentState] = useState(0);
   const [isLoading, setIsLoading] = useState(false);
   function open() {
