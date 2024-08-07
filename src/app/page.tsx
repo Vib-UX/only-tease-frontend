@@ -9,10 +9,13 @@ import JoinCommunities from '@/components/landing-page/JoinCommunities';
 import CreatorsGlobe from '@/components/landing-page/CreatorsGlobe';
 import Features from '@/components/landing-page/Features';
 import BgImage from '../../public/landingPage/bg-image.webp';
+import { FaApple } from 'react-icons/fa6';
+import { FaGooglePlay } from 'react-icons/fa';
+import { CiGlobe } from 'react-icons/ci';
 const AvailableOn = [
-  { item: 'Apple Store' },
-  { item: 'Google Play' },
-  { item: 'Browser' },
+  { item: 'Apple Store', icon: <FaApple size={20} /> },
+  { item: 'Google Play', icon: <FaGooglePlay size={20} /> },
+  { item: 'Browser', icon: <CiGlobe size={20} /> },
 ];
 export default function HomePage() {
   return (
@@ -77,8 +80,9 @@ export default function HomePage() {
                     <Link
                       href={elem.item === 'Browser' ? '/feed' : '#'}
                       key={index}
-                      className=' py-1 px-6 rounded-lg text-black no-underline border border-red-200'
+                      className='flex items-center gap-x-2 py-1 px-6 rounded-lg text-black no-underline border border-red-200'
                     >
+                      {elem.icon}
                       {elem.item}
                     </Link>
                   );
