@@ -73,12 +73,17 @@ export default {
             backgroundPosition: '700px 0',
           },
         },
+        spinhorizon: {
+          // '0%': { transform: 'rotateY(0deg)' },
+          '100%': { transform: 'rotateY(360deg)' },
+        },
       },
       animation: {
         flicker: 'flicker 3s linear infinite',
         shimmer: 'shimmer 1.3s linear infinite',
         marquee: 'marquee var(--duration) linear infinite',
         'marquee-vertical': 'marquee-vertical var(--duration) linear infinite',
+        spinhorizon: 'spinhorizon 20s linear  infinite',
       },
     },
     screens: {

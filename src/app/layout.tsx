@@ -58,7 +58,7 @@ export default function RootLayout({
 }) {
   return (
     <html >
-      <body>
+      <body >
         <OnchainProviders>{children}</OnchainProviders>
       </body>
     </html>
