@@ -16,7 +16,7 @@ import Logo from '../../public/landingPage/onlytease-logo.png';
 import LogoText from '../../public/landingPage/onlytease-text.png';
 import Apple from "../../public/socialDownload/Apple.png"
 import Browser from "../../public/socialDownload/browser.png"
-import GPlay from "../../public/socialDownload/play-store.png"
+import GPlay from "../../public/socialDownload/gplay.png"
 const AvailableOn = [
   { item: 'Apple Store', icon: Apple },
   { item: 'Google Play', icon: GPlay },
@@ -92,7 +92,7 @@ export default function HomePage() {
                       key={index}
                       className='flex items-center gap-x-2 py-1 rounded-lg text-black no-underline  '
                     >
-                      <Image src={elem.icon} alt="elem.item" />
+                      <Image src={elem.icon} alt={elem.item} />
 
                     </Link>
                   );
