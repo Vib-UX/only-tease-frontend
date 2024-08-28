@@ -9,6 +9,7 @@ import { Globe } from '@/components/landing-page/globe';
 import JoinCommunities from '@/components/landing-page/JoinCommunities';
 import { ProductFeatures } from '@/components/landing-page/productFeatures';
 
+import BgImage from "../../public/landingPage/bg-image.webp"
 import Laptop from '../../public/landingPage/laptop.webp';
 import Mobile from '../../public/landingPage/mobile.png';
 import Logo from '../../public/landingPage/onlytease-logo.png';
@@ -24,8 +25,8 @@ const AvailableOn = [
 
 export default function HomePage() {
   return (
-    <main className='text-[#AAAAAA]  font-bold bg-white w-full'>
-      {/* <Image src={BgImage} alt='bg' className='absolute h-screen w-full' /> */}
+    <main className='text-[#AAAAAA]   font-bold  w-full'>
+      <Image src={BgImage} alt='bg' className='absolute h-[700px] w-full' />
       <div className='container mx-auto relative'>
         <div className='h-full md:h-screen xl:h-full px-5 md:px-0'>
           <div className='flex items-center justify-between  pt-8 pb-5'>
@@ -78,7 +79,7 @@ export default function HomePage() {
                 type='video/mp4'
               />
             </video>
-            <div className='text-lg flex items-center flex-col pt-44 md:pt-6'>
+            <div className='text-lg flex mt-8 md:mt-0 items-center flex-col pt-44 md:pt-6'>
               <div className='flex items-center w-full justify-between text-neutral-700 gap-x-4 md:gap-x-0'>
                 <div className='pl-0 md:pl-32 text-lg'>Coming soon</div>
                 <div className='pr-8'>Try with</div>
@@ -102,6 +103,7 @@ export default function HomePage() {
         </div>
       </div>
       <ProductFeatures />
+      {/* <AppleCardsCarouselDemo /> */}
       <Features />
       <JoinCommunities />
       <Globe />

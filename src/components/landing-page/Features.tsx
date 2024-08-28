@@ -11,17 +11,17 @@ import Feature4 from '../../../public/landingPage/feature-4.png';
 const features = [
   {
     title: 'Seamless Top-Up and Withdrawal',
-    desc: 'OnlyTease makes it simple for fans and creators to manage their funds with our Crypto OnRamp and OffRamp features.',
+    desc: '💘 OnlyTease 💌 makes it simple for fans and creators to manage their funds with our Crypto OnRamp and OffRamp features.',
     img: Feature1,
   },
   {
     title: 'Hassle-Free Onboarding',
-    desc: 'Join OnlyTease effortlessly by signing in with your existing social accounts. When you log in with your social accounts, we create a Smart Account thats linked to your socials, making your entry into the exciting world of OnlyTease simple and barrier-free.',
+    desc: 'Join 💘 OnlyTease 💌 effortlessly by signing in with your existing social accounts. When you log in with your social accounts, we create a Smart Account thats linked to your socials, making your entry into the exciting world of 💘 OnlyTease 💌 simple and barrier-free.',
     img: Feature2,
   },
   {
     title: 'Never Miss Content from Your favourite Creators!',
-    desc: 'OnlyTease makes it easy to stay connected with your favorite creators through Autopay Creator Subscriptions.',
+    desc: '💘 OnlyTease 💌 makes it easy to stay connected with your favorite creators through Autopay Creator Subscriptions.',
     img: Feature3,
   },
   {
@@ -62,7 +62,7 @@ const Features = () => {
   return (
     <div className='py-28 px-5 md:px-0'>
       <div className='flex items-center justify-center text-3xl md:text-4xl text-[#4B4B4B] landing-font pb-16'>
-        Features of OnlyTease
+        Features of  OnlyTease
       </div>
       <div className='flex justify-center gap-2 items-center mx-20 '>
         <div className='w-fit'>

@@ -21,10 +21,11 @@ const Footer
                 <h2 className="mb-6 text-lg font-semibold text-gray-900 uppercase ">Resources</h2>
                 <ul className="text-gray-900 font-medium">
                   <li className="mb-4">
-                    <a href="/feed" className="hover:underline">OnlyTease</a>
+                    <a href="https://onlytease.gitbook.io/whitepaper" target='blank' className="hover:underline">Whitepaper</a>
+
                   </li>
                   <li>
-                    <a href="/feed" className="hover:underline">Tailwind</a>
+                    <a href="/feed" className="hover:underline">OnlyTease</a>
                   </li>
                 </ul>
               </div>
