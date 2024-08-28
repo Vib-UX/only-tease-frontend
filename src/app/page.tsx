@@ -1,6 +1,9 @@
 "use client"
 import { Link } from '@mui/material';
 import Image from 'next/image';
+import { CiGlobe } from 'react-icons/ci';
+import { FaGooglePlay } from 'react-icons/fa';
+import { FaApple } from 'react-icons/fa6';
 import '@/lib/env';
 
 import Features from '@/components/landing-page/Features';
@@ -14,13 +17,10 @@ import Laptop from '../../public/landingPage/laptop.webp';
 import Mobile from '../../public/landingPage/mobile.png';
 import Logo from '../../public/landingPage/onlytease-logo.png';
 import LogoText from '../../public/landingPage/onlytease-text.png';
-import Apple from "../../public/socialDownload/Apple.png"
-import Browser from "../../public/socialDownload/browser.png"
-import GPlay from "../../public/socialDownload/gplay.png"
 const AvailableOn = [
-  { item: 'Apple Store', icon: Apple },
-  { item: 'Google Play', icon: GPlay },
-  { item: 'Browser', icon: Browser },
+  { item: 'Apple Store', icon: <FaApple size={20} /> },
+  { item: 'Google Play', icon: <FaGooglePlay size={20} /> },
+  { item: 'Browser', icon: <CiGlobe size={20} /> },
 ];
 
 export default function HomePage() {
@@ -79,8 +79,8 @@ export default function HomePage() {
                 type='video/mp4'
               />
             </video>
-            <div className='text-lg flex mt-8 md:mt-0 items-center flex-col pt-44 md:pt-6'>
-              <div className='flex items-center w-full justify-between text-neutral-700 gap-x-4 md:gap-x-0'>
+            <div className='text-lg flex items-center flex-col pt-44 md:pt-6'>
+              <div className='flex items-center w-full justify-between text-black gap-x-4 md:gap-x-0'>
                 <div className='pl-0 md:pl-32 text-lg'>Coming soon</div>
                 <div className='pr-8'>Try with</div>
               </div>
@@ -90,10 +90,10 @@ export default function HomePage() {
                     <Link
                       href={elem.item === 'Browser' ? '/feed' : '#'}
                       key={index}
-                      className='flex items-center gap-x-2 py-1 rounded-lg text-black no-underline  '
+                      className='flex items-center gap-x-2 py-2 px-6 rounded-lg text-black no-underline border border-red-200'
                     >
-                      <Image src={elem.icon} alt={elem.item} />
-
+                      {elem.icon}
+                      <p className=' font-bold '> {elem.item} </p>
                     </Link>
                   );
                 })}
