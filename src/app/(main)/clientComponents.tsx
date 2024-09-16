@@ -2,20 +2,24 @@
 import { Drawer } from '@mui/material';
 import React from 'react';
 
-import Footer from '@/components/ui/footer'
 import Header from '@/components/ui/header';
 import SideBar from '@/components/ui/sideBar';
+import Footer from '@/components/landing-page/footer';
 
 const ClientComponent = ({ children }: { children: React.ReactNode }) => {
   const [isOpen, setIsOpen] = React.useState(false);
 
   const toggleDrawer = () => {
-    setIsOpen(!isOpen)
-  }
+    setIsOpen(!isOpen);
+  };
   return (
     <>
       <div className='flex items-start h-full w-full justify-between'>
-        <Drawer open={isOpen} onClose={toggleDrawer} className="block md:hidden">
+        <Drawer
+          open={isOpen}
+          onClose={toggleDrawer}
+          className='block md:hidden'
+        >
           <SideBar isOpen={isOpen} setIsOpen={setIsOpen} />
         </Drawer>
         <div className='hidden md:block'>
@@ -34,9 +38,11 @@ const ClientComponent = ({ children }: { children: React.ReactNode }) => {
 
 export default ClientComponent;
 
-{/* <Headers isOpen={isOpen} setIsOpen={setIsOpen} />
+{
+  /* <Headers isOpen={isOpen} setIsOpen={setIsOpen} />
       <div className='  flex  mt-28  '>
         <SideBar isOpen={isOpen} setIsOpen={setIsOpen} />
 
         {children}
-      </div> */}
+      </div> */
+}

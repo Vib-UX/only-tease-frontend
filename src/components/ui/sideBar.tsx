@@ -109,17 +109,6 @@ const SideBar = ({ isOpen, setIsOpen }: props) => {
       }`}
     >
       <div className='flex pt-10 flex-col justify-between gap-4 overflow-hidden w-full h-full'>
-        <div className='flex items-center justify-center w-full '>
-          <Image
-            src='/images/onchain-summer.webp'
-            alt='onchain'
-            width={213}
-            height={178}
-          />
-        </div>
-        <div className='px-5 w-full'>
-          <div className='h-[1px] bg-[#625B71] w-full' />
-        </div>
         <SideBarSections sectionFor='general' content={sideBarContentGenral} />
         <SideBarSections
           sectionFor='special'
